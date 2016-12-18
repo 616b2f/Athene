@@ -20,7 +20,7 @@ namespace Athene.Inventory.Web.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Book> books = _inventory.SearchForBooks("code");
+            IEnumerable<Book> books = _inventory.AllBooks();
             return View(books);
         }
 

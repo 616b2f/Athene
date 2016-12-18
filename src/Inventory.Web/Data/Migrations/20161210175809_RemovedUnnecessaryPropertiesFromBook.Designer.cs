@@ -8,9 +8,10 @@ using Athene.Inventory.Web.Data;
 namespace Athene.Inventory.Web.Data.Migrations
 {
     [DbContext(typeof(InventoryDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20161210175809_RemovedUnnecessaryPropertiesFromBook")]
+    partial class RemovedUnnecessaryPropertiesFromBook
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1");
@@ -162,7 +163,7 @@ namespace Athene.Inventory.Web.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Languages");
+                    b.ToTable("Language");
                 });
 
             modelBuilder.Entity("Athene.Inventory.Web.Models.Publisher", b =>

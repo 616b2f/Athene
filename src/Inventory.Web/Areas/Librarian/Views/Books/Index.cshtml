@@ -19,10 +19,13 @@
             </div>
             <input name="q" type="text" class="form-control" />
             <span class="input-group-btn">
-                <button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search"></span> Suchen</button>
+                <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span> Suchen</button>
             </span>
         </div>
     </form>
+    <div>
+        <a class="btn btn-default" href="@Url.Action("Create", "Books")"><span class="glyphicon glyphicon-plus"></span> Hinzufügen</a>
+    </div>
 </div>
 @if (Model == null)
 {

@@ -21,6 +21,9 @@ namespace Athene.Inventory.Web.Data
         public DbSet<Student> Students { get; set; }
         public DbSet<StockLocation> StockLocations { get; set; }
         public DbSet<BookItem> BookItems { get; set; }
+        public DbSet<Language> Languages { get; set; }
+        public DbSet<Publisher> Publisher { get; set; }
+        public DbSet<Author> Authors { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

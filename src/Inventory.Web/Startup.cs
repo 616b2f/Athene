@@ -76,6 +76,7 @@ namespace Athene.Inventory.Web
 
             app.UseIdentity();
 
+            db.Database.EnsureCreated();
             if (db.Books.Count() == 0) {
                 db.Initialize();
             }

@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Athene.Inventory.Web.Models
 {
@@ -16,12 +14,16 @@ namespace Athene.Inventory.Web.Models
         [Required]
         public string Title { get; set; }
         public string Description { get; set; }
-        public string InternationalStandardBookNumber10 { get; set; }
-        public string InternationalStandardBookNumber13 { get; set; }
-        public string EuropeanArticleNumber { get; set; }
+        [RegularExpression(@"^(97(8|9))?\d{9}(\d|X)$")]
+        public string InternationalStandardBookNumber { get; set; }
+        [Required]
+        [ForeignKey("Publisher")]
+        public int PublisherId { get; set; }
         public Publisher Publisher { get; set; }
         public ICollection<Author> Authors { get; set; }
         [Required]
+        [ForeignKey("Language")]
+        public int LanguageId { get; set; }
         public Language Language { get; set; }
     }
 }

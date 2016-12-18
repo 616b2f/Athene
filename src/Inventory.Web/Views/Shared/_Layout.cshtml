@@ -37,6 +37,8 @@
                       <ul class="dropdown-menu">
                         <li><a asp-area="Librarian" asp-controller="Books" asp-action="Index">Bücher</a></li>
                         <li><a asp-area="Librarian" asp-controller="Students" asp-action="Index">Schüler</a></li>
+                        <li><a asp-area="Librarian" asp-controller="Publisher" asp-action="Index">Herausgeber</a></li>
+                        <li><a asp-area="Librarian" asp-controller="Authors" asp-action="Index">Autoren</a></li>
                       </ul>
                     </li>
                 </ul>
@@ -52,12 +54,12 @@
         <div class="container">
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    <li><a asp-controller="Home" asp-action="Terms">AGB</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Terms">AGB</a></li>
                 </ul>
             </div>
-            <p>&copy; 2016 - Weeder</p>
+            <p>&copy; 2016 - Athene</p>
         </div>
     </footer>
 

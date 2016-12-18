@@ -15,9 +15,9 @@ body {
 }
 
 /* Set widths on the form inputs since otherwise they're 100% wide */
-input.input-sm,
-select.input-sm,
-textarea.input-sm {
+input.ath-input-sm,
+select.ath-input-sm,
+textarea.ath-input-sm {
     max-width: 280px;
 }
 
@@ -54,7 +54,7 @@ textarea.input-sm {
 }
 
 .ath-navbar-top {
-    /*background-color: #4d90fe;*/
+    background-color: white;
     border-bottom: 1px solid #4d90fe;
 }
 
@@ -67,7 +67,7 @@ textarea.input-sm {
     background-color: #4d90fe;
 }
 
-/* settings for the footer */
+
 .ath-footer {
     position:absolute;
     bottom: 0;

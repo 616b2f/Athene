@@ -1,0 +1,16 @@
+@model Author
+
+@{
+    Layout = "_Layout";
+}
+
+<h3>Autor hinzufügen</h3>
+<form asp-controller="Authors", asp-action="Create">
+    <div class="form-group">
+        <label asp-for="FullName" ></label>
+        <input class="form-control ath-input-sm" asp-for="FullName" >
+        <label asp-for="Info" ></label>
+        <input class="form-control ath-input-sm" asp-for="Info" >
+    </div>
+    <button class="btn btn-primary" type="submit">Hinzufügen</button>
+</form>

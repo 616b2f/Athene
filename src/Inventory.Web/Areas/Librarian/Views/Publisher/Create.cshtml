@@ -1,0 +1,14 @@
+@model Publisher
+
+@{
+    Layout = "_Layout";
+}
+
+<h3>Herausgeber hinzufügen</h3>
+<form asp-controller="Publisher", asp-action="Create">
+    <div class="form-group">
+        <label asp-for="Name" ></label>
+        <input class="form-control ath-input-sm" asp-for="Name" >
+    </div>
+    <button class="btn btn-primary" type="submit">Hinzufügen</button>
+</form>
