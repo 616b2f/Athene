@@ -62,6 +62,10 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
             ViewBag.LanguageId = new SelectList(languages, "Id", "Name");
             var publisher = _inventoryService.AllPublisher();
             ViewBag.PublisherId = new SelectList(publisher, "Id", "Name");
+            var authors = _inventoryService.AllAuthors();
+            ViewBag.Authors = new SelectList(authors, "Id", "FullName");
+            var categories = _inventoryService.AllCategories();
+            ViewBag.Categories = new SelectList(categories, "Id", "Name");
         }
     }
 }

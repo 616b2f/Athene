@@ -1,8 +1,13 @@
 @model Book
 
 <div class="panel panel-default panel-body">
+    <label asp-for="Id"></label>
     @Model.Id<br/>
+    <label asp-for="Title"></label>
     @Model.Title<br/>
-    @Model.Description<br/>
-    @Html.ActionLink("Bearbeiten", "Change", "Books", new { id = Model.Id })
+    <label asp-for="Description"></label>
+    <p>
+        @Model.Description
+    </p>
+    <a class="btn btn-primary" asp-controller="Books" asp-action="Change" asp-route-id="@Model.Id">Bearbeiten</a>
 </div>

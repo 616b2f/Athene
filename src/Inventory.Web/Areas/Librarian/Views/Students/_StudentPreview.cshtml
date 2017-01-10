@@ -1,0 +1,8 @@
+@model Student
+
+<div class="panel panel-default panel-body">
+    <label asp-for="FullName"></label>
+    @Model.FullName<br />
+    <label asp-for="Birthsday"></label>
+    @Model.Birthsday.ToString("dd.MM.yyyy")<br />
+</div>

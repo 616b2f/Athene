@@ -11,6 +11,7 @@ namespace Athene.Inventory.Web.Services
         IEnumerable<Language> AllLanguages();
         IEnumerable<Publisher> AllPublisher();
         IEnumerable<Author> AllAuthors();
+        IEnumerable<Category> AllCategories();
         IEnumerable<Book> AllBooks();
         void AddBook(Book book);
         IEnumerable<Book> SearchForBooks(string matchcode);

@@ -50,7 +50,9 @@ namespace Athene.Inventory.Web
             services.AddMvc();
 
             // Add application services.
+            services.AddScoped<IRentalService, Athene.Inventory.Web.Services.RentalService>();
             services.AddScoped<IInventory, Athene.Inventory.Web.Services.Inventory>();
+            services.AddScoped<IStudentsRepository, Athene.Inventory.Web.Services.StudentRepository>();
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
         }

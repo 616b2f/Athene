@@ -29,6 +29,18 @@ namespace Athene.Inventory.Web.Models
         [Key]
         [Column(Order = 4)]
         public int Position { get; set; }
+
+        public string OneLiner
+        {
+            get
+            {
+                return this.Hall + "/" +
+                    this.Corridor + "/" +
+                    this.Rack + "/" +
+                    this.Level + "/" +
+                    this.Position;
+            }
+        }
         public ICollection<BookItem> BookItems { get; set; }
     }
 }

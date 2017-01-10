@@ -1,9 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using Athene.Inventory.Web.Models;
 using Athene.Inventory.Web.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Athene.Inventory.Web.Services
 {
@@ -17,6 +16,17 @@ namespace Athene.Inventory.Web.Services
 
         public void AddBook(Book book)
         {
+            List<int> authorIds = book.Authors
+                .Select(a => a.Id)
+                .Distinct()
+                .ToList();
+            var authors = _db.Authors
+                .Where(a => authorIds.Contains(a.Id))
+                .ToList();
+            book.Authors.Clear();
+            foreach (var author in authors) {
+                book.Authors.Add(author);
+            }
             _db.Books.Add(book);
             _db.SaveChanges();
         }
@@ -30,6 +40,10 @@ namespace Athene.Inventory.Web.Services
         public IEnumerable<Book> SearchForBooks(string matchcode)
         {
             var books = _db.Books
+                .Include(b => b.OwnedBooks)
+                    .ThenInclude(ob => ob.RentedBy)
+                .Include(b => b.OwnedBooks)
+                    .ThenInclude(ob => ob.StockLocation)
                 .Where(b =>
                     b.InternationalStandardBookNumber == matchcode ||
                     b.Title.Contains(matchcode) ||
@@ -71,6 +85,12 @@ namespace Athene.Inventory.Web.Services
         {
             var authors = _db.Authors.ToArray();
             return authors;
+        }
+
+        public IEnumerable<Category> AllCategories()
+        {
+            var categories = _db.Categories.ToArray();
+            return categories;
         }
 
         public IEnumerable<Book> AllBooks()

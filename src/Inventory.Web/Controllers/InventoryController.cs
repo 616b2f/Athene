@@ -18,9 +18,20 @@ namespace Athene.Inventory.Web.Controllers
             _inventory = inventory;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string q)
         {
-            IEnumerable<Book> books = _inventory.AllBooks();
+            ViewBag.SearchTargets = new List<string>
+            {
+                "Alle",
+                "Bücher",
+                "Zeitschriften",
+                "Magazine",
+            };
+
+            if (string.IsNullOrEmpty(q))
+                return View();
+
+            IEnumerable<Book> books = _inventory.SearchForBooks(q);
             return View(books);
         }
 

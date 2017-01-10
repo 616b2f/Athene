@@ -1,6 +1,8 @@
 @model Book
 @{
     Layout = "_Layout";
+    var authors = ViewBag.Authors as SelectList;
+    var categories = ViewBag.Categories as SelectList;
 }
 
 <h3>Buch hinzufügen</h3>
@@ -11,6 +13,10 @@
         @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class="form-control" }})
     </div>
     <div class="form-group">
+        @Html.LabelFor(model => model.SubTitle)
+        @Html.EditorFor(model => model.SubTitle, new { htmlAttributes = new { @class="form-control" }})
+    </div>
+    <div class="form-group">
         @Html.LabelFor(model => model.Description)
         @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class="form-control" }})
     </div>
@@ -19,8 +25,24 @@
         @Html.EditorFor(model => model.InternationalStandardBookNumber, new { htmlAttributes = new { @class="form-control" }})
     </div>
     <div class="form-group">
+        @Html.LabelFor(model => model.Authors)
+        <p>
+            @Html.DropDownList("authors[" + "0" + "].Id", authors, new { @class="form-control" })
+        </p>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Categories)
+        <p>
+            @Html.DropDownList("categories[" + "0" + "].Id", categories, new { @class="form-control" })
+        </p>
+    </div>
+    <div class="form-group">
         @Html.LabelFor(model => model.Publisher)
         @Html.DropDownListFor(model => model.PublisherId, null, new { @class="form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.PublishedAt)
+        @Html.EditorFor(model => model.PublishedAt, new { htmlAttributes = new { @class="form-control" }})
     </div>
     <div class="form-group">
         @Html.LabelFor(model => model.Language)

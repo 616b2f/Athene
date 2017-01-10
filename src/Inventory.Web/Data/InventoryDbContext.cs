@@ -24,6 +24,7 @@ namespace Athene.Inventory.Web.Data
         public DbSet<Language> Languages { get; set; }
         public DbSet<Publisher> Publisher { get; set; }
         public DbSet<Author> Authors { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

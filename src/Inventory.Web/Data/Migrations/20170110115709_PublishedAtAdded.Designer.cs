@@ -8,9 +8,10 @@ using Athene.Inventory.Web.Data;
 namespace Athene.Inventory.Web.Data.Migrations
 {
     [DbContext(typeof(InventoryDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170110115709_PublishedAtAdded")]
+    partial class PublishedAtAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1");
@@ -161,22 +162,6 @@ namespace Athene.Inventory.Web.Data.Migrations
                     b.HasIndex("BookItemId");
 
                     b.ToTable("BookItemNote");
-                });
-
-            modelBuilder.Entity("Athene.Inventory.Web.Models.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int?>("BookId");
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookId");
-
-                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Athene.Inventory.Web.Models.Language", b =>
@@ -383,13 +368,6 @@ namespace Athene.Inventory.Web.Data.Migrations
                     b.HasOne("Athene.Inventory.Web.Models.BookItem")
                         .WithMany("Notes")
                         .HasForeignKey("BookItemId");
-                });
-
-            modelBuilder.Entity("Athene.Inventory.Web.Models.Category", b =>
-                {
-                    b.HasOne("Athene.Inventory.Web.Models.Book")
-                        .WithMany("Categories")
-                        .HasForeignKey("BookId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
