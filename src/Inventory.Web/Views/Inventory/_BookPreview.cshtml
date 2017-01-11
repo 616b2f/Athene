@@ -12,9 +12,9 @@
                     @Model.Title
                     @if (!string.IsNullOrEmpty(Model.SubTitle))
                     {
-                    <br />
-                    <label asp-for="SubTitle"></label>
-                    @Model.SubTitle
+                        <br />
+                        <label asp-for="SubTitle"></label>
+                        @Model.SubTitle
                     }
                 </div>
                 <div class="col-md-12">
@@ -30,18 +30,49 @@
                     }
                 </div>
                 <div class="col-md-12">
-                    <label asp-for="OwnedBooks"></label>
-                    @if (Model.OwnedBooks.Count > 0)
+                    <label asp-for="Categories"></label>
+                    @if (Model.Categories.Count > 0)
                     {
-                    @foreach (var bookItem in Model.OwnedBooks)
-                    {
-                    @Html.Partial("_BookItemPreview", bookItem)
-                    }
+                        @foreach (var category in Model.Categories)
+                        {
+                            <span class="label label-default">
+                                @string.Format("#{0}", category.Name)
+                            </span>
+                        }
                     }
                     else
                     {
-                    <br />
-                    <label>Nicht verfügbar</label>
+                        <label>-</label>
+                    }
+                </div>
+                <div class="col-md-12">
+                    <label asp-for="Authors"></label>
+                    @if (Model.Authors.Count > 0)
+                    {
+                        @foreach (var author in Model.Authors)
+                        {
+                            <span>
+                                @author.FullName
+                            </span>
+                        }
+                    }
+                    else
+                    {
+                        <label>Nicht verfügbar</label>
+                    }
+                </div>
+                <div class="col-md-12">
+                    <label asp-for="OwnedBooks"></label>
+                    @if (Model.OwnedBooks.Count > 0)
+                    {
+                        @foreach (var bookItem in Model.OwnedBooks)
+                        {
+                            @Html.Partial("_BookItemPreview", bookItem)
+                        }
+                    }
+                    else
+                    {
+                        <label>Nicht verfügbar</label>
                     }
                 </div>
             </div>
