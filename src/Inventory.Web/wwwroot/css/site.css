@@ -4,7 +4,7 @@ html {
 }
 body {
     padding-top: 50px;
-    padding-bottom: 155px;
+    padding-bottom: 205px;
 }
 
 /* Wrapping element */
@@ -67,9 +67,9 @@ textarea.ath-input-sm {
     background-color: #4d90fe;
 }
 
-
 .ath-footer {
     position:absolute;
+    padding-top: 40px;
     bottom: 0;
     height: 155px; /* .push must be the same height as .footer */
     width: 100%;

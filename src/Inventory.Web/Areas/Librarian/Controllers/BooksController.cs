@@ -43,10 +43,20 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Book model)
+        public IActionResult Create(Book model, int[] authorsIds, int[] categoriesIds)
         {
             if (ModelState.IsValid)
             {
+                model.Authors.Clear();
+                foreach(int authorId in authorsIds)
+                {
+                    model.Authors.Add(new Author { Id = authorId });
+                }
+                model.Categories.Clear();
+                foreach(int categoryId in categoriesIds)
+                {
+                    model.Categories.Add(new Category { Id = categoryId });
+                }
                 _inventoryService.AddBook(model);
                 // TODO: add message
                 return RedirectToAction("Index");

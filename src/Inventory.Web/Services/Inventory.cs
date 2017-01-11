@@ -27,6 +27,17 @@ namespace Athene.Inventory.Web.Services
             foreach (var author in authors) {
                 book.Authors.Add(author);
             }
+            List<int> categoryIds = book.Categories
+                .Select(c => c.Id)
+                .Distinct()
+                .ToList();
+            var categories = _db.Categories
+                .Where(c => categoryIds.Contains(c.Id))
+                .ToList();
+            book.Categories.Clear();
+            foreach (var category in categories) {
+                book.Categories.Add(category);
+            }
             _db.Books.Add(book);
             _db.SaveChanges();
         }
@@ -40,6 +51,8 @@ namespace Athene.Inventory.Web.Services
         public IEnumerable<Book> SearchForBooks(string matchcode)
         {
             var books = _db.Books
+                .Include(b => b.Authors)
+                .Include(b => b.Categories)
                 .Include(b => b.OwnedBooks)
                     .ThenInclude(ob => ob.RentedBy)
                 .Include(b => b.OwnedBooks)
@@ -108,6 +121,12 @@ namespace Athene.Inventory.Web.Services
         public void AddAuthors(IEnumerable<Author> authors)
         {
             _db.Authors.AddRange(authors);
+            _db.SaveChanges();
+        }
+
+        public void AddCategories(IEnumerable<Category> categories)
+        {
+            _db.Categories.AddRange(categories);
             _db.SaveChanges();
         }
     }
