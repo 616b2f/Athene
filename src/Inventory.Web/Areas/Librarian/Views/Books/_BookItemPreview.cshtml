@@ -10,4 +10,5 @@
         @Model.Description
     </p>
     <a class="btn btn-primary" asp-controller="Books" asp-action="Change" asp-route-id="@Model.Id">Bearbeiten</a>
+    <a class="btn btn-primary" asp-controller="Books" asp-action="AddToStore" asp-route-bookId="@Model.Id">In Bibliothek aufnehmen</a>
 </div>

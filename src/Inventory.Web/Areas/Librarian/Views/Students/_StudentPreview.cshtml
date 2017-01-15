@@ -5,4 +5,8 @@
     @Model.FullName<br />
     <label asp-for="Birthsday"></label>
     @Model.Birthsday.ToString("dd.MM.yyyy")<br />
+    <a class="btn btn-primary"
+       asp-controller="Rent" 
+       asp-action="Rented" 
+       asp-route-userId="@Model.StudentId">Geliehene Bücher</a>
 </div>

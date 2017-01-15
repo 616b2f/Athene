@@ -33,14 +33,12 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
         {
             if (ModelState.IsValid)
             {
-                //TODO: set message
                 var authors = new List<Author>();
                 authors.Add(model);
                 _inventoryService.AddAuthors(authors);
                 return RedirectToAction("Index");
             }
 
-            //TODO: set message
             return View(model);
         }
     }

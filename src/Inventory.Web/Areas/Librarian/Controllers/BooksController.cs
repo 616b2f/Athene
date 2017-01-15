@@ -1,10 +1,10 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Athene.Inventory.Web.Services;
 using Athene.Inventory.Web.Models;
-
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Athene.Inventory.Web.Areas.Librarian.Models.BooksViewModels;
 
 namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 {
@@ -63,6 +63,58 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
             }
 
             LoadCreateViewBags();
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult AddToStore(int? bookId)
+        {
+            if (bookId == null)
+                return RedirectToAction("Index");
+
+            var book = _inventoryService.FindBookById(bookId.Value);
+
+            var viewModel = new CreateBookItemViewModel
+            {
+                BookId = book.Id,
+                Book = book,
+            };
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddToStore(CreateBookItemViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var book = _inventoryService.FindBookById(model.BookId);
+                var bookItem = new BookItem
+                {
+                    Book = book,
+                    StockLocation = new StockLocation
+                    {
+                        Hall = model.Hall.Value,
+                        Corridor = model.Corridor.Value,
+                        Rack = model.Rack.Value,
+                        Level = model.Level.Value,
+                        Position = model.Position.Value,
+                    }
+                };
+                if (!string.IsNullOrWhiteSpace(model.Note))
+                {
+                    //TODO: add userId
+                    var note = new BookItemNote
+                    { 
+                        Text = model.Note,
+                        CreatedAt = DateTime.Now,
+                    };
+                    bookItem.Notes.Add(note);
+                }
+                _inventoryService.AddBookItem(bookItem);
+                return RedirectToAction("Index");
+            }
+
             return View(model);
         }
 

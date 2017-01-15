@@ -21,5 +21,6 @@ namespace Athene.Inventory.Web.Services
         void AddPublisher(Publisher publisher);
         void AddAuthors(IEnumerable<Author> authors);
         void AddCategories(IEnumerable<Category> categories);
+        Book FindBookById(int bookId);
     }
 }

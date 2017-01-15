@@ -52,7 +52,7 @@ namespace Athene.Inventory.Web
             // Add application services.
             services.AddScoped<IRentalService, Athene.Inventory.Web.Services.RentalService>();
             services.AddScoped<IInventory, Athene.Inventory.Web.Services.Inventory>();
-            services.AddScoped<IStudentsRepository, Athene.Inventory.Web.Services.StudentRepository>();
+            services.AddScoped<IStudentsRepository, Athene.Inventory.Web.Services.StudentsRepository>();
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
         }

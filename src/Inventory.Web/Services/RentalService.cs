@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Athene.Inventory.Web.Data;
+using Athene.Inventory.Web.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Athene.Inventory.Web.Services
 {
@@ -19,6 +22,17 @@ namespace Athene.Inventory.Web.Services
             bookItem.RentedBy = student;
             bookItem.RentedAt = DateTime.Now;
             _db.SaveChanges();
+        }
+
+        public IEnumerable<BookItem> FindRentedBooks(int studentId)
+        {
+            var bookItems = _db.BookItems
+                .Include(bi => bi.StockLocation)
+                .Include(bi => bi.Book)
+                .Where(bi => bi.RentedBy.StudentId == studentId)
+                .ToList();
+
+            return bookItems;
         }
     }
 }

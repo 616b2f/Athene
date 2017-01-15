@@ -33,12 +33,9 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
         {
             if (ModelState.IsValid)
             {
-                //TODO: set message
                 _inventoryService.AddPublisher(model);
                 return RedirectToAction("Index");
             }
-
-            //TODO: set message
             return View(model);
         }
     }

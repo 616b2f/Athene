@@ -66,6 +66,19 @@ namespace Athene.Inventory.Web.Services
             return books;
         }
 
+        public Book FindBookById(int bookId)
+        {
+            var book = _db.Books
+                .Include(b => b.Authors)
+                .Include(b => b.Categories)
+                .Include(b => b.OwnedBooks)
+                    .ThenInclude(ob => ob.RentedBy)
+                .Include(b => b.OwnedBooks)
+                    .ThenInclude(ob => ob.StockLocation)
+                .SingleOrDefault(b => b.Id == bookId);
+            return book;
+        }
+
         public IEnumerable<StockLocation> SearchForLocations(Book book)
         {
             var stockLocations = _db.StockLocations
