@@ -5,7 +5,7 @@ namespace Athene.Inventory.Web.Services
 {
     public interface IRentalService
     {
-        void RentBook(int studentId, int bookItemId);
+        void RentBook(int studentId, int[] bookItemIds);
         IEnumerable<BookItem> FindRentedBooks(int studentId);
     }
 }

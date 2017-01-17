@@ -142,5 +142,17 @@ namespace Athene.Inventory.Web.Services
             _db.Categories.AddRange(categories);
             _db.SaveChanges();
         }
+
+        public BookItem FindBookItemByBarcode(string barcode)
+        {
+            int id;
+            if (int.TryParse(barcode.Trim(), out id))
+                return _db.BookItems
+                    .Include(bi => bi.Book)
+                    .Include(bi => bi.StockLocation)
+                    .SingleOrDefault(bi => bi.Id == id);
+            else
+                return null;
+        }
     }
 }

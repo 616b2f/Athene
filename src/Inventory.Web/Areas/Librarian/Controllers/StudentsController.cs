@@ -22,6 +22,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
             _studentsRepository = studentsRepository;
         }
 
+        [HttpGet]
         public IActionResult Index(string q)
         {
             if (string.IsNullOrWhiteSpace(q))

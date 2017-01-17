@@ -8,5 +8,11 @@
     <a class="btn btn-primary"
        asp-controller="Rent" 
        asp-action="Rented" 
-       asp-route-userId="@Model.StudentId">Geliehene Bücher</a>
+       asp-route-userId="@Model.StudentId">
+       Geliehene Bücher</a>
+    <a class="btn btn-primary"
+        asp-controller="Rent"
+        asp-action="Rent"
+        asp-route-userId="@Model.StudentId">
+        Bücher leihen</a>
 </div>

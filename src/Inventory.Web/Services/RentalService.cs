@@ -15,12 +15,17 @@ namespace Athene.Inventory.Web.Services
             _db = dbContext;
         }
 
-        public void RentBook(int studentId, int bookItemId)
+        public void RentBook(int studentId, int[] bookItemIds)
         {
-            var bookItem = _db.BookItems.Single(bi => bi.Id == bookItemId);
+            var bookItems = _db.BookItems
+                .Where(bi => bookItemIds.Contains(bi.Id))
+                .ToArray();
             var student = _db.Students.Single(s => s.StudentId == studentId);
-            bookItem.RentedBy = student;
-            bookItem.RentedAt = DateTime.Now;
+            foreach (var bookItem in bookItems) 
+            {
+                bookItem.RentedBy = student;
+                bookItem.RentedAt = DateTime.Now;
+            }
             _db.SaveChanges();
         }
 
