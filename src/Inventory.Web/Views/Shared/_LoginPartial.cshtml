@@ -5,16 +5,52 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <form asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
             <li>
-                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+                <a href="#">
+                    <span class="glyphicon glyphicon-bell"></span>
+                </a>
             </li>
-            <li>
-                <button type="submit" class="btn btn-link navbar-btn navbar-link">Log off</button>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  <span class="glyphicon glyphicon-cog"></span>
+                  <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">
+                    Angemeldet als <strong>@UserManager.GetUserName(User)</strong>
+                </li>
+                <li role="separator" class="divider"></li>
+                <li>
+                    <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Account verwalten</a>
+                </li>
+                <li><a href="#">Something else here</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">Einstellungen</a></li>
+                <li>
+                    <form id="logoutForm"
+                          asp-area=""
+                          asp-controller="Account"
+                          asp-action="LogOff"
+                          method="post">
+                        <a href="#" onclick="$(this).closest('form').submit()">Log off</a>
+                    </form>
+                </li>
+              </ul>
             </li>
         </ul>
-    </form>
+        <form class="navbar-form ath-searchbar"
+              asp-area=""
+              asp-controller="Inventory"
+              asp-action="Index"
+              method="get">
+              <div class="form-group">
+                  <div class="input-group" style="display:table">
+                      <input name="q" type="text" class="form-control" placeholder="ISBN, Titel, Beschreibung, Autor" />
+                      <span class="input-group-btn"><button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span> Suchen</button></span>
+                  </div>
+              </div>
+        </form>
 }
 else
 {

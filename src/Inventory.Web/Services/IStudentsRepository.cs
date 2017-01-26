@@ -5,8 +5,8 @@ namespace Athene.Inventory.Web
 {
     public interface IStudentsRepository
     {
-        IEnumerable<Student> Find(string matchcode);
-        Student Find(int studentId);
-        void Add(Student student);
+        IEnumerable<ApplicationUser> Find(string matchcode);
+        ApplicationUser FindByUserId(string userId);
+        void Add(ApplicationUser user);
     }
 }

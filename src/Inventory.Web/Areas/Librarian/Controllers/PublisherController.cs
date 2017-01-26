@@ -1,5 +1,6 @@
 using Athene.Inventory.Web.Models;
 using Athene.Inventory.Web.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 {
     [Area("Librarian")]
+    [Authorize(Policy="Librarian")]
     public class PublisherController : Controller
     {
         private readonly IInventory _inventoryService;

@@ -1,3 +1,6 @@
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,7 +20,7 @@
     </environment>
 </head>
 <body>
-    <div class="navbar ath-navbar-top navbar-fixed-top">
+    <div class="navbar navbar-default ath-navbar-top navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -29,27 +32,27 @@
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Athene</a>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a asp-area="" asp-controller="Inventory" asp-action="Index">
-                            <label class="glyphicon glyphicon-book"></label>
-                            Bücher
-                        </a>
-                    </li>
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                          <label class="glyphicon glyphicon-wrench"></label>
-                          Verwalten <span class="caret"></span>
-                      </a>
-                      <ul class="dropdown-menu">
-                        <li><a asp-area="Librarian" asp-controller="Books" asp-action="Index">Bücher verwalten</a></li>
-                        <li><a asp-area="Librarian" asp-controller="Students" asp-action="Index">Schüler verwalten</a></li>
-                        <li><a asp-area="Librarian" asp-controller="Publisher" asp-action="Index">Herausgeber verwalten</a></li>
-                        <li><a asp-area="Librarian" asp-controller="Authors" asp-action="Index">Autoren verwalten</a></li>
-                        <li><a asp-area="Librarian" asp-controller="Categories" asp-action="Index">Kategorien verwalten</a></li>
-                      </ul>
-                    </li>
-                </ul>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <ul class="nav navbar-nav">
+                        @if (User.IsInRole("Librarian"))
+                        {
+                            <li class="dropdown">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                  <label class="glyphicon glyphicon-wrench"></label>
+                                  Verwalten <span class="caret"></span>
+                              </a>
+                              <ul class="dropdown-menu">
+                                <li><a asp-area="Librarian" asp-controller="Books" asp-action="Index">Bücher verwalten</a></li>
+                                <li><a asp-area="Librarian" asp-controller="Users" asp-action="Index">Benutzer verwalten</a></li>
+                                <li><a asp-area="Librarian" asp-controller="Publisher" asp-action="Index">Herausgeber verwalten</a></li>
+                                <li><a asp-area="Librarian" asp-controller="Authors" asp-action="Index">Autoren verwalten</a></li>
+                                <li><a asp-area="Librarian" asp-controller="Categories" asp-action="Index">Kategorien verwalten</a></li>
+                              </ul>
+                            </li>
+                        }
+                    </ul>
+                }
                 @await Html.PartialAsync("_LoginPartial")
             </div>
         </div>
@@ -60,13 +63,11 @@
 
     <footer class="ath-footer">
         <div class="container">
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Terms">AGB</a></li>
-                </ul>
-            </div>
+            <ul class="nav nav-pills ath-navbar-bottom">
+                <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+                <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                <li><a asp-area="" asp-controller="Home" asp-action="Terms">AGB</a></li>
+            </ul>
             <p>&copy; 2016 - Athene</p>
         </div>
     </footer>

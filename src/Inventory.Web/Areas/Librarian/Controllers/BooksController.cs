@@ -5,10 +5,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Athene.Inventory.Web.Services;
 using Athene.Inventory.Web.Models;
 using Athene.Inventory.Web.Areas.Librarian.Models.BooksViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 {
     [Area("Librarian")]
+    [Authorize(Policy="Librarian")]
     public class BooksController : Controller
     {
         private readonly IInventory _inventoryService;
@@ -16,7 +18,8 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
         public BooksController(IInventory inventoryService) {
             _inventoryService = inventoryService;
         }
-        // GET: /<controller>/
+
+        [HttpGet]
         public IActionResult Index(string q)
         {
             ViewBag.SearchTargets = new List<string>

@@ -21,6 +21,8 @@ namespace Athene.Inventory.Web.Data.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<DateTime>("Birthsday");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -28,6 +30,8 @@ namespace Athene.Inventory.Web.Data.Migrations
                         .HasAnnotation("MaxLength", 256);
 
                     b.Property<bool>("EmailConfirmed");
+
+                    b.Property<string>("Lastname");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -46,6 +50,8 @@ namespace Athene.Inventory.Web.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed");
 
                     b.Property<string>("SecurityStamp");
+
+                    b.Property<string>("Surname");
 
                     b.Property<bool>("TwoFactorEnabled");
 
@@ -120,7 +126,7 @@ namespace Athene.Inventory.Web.Data.Migrations
 
                     b.Property<DateTime?>("RentedAt");
 
-                    b.Property<int?>("RentedByStudentId");
+                    b.Property<string>("RentedByUserId");
 
                     b.Property<int?>("StockLocationCorridor");
 
@@ -136,7 +142,7 @@ namespace Athene.Inventory.Web.Data.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.HasIndex("RentedByStudentId");
+                    b.HasIndex("RentedByUserId");
 
                     b.HasIndex("StockLocationHall", "StockLocationCorridor", "StockLocationRack", "StockLocationLevel", "StockLocationPosition");
 
@@ -218,22 +224,6 @@ namespace Athene.Inventory.Web.Data.Migrations
                     b.HasKey("Hall", "Corridor", "Rack", "Level", "Position");
 
                     b.ToTable("StockLocations");
-                });
-
-            modelBuilder.Entity("Athene.Inventory.Web.Models.Student", b =>
-                {
-                    b.Property<int>("StudentId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("Birthsday");
-
-                    b.Property<string>("Lastname");
-
-                    b.Property<string>("Surname");
-
-                    b.HasKey("StudentId");
-
-                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
@@ -369,9 +359,9 @@ namespace Athene.Inventory.Web.Data.Migrations
                         .WithMany("OwnedBooks")
                         .HasForeignKey("BookId");
 
-                    b.HasOne("Athene.Inventory.Web.Models.Student", "RentedBy")
+                    b.HasOne("Athene.Inventory.Web.Models.ApplicationUser", "RentedBy")
                         .WithMany("RentedBooks")
-                        .HasForeignKey("RentedByStudentId");
+                        .HasForeignKey("RentedByUserId");
 
                     b.HasOne("Athene.Inventory.Web.Models.StockLocation", "StockLocation")
                         .WithMany("BookItems")

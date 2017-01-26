@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Security.Claims;
 using Athene.Inventory.Web.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Athene.Inventory.Web.Data
 {
     public static class DbInitializer
     {
-        public static void Initialize(this InventoryDbContext context)
+        public static void Initialize(this InventoryDbContext context,
+                UserManager<ApplicationUser> userManager)
         {
             var prenticeHall = new Publisher { Name = "Prentice Hall" };
 
@@ -72,13 +74,6 @@ namespace Athene.Inventory.Web.Data
                     Level = 1,
                     Position = 1,
                 },
-                RentedBy = new Student 
-                {
-                    Surname = "Max",
-                    Lastname = "Mustermann",
-                    Birthsday = new DateTime(2011, 1, 1),
-                },
-                RentedAt = DateTime.Now,
             };
             var bookItem2 = new BookItem
             {
@@ -91,12 +86,51 @@ namespace Athene.Inventory.Web.Data
                     Level = 1,
                     Position = 2,
                 },
-                RentedBy = null,
+                RentedByUserId = null,
                 RentedAt = null,
             };
             context.BookItems.Add(bookItem1);
             context.BookItems.Add(bookItem2);
 
+            context.SaveChanges();
+
+            var user1 = new ApplicationUser 
+            {
+                UserName = "admin@athene.com",
+                Email =  "admin@athene.com",
+                Surname = "Max",
+                Lastname = "Mustermann",
+                Birthsday = new DateTime(1988, 1, 1),
+            };
+            user1.Claims.Add(new IdentityUserClaim<string>
+            {
+                ClaimType = ClaimTypes.Role,
+                ClaimValue = "Librarian"
+            });
+            user1.Claims.Add(new IdentityUserClaim<string>
+            {
+                ClaimType = ClaimTypes.Role,
+                ClaimValue = "Administrator"
+            });
+            var user2 = new ApplicationUser 
+            {
+                UserName = "u.musterfrau@athene.com",
+                Email =  "u.musterfrau@athene.com",
+                Surname = "Uwe",
+                Lastname = "Musterfrau",
+                Birthsday = new DateTime(1989, 1, 1),
+            };
+            user2.Claims.Add(new IdentityUserClaim<string>
+            {
+                ClaimType = ClaimTypes.Role,
+                ClaimValue = "Librarian"
+            });
+            userManager.CreateAsync(user1, "Admin123!");
+            userManager.CreateAsync(user2, "Test123!");
+
+            user1 = userManager.FindByEmailAsync("admin@athene.com").Result;
+            bookItem1.RentedByUserId = user1.Id;
+            bookItem1.RentedAt = DateTime.Now;
             context.SaveChanges();
         }
     }

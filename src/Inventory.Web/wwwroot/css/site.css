@@ -58,11 +58,6 @@ textarea.ath-input-sm {
     border-bottom: 1px solid #4d90fe;
 }
 
-.ath-navbar-bottom {
-    background-color: #4d90fe;
-    border-top: 1px solid gray;
-}
-
 .navbar-toggle .icon-bar {
     background-color: #4d90fe;
 }
@@ -78,4 +73,35 @@ textarea.ath-input-sm {
 
 .ath-footer a {
      color:white;
+}
+
+.ath-navbar-bottom > li > a:hover,
+.ath-navbar-bottom > li > a:focus {
+    text-decoration: none !important;
+    background-color: rgba(238, 238, 238, 0.15) !important;
+}
+
+.ath-searchbar .form-group {
+    display: inline;
+}
+
+.ath-searchbar .form-group .input-group-btn {
+    width: 1%;
+}
+
+#logoutForm > a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+}
+
+#logoutForm > a:hover,
+#logoutForm > a:focus {
+    color: #262626;
+    text-decoration: none;
+    background-color: #f5f5f5;
 }

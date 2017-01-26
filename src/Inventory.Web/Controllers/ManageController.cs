@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -12,7 +10,7 @@ using Athene.Inventory.Web.Models.ManageViewModels;
 
 namespace Athene.Inventory.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles="Administrator")]
     public class ManageController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
