@@ -4,6 +4,10 @@
 
 It is a software for manage books and magazines in the school library and should be used to track which users borrow which book etc.
 
+## Dependencies
+
+*   .NET Core SDK 1.0.0-rc3-004530 (MSBuild version, csproj instead of project.json is used)
+
 # Some info links for ASP.NET Core #
 
 ## This application consists of:

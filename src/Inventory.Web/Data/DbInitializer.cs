@@ -125,8 +125,8 @@ namespace Athene.Inventory.Web.Data
                 ClaimType = ClaimTypes.Role,
                 ClaimValue = "Librarian"
             });
-            userManager.CreateAsync(user1, "Admin123!");
-            userManager.CreateAsync(user2, "Test123!");
+            var res1 = userManager.CreateAsync(user1, "Admin123!").Result;
+            var res2 = userManager.CreateAsync(user2, "Test123!").Result;
 
             user1 = userManager.FindByEmailAsync("admin@athene.com").Result;
             bookItem1.RentedByUserId = user1.Id;
