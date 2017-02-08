@@ -1,0 +1,61 @@
+@model Athene.Inventory.Web.Areas.Librarian.Models.RentViewModels.RentViewModel
+@{
+    Layout = "_Layout";
+}
+<h3>Benutzer</h3>
+@Html.Partial("_UserPreview", Model.User)
+<h3>Bücher leihen</h3>
+<form asp-controller="Rent" asp-action="Rent" asp-route-userId="@Model.UserId">
+    <div class="form-group">
+    <div class="form-inline">
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-barcode"></span>
+                </span>
+                <input id="barcode" class="form-control">
+                <div class="input-group-btn">
+                    <button id="add-bookitem" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span></button>
+                </div>
+            </div>
+            <div class="input-group">
+                <button class="btn btn-primary">Alle leihen</button>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div id="bookitems-to-rent" class="panel panel-default panel-body hidden">
+    </div>
+</form>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#add-bookitem").click(function() {
+                var inputField = $("#barcode");
+                var barcode = inputField.val().toString();
+                $.get("@Url.Action("RentableBookItem", "Rent")", { barcode: barcode }, function(data) {
+                    if (data != "")
+                    {
+                        var container = $("#bookitems-to-rent");
+                        container.removeClass("hidden");
+                        if (container.children().length >= 1)
+                            container.append("<hr />")
+                        container.append(data);
+                        inputField.val("");
+                    }
+                });
+            });
+            $("#bookitems-to-rent").on("click", "[data-dismiss]", function () {
+                var closeButton = $(this);
+                var className = closeButton.data("dismiss");
+                var currentItem = closeButton.closest("." + className);
+                var nextItem = currentItem.next();
+                currentItem.remove();
+                if (nextItem.is("hr"))
+                    nextItem.remove();
+            });
+        });
+    </script>
+}

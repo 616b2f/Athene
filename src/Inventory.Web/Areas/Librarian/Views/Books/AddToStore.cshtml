@@ -1,0 +1,38 @@
+@model Athene.Inventory.Web.Areas.Librarian.Models.BooksViewModels.CreateBookItemViewModel
+@{
+    Layout = "_Layout";
+}
+<h3>In Bibliothek aufnehmen</h3>
+@Html.Partial("_BookItemPreview", Model.Book)
+
+<form asp-controller="Books" asp-action="AddToStore">
+    @Html.HiddenFor(model => model.BookId)
+    <div class="form-group col-md-2">
+        <label asp-for="Hall"></label>
+        @Html.EditorFor(model => model.Hall, new { htmlAttributes = new { @class="form-control" } })
+    </div>
+    <div class="form-group col-md-2">
+        <label asp-for="Corridor"></label>
+        @Html.EditorFor(model => model.Corridor, new { htmlAttributes = new { @class="form-control" } })
+    </div>
+    <div class="form-group col-md-2">
+        <label asp-for="Rack"></label>
+        @Html.EditorFor(model => model.Rack, new { htmlAttributes = new { @class="form-control" } })
+    </div>
+    <div class="form-group col-md-2">
+        <label asp-for="Level"></label>
+        @Html.EditorFor(model => model.Level, new { htmlAttributes = new { @class="form-control" } })
+    </div>
+    <div class="form-group col-md-2">
+        <label asp-for="Position"></label>
+        @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class="form-control" } })
+    </div>
+
+    <div class="form-group col-md-12">
+        <label asp-for="Note"></label>
+        @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class="form-control" } })
+    </div>
+    <div class="form-group col-md-12">
+        <button class="btn btn-primary">Speichern</div>
+    </button>
+</form>

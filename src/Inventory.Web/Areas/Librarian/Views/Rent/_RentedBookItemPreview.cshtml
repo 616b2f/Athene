@@ -1,0 +1,20 @@
+@model BookItem
+
+<div class="panel panel-default panel-body">
+    <div class="row">
+        <div class="col-md-6">
+            @Model.Book.Title<br />
+            @Model.Book.SubTitle<br />
+            <label asp-for="Book.InternationalStandardBookNumber"></label>
+            @Model.Book.InternationalStandardBookNumber
+        </div>
+        <div class="col-md-6">
+            <label asp-for="Id"></label>
+            @Model.Id<br />
+            <label asp-for="StockLocation"></label>
+            @Model.StockLocation.OneLiner<br />
+            <label asp-for="RentedAt"></label>
+            @Model.RentedAt
+        </div>
+    </div>
+</div>
