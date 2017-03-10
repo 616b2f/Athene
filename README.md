@@ -6,7 +6,7 @@ It is a software for manage books and magazines in the school library and should
 
 ## Dependencies
 
-*   .NET Core SDK 1.0.0-rc3-004530 (MSBuild version, csproj instead of project.json is used)
+*   .NET Core SDK 1.0.1 (MSBuild version, csproj instead of project.json is used)
 *   bower v1.8.0
 
 # Some info links for ASP.NET Core #
