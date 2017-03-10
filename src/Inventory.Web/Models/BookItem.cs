@@ -24,6 +24,10 @@ namespace Athene.Inventory.Web.Models
         [ForeignKey("RentedByUserId")]
         public ApplicationUser RentedBy { get; set; }
         [Display(Name="Geliehen am")]
-        public DateTime? RentedAt { get;set; }
+        public DateTime? RentedAt { get; set; }
+        [Display(Name="Kaufdatum")]
+        public DateTime PurchasedAt { get; set; }
+        [Display(Name="Zustand")]
+        public Condition Condition { get; set; }
     }
 }

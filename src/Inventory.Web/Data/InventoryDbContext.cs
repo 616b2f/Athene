@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Athene.Inventory.Web.Models;
 
@@ -6,7 +7,7 @@ namespace Athene.Inventory.Web.Data
 {
     public class InventoryDbContext : IdentityDbContext<ApplicationUser>
     {
-        public InventoryDbContext() {}
+        public InventoryDbContext() : base() {}
 
         public InventoryDbContext(DbContextOptions<InventoryDbContext> options) 
             : base(options)
@@ -21,6 +22,11 @@ namespace Athene.Inventory.Web.Data
         public DbSet<Author> Authors { get; set; }
         public DbSet<Category> Categories { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        {
+            options.UseSqlite(Startup.Configuration.GetConnectionString("DefaultConnection"));
+        }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -29,7 +35,7 @@ namespace Athene.Inventory.Web.Data
             // Add your customizations after calling base.OnModelCreating(builder);
 
             builder.Entity<StockLocation>()
-                .HasKey(s => new { s.Hall, s.Corridor, s.Rack, s.Level, s.Position });
+                .HasIndex(s => new { s.Hall, s.Corridor, s.Rack, s.Level, s.Position }).IsUnique();
         }
     }
 }
