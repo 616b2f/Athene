@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using Athene.Inventory.Web.Models;
 
@@ -25,7 +26,15 @@ namespace Athene.Inventory.Web.Areas.Librarian.Models.BooksViewModels
         [Display(Name="Position")]
         public int? Position { get; set; }
 
+        [Required, DataType(DataType.Date)]
+        [Display(Name="Kaufdatum")]
+        public DateTime? PurchasedAt { get; set; }
+        [Required]
+        [Display(Name="Zustand")]
+        public Condition Condition { get; set; }
+
         [Display(Name="Notiz")]
         public string Note { get; set; }
+
     }
 }

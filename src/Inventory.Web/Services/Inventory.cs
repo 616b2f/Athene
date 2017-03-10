@@ -44,6 +44,14 @@ namespace Athene.Inventory.Web.Services
 
         public void AddBookItem(BookItem bookItem)
         {
+            var dbStockLocation = _db.StockLocations.SingleOrDefault(sl => 
+                sl.Hall == bookItem.StockLocation.Hall &&
+                sl.Corridor == bookItem.StockLocation.Corridor &&
+                sl.Rack == bookItem.StockLocation.Rack &&
+                sl.Level == bookItem.StockLocation.Level &&
+                sl.Position == bookItem.StockLocation.Position);
+            if (dbStockLocation != null)
+                bookItem.StockLocation = dbStockLocation;
             _db.BookItems.Add(bookItem);
             _db.SaveChanges();
         }
