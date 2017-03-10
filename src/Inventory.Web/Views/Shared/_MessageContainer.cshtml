@@ -1,5 +1,9 @@
-﻿@using Microsoft.AspNetCore.Http;
-@if (Context.Session.GetString("MessageValue") != null)
+﻿@{
+	object message;
+	ViewData.TryGetValue("MessageValue", out message);
+}
+
+@if (message != null)
 {
 	<div class="alert alert-warning text-center" data-dismiss="alert" role="alert" style="margin-top:10px;">
 		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>

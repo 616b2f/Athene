@@ -6,6 +6,7 @@ using Athene.Inventory.Web.Services;
 using Athene.Inventory.Web.Models;
 using Athene.Inventory.Web.Areas.Librarian.Models.BooksViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 {
@@ -35,8 +36,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
                 return View();
 			
 			var ums = new UserMessageService();
-			ums.SetMessageIntoMessageContainer(this.HttpContext, "testMessage");
-			HttpContext.Session.GetString("MessageValue");
+			ums.SetMessageIntoMessageContainer(this, "testMessage");
 
             var books = _inventoryService.SearchForBooks(q);
             return View(books);
