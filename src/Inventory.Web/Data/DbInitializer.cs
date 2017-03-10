@@ -94,7 +94,7 @@ namespace Athene.Inventory.Web.Data
 
             context.SaveChanges();
 
-            var user1 = new ApplicationUser 
+            var user1 = new ApplicationUser
             {
                 UserName = "admin@athene.com",
                 Email =  "admin@athene.com",
@@ -112,7 +112,7 @@ namespace Athene.Inventory.Web.Data
                 ClaimType = ClaimTypes.Role,
                 ClaimValue = "Administrator"
             });
-            var user2 = new ApplicationUser 
+            var user2 = new ApplicationUser
             {
                 UserName = "u.musterfrau@athene.com",
                 Email =  "u.musterfrau@athene.com",

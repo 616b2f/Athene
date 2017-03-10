@@ -48,7 +48,7 @@ namespace Athene.Inventory.Web
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Administrator", policy => policy.RequireRole("Administrator"));
-                options.AddPolicy("Librarian", policy => policy.RequireRole("Librarian"));
+                options.AddPolicy("Librarian", policy => policy.RequireRole("Librarian", "Administrator"));
             });
 
             services.AddMvc();
