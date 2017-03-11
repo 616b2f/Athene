@@ -12,17 +12,69 @@ namespace Athene.Inventory.Web.Data
         public static void Initialize(this InventoryDbContext context,
                 UserManager<ApplicationUser> userManager)
         {
-            var prenticeHall = new Publisher { Name = "Prentice Hall" };
 
+            /* Publishers */
+            var prenticeHall = new Publisher { Name = "Prentice Hall" };
+            var pearson = new Publisher { Name = "Pearson" };
+            var thomsonReuters = new Publisher { Name = "Thomson Reuters" };
+            var relxGroup = new Publisher { Name = "RELX Group" };
+            var PenguinRandomHouse = new Publisher { Name = "Penguin Random House" };
+            var woltersKluwer = new Publisher { Name = "Wolters Kluwer" };
+            var rheinwerk = new Publisher { Name = "Rheinwerk" };
+            var hanserVerlag = new Publisher { Name = "Der Carl Hanser Verlag" };
+            var cornelsen = new Publisher { Name = "Cornelsen Verlag GmbH" };
+            var ernstKlett = new Publisher { Name = "Ernst Klett Verlag GmbH" };
+
+            /* Authors */
             var robertCMartin = new Author { FullName = "Robert C. Martin" };
             var deanWampler = new Author { FullName = "Dean Wampler" };
+            var benAaronovitch = new Author { FullName = "Ben Aaronovitch" };
+            var atiaAbawi = new Author { FullName = "Atia Abawi" };
+            var davidAbbott = new Author { FullName = "David Abbott" };
+            var emmyAbrahamson = new Author { FullName = "Emmy Abrahamson" };
+            var sashaAbramsky = new Author { FullName = "Sasha Abramsky" };
+            var thomasClaudiusHuber = new Author { FullName = "Thomas Claudius Huber" };
+            var andrewTannenbaum = new Author { FullName = "Andrew S. Tannenbaum" };
+            var herberBos = new Author { FullName = "Herbert Bos" };
+            var rolfSocher = new Author { FullName = "Rolf Socher" };
+            var susanAbbey = new Author { FullName = "Susan Abbey" };
+            var roderickCox = new Author { FullName = "Roderick Cox" };
+            var laurenceHarger = new Author { FullName = "Laurnce Harger" };
+            var claireLamsdale = new Author { FullName = "Claire Lemsdale" };
+            var wolfgangbiederstaedt = new Author { FullName = "Wolfgang Biederstädt" };
+            var hellmutSchwarz = new Author { FullName = "Hellmut Schwarz" };
+            var antonioBarquero = new Author { FullName = "Antonio Barquero" };
+            var julianaBizama = new Author { FullName = "Juliana Bizama" };
+            var jaimeCorpas = new Author { FullName = "Jaime Corpas" };
+            var pedroCrovetto = new Author { FullName = "Pedro Crovetto-Bizama" };
+            var evaDiaz = new Author { FullName = "Eva Diaz" };
+            var claireMarieJeske = new Author { FullName = "Claire-Marie Jeske" };
+            var aliciaJimenez = new Author { FullName = "Alicia Jimenez Romera" };
+            var javierNavarro = new Author { FullName = "Javier Navarro" };
+            var rosamnaPardellas = new Author { FullName = "Rosamna Pradellas Velay" };
 
+
+
+
+
+
+            /* Languaged */
             var english = new Language { Name = "English" };
             var german = new Language { Name = "Deutsch" };
             var russian = new Language { Name = "Russian" };
+            var spain = new Language { Name = "Spanisch" };
+            var italian = new Language { Name = "Italienisch" };
 
+            /* Categories */
             var computerCategory = new Category { Name = "Computers" };
+            var thrillerCategory = new Category { Name = "Thrillers" };
+            var specializedCategory = new Category { Name = "Fachbuch" };
+            var literatureCategory = new Category { Name = "Literatur" };
+            var humorCategory = new Category { Name = "Humor" };
+            var codingCategory = new Category { Name = "Programmieren" };
+            var schoolCategory = new Category { Name = "Schulbücher" };
 
+            /* Books */
             var book1 = new Book
             {
                 InternationalStandardBookNumber = "9780132350884",
@@ -51,18 +103,130 @@ namespace Athene.Inventory.Web.Data
                 },
                 Categories = new HashSet<Category> {
                     computerCategory,
+                    literatureCategory
+                },
+                Language = english
+            }; 
+            var book3 = new Book
+            {
+                InternationalStandardBookNumber = "9783836219563",
+                Title = "Windows Presentation Forms",
+                SubTitle = "WPF - Das umfassende Handbuch",
+                Description = "Geballtes Wissen zum Grafik-Framework von .NET! Ob Grundlagen, XAML, GUI-Entwicklung, Datenbindung, Animationen, Multimedia oder Migration - hier finden Sie auf jede Frage eine Antwort! Grundkenntnisse in C# vorausgesetzt, ist dieses Buch sowohl zum Einstieg als auch als Nachschlagewerk optimal geeignet.",
+                Publisher = rheinwerk,
+                Authors = new HashSet<Author> {
+                    thomasClaudiusHuber,
+                },
+                Categories = new HashSet<Category> {
+                    computerCategory,
+                    codingCategory,
+                    literatureCategory
+                },
+                Language = german
+            };
+            var book4 = new Book
+            {
+                InternationalStandardBookNumber = "9783836219563",
+                Title = "Moderne Betriebssysteme",
+                SubTitle = "Moderne Betriebssysteme (4., aktualisierte Auflage)",
+                Description = "Auch in dieser komplett überarbeiteten Neuauflage des preisgekrönten Lehrbuchs stellen die Autoren wie gewohnt auf unterhaltsame Art und Weise alle Konzepte rund um das Thema Betriebssysteme vor, die man benötigt, um moderne Betriebssysteme zu verstehen und zu entwickeln. Dabei wurden den neuesten Entwicklungen der Betriebssysteme sowie der zugrunde liegenden Hardware Rechnung getragen. Das Lehrbuch enthält umfangreiche Aktualisierungen zu UNIX, Linux und Windows und behandelt erstmals auch Android als mobiles Betriebssystem. Das Kapitel zu IT-Sicherheit wurde grundlegend aktualisiert, ein neues Kapitel behandelt die Themen Virtualisierungs- und Cloud-Technologie.  Zahlreiche Abbildungen, viele Beispiele, aktuelle Fallstudien sowie über 500 Übungsaufgaben erleichtern das Verstehen und Erlernen der vorgestellten Konzepte und Theorien. Zudem stehen auf den Companion Websites zum Buch Experimentier- und Simulationswerkzeuge zu Linux und Window bereit – ideal zum Selbststudium.",
+                Publisher = rheinwerk,
+                Authors = new HashSet<Author> {
+                    andrewTannenbaum,
+                    herberBos
+                },
+                Categories = new HashSet<Category> {
+                    computerCategory,
+                    literatureCategory
+                },
+                Language = german
+            }; 
+            var book5 = new Book
+            {
+                InternationalStandardBookNumber = "9783446414457",
+                Title = "Theoretische Grundlagen der Informatik",
+                SubTitle = "",
+                Description = "Das Buch bietet einen Einstieg in die theoretischen Grundlagen der Informatik. Es beschränkt sich auf die klassischen Themen: formale Sprachen, endliche Automaten und Grammatiken, Turing-Maschinen, Berechenbarkeit und Entscheidbarkeit, Komplexität. Das Konzept der Transformation zwischen den verschiedenen Formalismen zieht sich wie ein roter Faden durch das gesamte Buch. Auf eine anschauliche Vermittlung der Begriffe und Methoden der theoretischen Informatik und ihre Vertiefung in Aufgaben und Programmierprojekten wird großer Wert gelegt. Auf der zu dem Buch gehörenden Website findet sich das Lernprogramm Machines, mit dem endliche Automaten, Kellerautomaten, Grammatiken, reguläre Ausdrücke und Turing-Maschinen mit einer komfortablen grafischen Oberfläche realisiert und visualisiert werden können.",
+                Publisher = hanserVerlag,
+                Authors = new HashSet<Author> {
+                    rolfSocher
+                },
+                Categories = new HashSet<Category> {
+                    computerCategory,
+                    literatureCategory
+                },
+                Language = german
+            };
+            var book6 = new Book
+            {
+                InternationalStandardBookNumber = "9783060313150",
+                Title = "English G 21",
+                SubTitle = "",
+                Description = "Eine systematische Prüfungsvorbereitung mit drei kürzeren Units, die dem Aufbau von Band 5 folgen",
+                Publisher = cornelsen,
+                Authors = new HashSet<Author> {
+                    susanAbbey,
+                    roderickCox,
+                    laurenceHarger,
+                    claireLamsdale,
+                    wolfgangbiederstaedt,
+                    hellmutSchwarz
+                },
+                Categories = new HashSet<Category> {
+                    schoolCategory
                 },
                 Language = english
             };
+            var book7 = new Book
+            {
+                InternationalStandardBookNumber = "9783125380011",
+                Title = "¡Adelante! Nivel intermedio",
+                SubTitle = "¡Adelante! Schülerbuch 11./12. Schuljahr. Nivel intermedio",
+                Description = "Alltagssituationen, über die man gerne spricht - Schulung der Grundfertigkeiten - Förderung des Sprechens - Aufgabenorientiertes Arbeiten - Grammatik, die auf das Wesentliche reduziert ist - Anregungen zum selbstständigen Lernen 8 Unidades, linearer Buchaufbau mit 3 Plateauphasen. Die inhaltliche Konzeption des Nivel elemental wird fortgeführt: Am Ende jeder Unidad steht ebenfalls die Tarea final. Die Schülerinnen und Schüler lernen interessante Schauplätze in Spanien und Lateinamerika kennen. Intensive Abiturvorbereitung im Teil Preparación para los exámenes: ein Angebot verschiedener…mehr",
+                Publisher = ernstKlett,
+                Authors = new HashSet<Author> {
+                    antonioBarquero,
+                    julianaBizama,
+                    jaimeCorpas,
+                    pedroCrovetto,
+                    evaDiaz,
+                    claireMarieJeske,
+                    aliciaJimenez,
+                    javierNavarro,
+                    rosamnaPardellas
+                },
+                Categories = new HashSet<Category> {
+                    schoolCategory
+                },
+                Language = spain
+            };
+
+
+            /* Add Books */
             context.Books.Add(book1);
             context.Books.Add(book2);
+            context.Books.Add(book3);
+            context.Books.Add(book4);
+            context.Books.Add(book5);
+            context.Books.Add(book6);
+            context.Books.Add(book7);
 
+
+
+            /* Add languages */
             context.Languages.Add(english);
             context.Languages.Add(german);
             context.Languages.Add(russian);
+            context.Languages.Add(italian);
+            context.Languages.Add(spain);
 
+
+            /* Add categories */
             context.Categories.Add(computerCategory);
 
+
+
+            /* BookItems */
             var bookItem1 = new BookItem
             {
                 Book = book1,
@@ -89,8 +253,160 @@ namespace Athene.Inventory.Web.Data
                 RentedByUserId = null,
                 RentedAt = null,
             };
+            var bookItem3 = new BookItem
+            {
+                Book = book2,
+                StockLocation = new StockLocation
+                {
+                    Hall = 1,
+                    Corridor = 1,
+                    Rack = 1,
+                    Level = 2,
+                    Position = 2,
+                },
+                RentedByUserId = null,
+                RentedAt = null,
+            };
+            var bookItem4 = new BookItem
+            {
+                Book = book3,
+                StockLocation = new StockLocation
+                {
+                    Hall = 2,
+                    Corridor = 1,
+                    Rack = 1,
+                    Level = 1,
+                    Position = 2,
+                },
+                RentedByUserId = null,
+                RentedAt = null,
+            };
+            var bookItem5 = new BookItem
+            {
+                Book = book3,
+                StockLocation = new StockLocation
+                {
+                    Hall = 1,
+                    Corridor = 6,
+                    Rack = 1,
+                    Level = 1,
+                    Position = 1,
+                },
+                RentedByUserId = null,
+                RentedAt = null,
+            };
+            var bookItem6 = new BookItem
+            {
+                Book = book4,
+                StockLocation = new StockLocation
+                {
+                    Hall = 1,
+                    Corridor = 1,
+                    Rack = 1,
+                    Level = 2,
+                    Position = 3,
+                },
+                RentedByUserId = null,
+                RentedAt = null,
+            };
+            var bookItem7 = new BookItem
+            {
+                Book = book4,
+                StockLocation = new StockLocation
+                {
+                    Hall = 1,
+                    Corridor = 1,
+                    Rack = 1,
+                    Level = 2,
+                    Position = 4,
+                },
+                RentedByUserId = null,
+                RentedAt = null,
+            };
+            var bookItem8 = new BookItem
+            {
+                Book = book4,
+                StockLocation = new StockLocation
+                {
+                    Hall = 1,
+                    Corridor = 1,
+                    Rack = 1,
+                    Level = 2,
+                    Position = 5,
+                },
+                RentedByUserId = null,
+                RentedAt = null,
+            };
+            var bookItem9 = new BookItem
+            {
+                Book = book5,
+                StockLocation = new StockLocation
+                {
+                    Hall = 1,
+                    Corridor = 3,
+                    Rack = 1,
+                    Level = 1,
+                    Position = 2,
+                },
+                RentedByUserId = null,
+                RentedAt = null,
+            };
+            var bookItem10 = new BookItem
+            {
+                Book = book6,
+                StockLocation = new StockLocation
+                {
+                    Hall = 1,
+                    Corridor = 4,
+                    Rack = 1,
+                    Level = 1,
+                    Position = 2,
+                },
+                RentedByUserId = null,
+                RentedAt = null,
+            };
+            var bookItem11 = new BookItem
+            {
+                Book = book7,
+                StockLocation = new StockLocation
+                {
+                    Hall = 1,
+                    Corridor = 2,
+                    Rack = 3,
+                    Level = 1,
+                    Position = 2,
+                },
+                RentedByUserId = null,
+                RentedAt = null,
+            };
+            var bookItem12 = new BookItem
+            {
+                Book = book7,
+                StockLocation = new StockLocation
+                {
+                    Hall = 1,
+                    Corridor = 2,
+                    Rack = 3,
+                    Level = 1,
+                    Position = 3,
+                },
+                RentedByUserId = null,
+                RentedAt = null,
+            };
+
+
             context.BookItems.Add(bookItem1);
             context.BookItems.Add(bookItem2);
+            context.BookItems.Add(bookItem3);
+            context.BookItems.Add(bookItem4);
+            context.BookItems.Add(bookItem5);
+            context.BookItems.Add(bookItem6);
+            context.BookItems.Add(bookItem7);
+            context.BookItems.Add(bookItem8);
+            context.BookItems.Add(bookItem9);
+            context.BookItems.Add(bookItem10);
+            context.BookItems.Add(bookItem11);
+            context.BookItems.Add(bookItem12);
 
             context.SaveChanges();
 
