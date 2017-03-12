@@ -32,11 +32,8 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
                 "Magazine",
             };
 
-            if (string.IsNullOrEmpty(q))
-                return View();
-			
-			var ums = new UserMessageService();
-			ums.SetMessageIntoMessageContainer(this, "testMessage");
+			if (string.IsNullOrEmpty(q))
+				return View();
 
             var books = _inventoryService.SearchForBooks(q);
             return View(books);

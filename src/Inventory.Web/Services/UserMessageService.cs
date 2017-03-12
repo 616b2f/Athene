@@ -11,14 +11,28 @@ using Athene.Inventory.Web.Areas.Librarian.Models.BooksViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Controllers;
+using System.ComponentModel.DataAnnotations;
 
 namespace Athene.Inventory.Web.Services
 {
-	public class UserMessageService
+	public static class UserMessageService
 	{
-		public void SetMessageIntoMessageContainer(Controller vc, string messageText)
+		public static void SetMessageIntoMessageContainer(this Controller vc, string messageText, UserMessageType messageType)
 		{
-			vc.TempData.Add("MessageValue", messageText);
+			vc.ViewBag.MessageValue = messageText;
+			vc.ViewBag.MessageType = messageType;
 		}
+	}
+
+	public enum UserMessageType
+	{
+		[Display(Name = "Erfolgreich")]
+		Success,
+		[Display(Name = "Warnung")]
+		Warning,
+		[Display(Name = "Fehler")]
+		Error,
+		[Display(Name = "Infor")]
+		Info
 	}
 }
