@@ -12,7 +12,6 @@ namespace Athene.Inventory.Web.Data
         public static void Initialize(this InventoryDbContext context,
                 UserManager<ApplicationUser> userManager)
         {
-
             /* Publishers */
             var prenticeHall = new Publisher { Name = "Prentice Hall" };
             var pearson = new Publisher { Name = "Pearson" };
@@ -52,11 +51,6 @@ namespace Athene.Inventory.Web.Data
             var aliciaJimenez = new Author { FullName = "Alicia Jimenez Romera" };
             var javierNavarro = new Author { FullName = "Javier Navarro" };
             var rosamnaPardellas = new Author { FullName = "Rosamna Pradellas Velay" };
-
-
-
-
-
 
             /* Languaged */
             var english = new Language { Name = "English" };
@@ -106,7 +100,7 @@ namespace Athene.Inventory.Web.Data
                     literatureCategory
                 },
                 Language = english
-            }; 
+            };
             var book3 = new Book
             {
                 InternationalStandardBookNumber = "9783836219563",
@@ -140,7 +134,7 @@ namespace Athene.Inventory.Web.Data
                     literatureCategory
                 },
                 Language = german
-            }; 
+            };
             var book5 = new Book
             {
                 InternationalStandardBookNumber = "9783446414457",
@@ -201,7 +195,6 @@ namespace Athene.Inventory.Web.Data
                 Language = spain
             };
 
-
             /* Add Books */
             context.Books.Add(book1);
             context.Books.Add(book2);
@@ -211,8 +204,6 @@ namespace Athene.Inventory.Web.Data
             context.Books.Add(book6);
             context.Books.Add(book7);
 
-
-
             /* Add languages */
             context.Languages.Add(english);
             context.Languages.Add(german);
@@ -220,11 +211,8 @@ namespace Athene.Inventory.Web.Data
             context.Languages.Add(italian);
             context.Languages.Add(spain);
 
-
             /* Add categories */
             context.Categories.Add(computerCategory);
-
-
 
             /* BookItems */
             var bookItem1 = new BookItem
@@ -393,7 +381,6 @@ namespace Athene.Inventory.Web.Data
                 RentedByUserId = null,
                 RentedAt = null,
             };
-
 
             context.BookItems.Add(bookItem1);
             context.BookItems.Add(bookItem2);
