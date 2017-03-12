@@ -24,7 +24,6 @@
                 <li>
                     <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Account verwalten</a>
                 </li>
-                <li><a href="#">Something else here</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a href="#">Einstellungen</a></li>
                 <li>
@@ -33,7 +32,7 @@
                           asp-controller="Account"
                           asp-action="LogOff"
                           method="post">
-                        <a href="#" onclick="$(this).closest('form').submit()">Log off</a>
+                        <a href="#" onclick="$(this).closest('form').submit()">Ausloggen</a>
                     </form>
                 </li>
               </ul>
@@ -55,7 +54,7 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
-        <li><a asp-area="" asp-controller="Account" asp-action="Login">Log in</a></li>
+        <li><a asp-area="" asp-controller="Account" asp-action="Register">Registrieren</a></li>
+        <li><a asp-area="" asp-controller="Account" asp-action="Login">Einloggen</a></li>
     </ul>
 }
