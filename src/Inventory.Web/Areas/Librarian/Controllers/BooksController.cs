@@ -6,20 +6,22 @@ using Athene.Inventory.Web.Services;
 using Athene.Inventory.Web.Models;
 using Athene.Inventory.Web.Areas.Librarian.Models.BooksViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 {
-    [Area("Librarian")]
-    [Authorize(Policy="Librarian")]
-    public class BooksController : Controller
-    {
-        private readonly IInventory _inventoryService;
+	[Area("Librarian")]
+	[Authorize(Policy = "Librarian")]
+	public class BooksController : Controller
+	{
+		private readonly IInventory _inventoryService;
 
-        public BooksController(IInventory inventoryService) {
-            _inventoryService = inventoryService;
-        }
+		public BooksController(IInventory inventoryService)
+		{
+			_inventoryService = inventoryService;
+		}
 
-        [HttpGet]
+		[HttpGet]
         public IActionResult Index(string q)
         {
             ViewBag.SearchTargets = new List<string>
@@ -30,8 +32,8 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
                 "Magazine",
             };
 
-            if (string.IsNullOrEmpty(q))
-                return View();
+			if (string.IsNullOrEmpty(q))
+				return View();
 
             var books = _inventoryService.SearchForBooks(q);
             return View(books);

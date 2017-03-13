@@ -5,7 +5,14 @@
     var categories = ViewBag.Categories as SelectList;
 }
 
-<h3>Buch hinzufügen</h3>
+<div class="row">
+	<div class="col-md-6">
+		<h3>Buch hinzufügen</h3>
+	</div>
+	<div class="col-md-6">
+		@Html.Partial("_MessageContainer")
+	</div>
+</div>
 @Html.ValidationSummary()
 <form asp-area="Librarian" asp-controller="Books" asp-action="Create" method="post">
     <div class="form-group">

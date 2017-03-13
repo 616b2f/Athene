@@ -4,7 +4,15 @@
     Layout = "_Layout";
 }
 
-<h3>Herausgeber</h3>
+<div class="row">
+	<div class="col-md-6">
+		<h3>Herausgeber</h3>
+	</div>
+	<div class="col-md-6">
+		@Html.Partial("_MessageContainer")
+	</div>
+</div>
+
 <p>
     <a class="btn btn-default" asp-controller="Publisher" asp-action="Create">
         <span class="glyphicon glyphicon-plus"></span> Hinzufügen
