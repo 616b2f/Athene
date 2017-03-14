@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Athene.Inventory.Web.Models.AccountViewModels
 {
@@ -10,12 +6,12 @@ namespace Athene.Inventory.Web.Models.AccountViewModels
     {
         [Required]
         [EmailAddress]
-		[Display(Name = "Benutzername")]
+        [Display(Name = "Benutzername")]
         public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-		[Display(Name = "Passwort")]
+        [Display(Name = "Passwort")]
         public string Password { get; set; }
 
         [Display(Name = "Eingeloggt bleiben?")]
