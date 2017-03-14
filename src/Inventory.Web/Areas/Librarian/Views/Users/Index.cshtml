@@ -4,7 +4,14 @@
     ViewBag.Title = "Suche";
 }
 
-<h3>Benutzersuche</h3>
+<div class="row">
+	<div class="col-md-6">
+		<h3>Benutzersuche</h3>
+	</div>
+	<div class="col-md-6">
+		@Html.Partial("_MessageContainer")
+	</div>
+</div>
 <div class="row">
     <form class="col-md-offset-3 col-md-6" 
         asp-controller="Users" 

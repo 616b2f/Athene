@@ -4,7 +4,14 @@
     ViewData["Title"] = "Manage your external logins";
 }
 
-<h2>@ViewData["Title"].</h2>
+<div class="row">
+	<div class="col-md-6">
+		<h3>@ViewData["Title"]</h3>
+	</div>
+	<div class="col-md-6">
+		@Html.Partial("_MessageContainer")
+	</div>
+</div>
 
 <p class="text-success">@ViewData["StatusMessage"]</p>
 @if (Model.CurrentLogins.Count > 0)
