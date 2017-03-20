@@ -1,0 +1,112 @@
+html {
+    position:relative;
+    min-height:100%;
+}
+body {
+    padding-top: 50px;
+    padding-bottom: 205px;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set widths on the form inputs since otherwise they're 100% wide */
+input.ath-input-sm,
+select.ath-input-sm,
+textarea.ath-input-sm {
+    max-width: 280px;
+}
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/* buttons and links extension to use brackets: [ click me ] */
+.btn-bracketed::before {
+    display:inline-block;
+    content: "[";
+    padding-right: 0.5em;
+}
+.btn-bracketed::after {
+    display:inline-block;
+    content: "]";
+    padding-left: 0.5em;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"]
+{
+    width: 100%;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+  /* Hide captions */
+  .carousel-caption {
+    display: none
+  }
+}
+
+.ath-navbar-top {
+    background-color: white;
+    border-bottom: 1px solid #4d90fe;
+}
+
+.navbar-toggle .icon-bar {
+    background-color: #4d90fe;
+}
+
+.ath-footer {
+    position:absolute;
+    padding-top: 40px;
+    bottom: 0;
+    height: 155px; /* .push must be the same height as .footer */
+    width: 100%;
+    background-color: #4d90fe;
+}
+
+.ath-footer a {
+     color:white;
+}
+
+.ath-navbar-bottom > li > a:hover,
+.ath-navbar-bottom > li > a:focus {
+    text-decoration: none !important;
+    background-color: rgba(238, 238, 238, 0.15) !important;
+}
+
+.ath-searchbar .form-group {
+    display: inline;
+}
+
+.ath-searchbar .form-group .input-group-btn {
+    width: 1%;
+}
+
+#logoutForm > a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+}
+
+#logoutForm > a:hover,
+#logoutForm > a:focus {
+    color: #262626;
+    text-decoration: none;
+    background-color: #f5f5f5;
+}
+
+.navbar-default .navbar-brand,
+.navbar-default .navbar-brand:hover {
+    color: #4d90fe;
+}

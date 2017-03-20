@@ -1,0 +1,25 @@
+@model IEnumerable<InventoryItem>
+@{
+    Layout = "_Layout";
+}
+
+@foreach (var item in Model)
+{
+   <div class="row">
+       <div class="col-md-3">
+           @item.ExternalId
+       </div>
+       <div class="col-md-3">
+           @if(item.Article is Book)
+           {
+               @(((Book)item.Article).InternationalStandardBookNumber)
+           }
+       </div>
+       <div class="col-md-3">
+           @item.PurchasePrice
+       </div>
+       <div class="col-md-3">
+           @item.Condition
+       </div>
+   </div> 
+}

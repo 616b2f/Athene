@@ -1,0 +1,12 @@
+@model Athene.Inventory.Web.Areas.Librarian.Models.RentViewModels.RentedViewModel
+@{
+    ViewBag.Title = "Benutzer";
+    Layout = "_Layout";
+}
+<h3>@ViewBag.Title</h3>
+@Html.Partial("_UserPreview", Model.User)
+<h3>Geliehene Bücher</h3>
+@foreach (var item in Model.RentedItems)
+{
+    @Html.Partial("_RentedInventoryItemPreview", item)
+}
