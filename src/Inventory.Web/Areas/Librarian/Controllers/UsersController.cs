@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Athene.Inventory.Web.Services;
 using Athene.Inventory.Web.Models;
 using Microsoft.AspNetCore.Authorization;
+using Athene.Inventory.Web.Extensions;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,7 +15,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
         private readonly IInventory _inventoryService;
         private readonly IStudentsRepository _usersRepository;
 
-        public UsersController(IInventory inventoryService, 
+        public UsersController(IInventory inventoryService,
                 IStudentsRepository usersRepository) {
             _inventoryService = inventoryService;
             _usersRepository = usersRepository;
@@ -43,8 +44,10 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
             //TODO: use a ViewModel instead of ApplicationUser
             if (ModelState.IsValid) {
                 _usersRepository.Add(user);
+                this.SetUserMessage(UserMessageType.Success, "Benutzer erfolgreich erstellt");
                 return RedirectToAction("Index");
             }
+            this.SetUserMessage(UserMessageType.Error, "Fehler beim Speichern aufgetreten.");
             return View(user);
         }
     }

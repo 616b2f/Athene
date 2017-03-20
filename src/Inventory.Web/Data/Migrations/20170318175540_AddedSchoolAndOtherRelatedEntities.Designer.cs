@@ -9,9 +9,10 @@ using Athene.Inventory.Web.Models;
 namespace Athene.Inventory.Web.Data.Migrations
 {
     [DbContext(typeof(InventoryDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170318175540_AddedSchoolAndOtherRelatedEntities")]
+    partial class AddedSchoolAndOtherRelatedEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.0-rtm-22752");

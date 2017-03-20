@@ -68,6 +68,27 @@ namespace Athene.Inventory.Web.Data
             var codingCategory = new Category { Name = "Programmieren" };
             var schoolCategory = new Category { Name = "Schulbücher" };
 
+            /* Board of education */
+            var boardOfEducation = new BoardOfEducation("Landrat");
+
+            /* School addresses */
+            var schhol1Address = new Address("Musterstraße 1", "88451", "Dettingen a. d. Iller", "DE");
+            var schhol2Address = new Address("Musterstraße 2", "88451", "Dettingen a. d. Iller", "DE");
+
+            /* Schools */
+            var school1 = new School("Schule 1", "SC1", schhol1Address, boardOfEducation);
+            var school2 = new School("Schule 2", "SC2", schhol2Address, boardOfEducation);
+
+            /* school classes */
+            var schoolClass1 = new SchoolClass("BF1", school1);
+            var schoolClass2 = new SchoolClass("BF2", school1);
+            var schoolClass3 = new SchoolClass("BR2", school2);
+            var schoolClass4 = new SchoolClass("BE2", school2);
+            school1.SchoolClasses.Add(schoolClass1);
+            school1.SchoolClasses.Add(schoolClass2);
+            school2.SchoolClasses.Add(schoolClass3);
+            school2.SchoolClasses.Add(schoolClass4);
+
             /* Books */
             var book1 = new Book
             {
@@ -395,6 +416,22 @@ namespace Athene.Inventory.Web.Data
             context.BookItems.Add(bookItem11);
             context.BookItems.Add(bookItem12);
 
+            school1.BookItems.Add(bookItem1);
+            school1.BookItems.Add(bookItem2);
+            school1.BookItems.Add(bookItem3);
+            school1.BookItems.Add(bookItem4);
+            school1.BookItems.Add(bookItem5);
+            school1.BookItems.Add(bookItem6);
+            school2.BookItems.Add(bookItem7);
+            school2.BookItems.Add(bookItem8);
+            school2.BookItems.Add(bookItem9);
+            school2.BookItems.Add(bookItem10);
+            school2.BookItems.Add(bookItem11);
+            school2.BookItems.Add(bookItem12);
+
+            context.Schools.Add(school1);
+            context.Schools.Add(school2);
+
             context.SaveChanges();
 
             var user1 = new ApplicationUser
@@ -428,12 +465,55 @@ namespace Athene.Inventory.Web.Data
                 ClaimType = ClaimTypes.Role,
                 ClaimValue = "Librarian"
             });
+
+            /* students */
+            var student1 = new ApplicationUser
+            {
+                UserName = "teststudent1@athene.com",
+                Email =  "teststudent1@athene.com",
+                Surname = "Rudolf",
+                Lastname = "Mustermann",
+                Gender = Gender.Male,
+                Birthsday = new DateTime(1988, 1, 1),
+                Student = new Student {
+                   StudentId = "43245BD",
+                   SchoolClass = schoolClass1
+                },
+            };
+            student1.Claims.Add(new IdentityUserClaim<string>
+            {
+                ClaimType = ClaimTypes.Role,
+                ClaimValue = "Student"
+            });
+            var student2 = new ApplicationUser
+            {
+                UserName = "teststudent2@athene.com",
+                Email =  "teststudent2@athene.com",
+                Surname = "Anna",
+                Lastname = "Mustermann",
+                Gender = Gender.Female,
+                Birthsday = new DateTime(1978, 3, 1),
+                Student = new Student {
+                   StudentId = "43235BD",
+                   SchoolClass = schoolClass3
+                },
+            };
+            student2.Claims.Add(new IdentityUserClaim<string>
+            {
+                ClaimType = ClaimTypes.Role,
+                ClaimValue = "Student"
+            });
+
             var res1 = userManager.CreateAsync(user1, "Admin123!").Result;
             var res2 = userManager.CreateAsync(user2, "Test123!").Result;
+            var res3 = userManager.CreateAsync(student1, "Test123!").Result;
+            var res4 = userManager.CreateAsync(student2, "Test123!").Result;
 
-            user1 = userManager.FindByEmailAsync("admin@athene.com").Result;
+            /* set rented books */
             bookItem1.RentedByUserId = user1.Id;
             bookItem1.RentedAt = DateTime.Now;
+            bookItem2.RentedByUserId = student1.Id;
+            bookItem2.RentedAt = DateTime.Now;
             context.SaveChanges();
         }
     }

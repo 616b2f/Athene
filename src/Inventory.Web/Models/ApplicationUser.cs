@@ -20,9 +20,13 @@ namespace Athene.Inventory.Web.Models
                 return this.Surname + " " + Lastname;
             }
         }
-
+        public Gender Gender { get; set; }
+        public Address Address { get; set; }
         [DataType(DataType.Date)]
         public DateTime Birthsday { get; set; }
         public ICollection<BookItem> RentedBooks { get; set; }
+        [Display(Name="Schüler Nr.")]
+        public string StudentId { get; set; }
+        public Student Student { get; set; }
     }
 }

@@ -14,5 +14,7 @@ namespace Athene.Inventory.Web.Models
         Good = 3,
         [Display(Name="Akzeptabel")]
         Acceptable = 4,
+        [Display(Name="Schlecht")]
+        Bad = 5,
     }
 }

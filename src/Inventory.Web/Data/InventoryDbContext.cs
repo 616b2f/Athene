@@ -21,6 +21,7 @@ namespace Athene.Inventory.Web.Data
         public DbSet<Publisher> Publisher { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<School> Schools { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {

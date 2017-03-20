@@ -3,6 +3,7 @@ using System.Linq;
 using Athene.Inventory.Web.Models;
 using Athene.Inventory.Web.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Athene.Inventory.Web.Services
 {
@@ -20,16 +21,24 @@ namespace Athene.Inventory.Web.Services
         public IEnumerable<ApplicationUser> Find(string matchcode)
         {
             var users = _db.Users
-                .Where(s => 
-                        s.Surname.StartsWith(matchcode) ||
-                        s.Lastname.StartsWith(matchcode))
+                .Include(u => u.Student)
+                    .ThenInclude(s => s.SchoolClass)
+                        .ThenInclude(sc => sc.School)
+                .Where(s =>
+                    s.Surname.ToLower().Contains(matchcode) ||
+                    s.Lastname.ToLower().Contains(matchcode) ||
+                    s.Email.ToLower().Contains(matchcode))
                 .ToList();
             return users;
         }
 
         public ApplicationUser FindByUserId(string userId)
         {
-            var user = _userManager.FindByIdAsync(userId).Result;
+            var user = _db.Users
+                .Include(u => u.Student)
+                    .ThenInclude(s => s.SchoolClass)
+                        .ThenInclude(sc => sc.School)
+                .SingleOrDefault(u => u.Id == userId);
             return user;
         }
 

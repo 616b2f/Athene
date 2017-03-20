@@ -10,6 +10,16 @@
             @Model.Id <br />
             <label asp-for="FullName"></label>
             @Model.FullName
+            @if (!string.IsNullOrEmpty(Model.StudentId))
+            {
+                <br />
+                <label asp-for="StudentId"></label>
+                @Model.StudentId <br />
+                <label asp-for="Student.SchoolClass.School.Name"></label>
+                @Model.Student.SchoolClass.School.Name <br />
+                <label asp-for="Student.SchoolClass.Name"></label>
+                @Model.Student.SchoolClass.Name
+            }
         </div>
     </div>
 </div>

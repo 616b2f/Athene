@@ -51,6 +51,9 @@ namespace Athene.Inventory.Web
                 options.AddPolicy("Librarian", policy => policy.RequireRole("Librarian", "Administrator"));
             });
 
+            services.AddDistributedMemoryCache();
+            services.AddSession();
+
             services.AddMvc();
 
             // Add application services.
@@ -110,6 +113,7 @@ namespace Athene.Inventory.Web
                 db.Initialize(userManager);
             }
 
+            app.UseSession();
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
 
             app.UseMvc(routes =>
