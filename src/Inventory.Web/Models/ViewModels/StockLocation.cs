@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace Athene.Inventory.Web.Models
 {
@@ -10,7 +9,6 @@ namespace Athene.Inventory.Web.Models
             this.BookItems = new HashSet<BookItem>();
         }
 
-        [Key]
         public int Id { get; set; }
 
         public int Hall { get; set; }

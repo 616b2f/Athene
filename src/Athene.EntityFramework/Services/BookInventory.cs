@@ -1,15 +1,17 @@
 using System.Linq;
 using System.Collections.Generic;
-using Athene.Inventory.Web.Models;
-using Athene.Inventory.Web.Data;
 using Microsoft.EntityFrameworkCore;
+using Athene.Abstractions;
+using Athene.EntityFramework.Data;
+using Athene.Abstractions.Models;
+using System;
 
-namespace Athene.Inventory.Web.Services
+namespace Athene.EntityFramework.Services
 {
-    public class Inventory : IInventory
+    public class BookInventory : IBookInventory
     {
         private readonly InventoryDbContext _db;
-        public Inventory(InventoryDbContext dbContext)
+        public BookInventory(InventoryDbContext dbContext)
         {
             _db = dbContext;
         }
@@ -42,28 +44,14 @@ namespace Athene.Inventory.Web.Services
             _db.SaveChanges();
         }
 
-        public void AddBookItem(BookItem bookItem)
-        {
-            var dbStockLocation = _db.StockLocations.SingleOrDefault(sl => 
-                sl.Hall == bookItem.StockLocation.Hall &&
-                sl.Corridor == bookItem.StockLocation.Corridor &&
-                sl.Rack == bookItem.StockLocation.Rack &&
-                sl.Level == bookItem.StockLocation.Level &&
-                sl.Position == bookItem.StockLocation.Position);
-            if (dbStockLocation != null)
-                bookItem.StockLocation = dbStockLocation;
-            _db.BookItems.Add(bookItem);
-            _db.SaveChanges();
-        }
-
         public IEnumerable<Book> SearchForBooks(string matchcode)
         {
             var books = _db.Books
                 .Include(b => b.Authors)
                 .Include(b => b.Categories)
-                .Include(b => b.OwnedBooks)
+                .Include(b => b.InventoryItems)
                     .ThenInclude(ob => ob.RentedBy)
-                .Include(b => b.OwnedBooks)
+                .Include(b => b.InventoryItems)
                     .ThenInclude(ob => ob.StockLocation)
                 .Where(b =>
                     b.InternationalStandardBookNumber == matchcode ||
@@ -79,9 +67,9 @@ namespace Athene.Inventory.Web.Services
             var book = _db.Books
                 .Include(b => b.Authors)
                 .Include(b => b.Categories)
-                .Include(b => b.OwnedBooks)
+                .Include(b => b.InventoryItems)
                     .ThenInclude(ob => ob.RentedBy)
-                .Include(b => b.OwnedBooks)
+                .Include(b => b.InventoryItems)
                     .ThenInclude(ob => ob.StockLocation)
                 .SingleOrDefault(b => b.Id == bookId);
             return book;
@@ -90,15 +78,15 @@ namespace Athene.Inventory.Web.Services
         public IEnumerable<StockLocation> SearchForLocations(Book book)
         {
             var stockLocations = _db.StockLocations
-                .Where(sl => sl.BookItems.Any(bi => bi.Book.Id == book.Id))
+                .Where(sl => sl.InventoryItems.Any(bi => bi.Article.Id == book.Id))
                 .ToArray();
             return stockLocations;
         }
 
-        public IEnumerable<BookItem> SearchForBookItems(Book book)
+        public IEnumerable<InventoryItem> SearchForBookItems(Book book)
         {
-            var bookItems = _db.BookItems
-                .Where(bi => bi.Book.Id == book.Id)
+            var bookItems = _db.InventoryItems
+                .Where(bi => bi.Article.Id == book.Id)
                 .ToArray();
             return bookItems;
         }
@@ -151,16 +139,43 @@ namespace Athene.Inventory.Web.Services
             _db.SaveChanges();
         }
 
-        public BookItem FindBookItemByBarcode(string barcode)
+        public void AddInventoryItem(InventoryItem item)
+        {
+           var dbStockLocation = _db.StockLocations.SingleOrDefault(sl => 
+               sl.Hall == item.StockLocation.Hall &&
+               sl.Corridor == item.StockLocation.Corridor &&
+               sl.Rack == item.StockLocation.Rack &&
+               sl.Level == item.StockLocation.Level &&
+               sl.Position == item.StockLocation.Position);
+           if (dbStockLocation != null)
+               item.StockLocation = dbStockLocation;
+           _db.InventoryItems.Add(item);
+           _db.SaveChanges();
+        }
+
+        IEnumerable<InventoryItem> IInventory.SearchByMatchcode(string matchcode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public InventoryItem FindInventoryItemByBarcode(string barcode)
         {
             int id;
             if (int.TryParse(barcode.Trim(), out id))
-                return _db.BookItems
+                return _db.InventoryItems
                     .Include(bi => bi.Book)
                     .Include(bi => bi.StockLocation)
                     .SingleOrDefault(bi => bi.Id == id);
             else
                 return null;
+        }
+
+        public InventoryItem FindInventoryItemById(int id)
+        {
+            return _db.InventoryItems
+                .Include(bi => bi.Book)
+                .Include(bi => bi.StockLocation)
+                .SingleOrDefault(bi => bi.Id == id);
         }
     }
 }

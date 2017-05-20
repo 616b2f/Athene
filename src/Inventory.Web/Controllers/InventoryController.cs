@@ -34,17 +34,5 @@ namespace Athene.Inventory.Web.Controllers
             IEnumerable<Book> books = _inventory.SearchForBooks(q);
             return View(books);
         }
-
-        [HttpGet]
-        public IActionResult CreateBook()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult CreateBook(Book book)
-        {
-            return View();
-        }
     }
 }

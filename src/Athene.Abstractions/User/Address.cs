@@ -1,6 +1,4 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Athene.Inventory.Web.Models
+namespace Athene.Abstractions.Models
 {
     public class Address
     {

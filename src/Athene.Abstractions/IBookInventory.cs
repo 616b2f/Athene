@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using Athene.Inventory.Web.Models;
+using Athene.Abstractions.Models;
 
-namespace Athene.Inventory.Web.Services
+namespace Athene.Abstractions
 {
-    public interface IInventory
+    public interface IBookInventory : IInventory
     {
         IEnumerable<Language> AllLanguages();
         IEnumerable<Publisher> AllPublisher();
@@ -12,13 +12,10 @@ namespace Athene.Inventory.Web.Services
         IEnumerable<Book> AllBooks();
         void AddBook(Book book);
         IEnumerable<Book> SearchForBooks(string matchcode);
-        void AddBookItem(BookItem bookItem);
         IEnumerable<StockLocation> SearchForLocations(Book book);
-        IEnumerable<BookItem> SearchForBookItems(Book book);
         void AddPublisher(Publisher publisher);
         void AddAuthors(IEnumerable<Author> authors);
         void AddCategories(IEnumerable<Category> categories);
-        BookItem FindBookItemByBarcode(string barcode);
         Book FindBookById(int bookId);
     }
 }

@@ -11,7 +11,6 @@ namespace Athene.Inventory.Web.Models
         {
             this.Notes = new HashSet<BookItemNote>();
         }
-        [Key]
         [DisplayFormat(DataFormatString = "{0:000000000}")]
         public int Id { get; set; }
         public Book Book { get; set; }

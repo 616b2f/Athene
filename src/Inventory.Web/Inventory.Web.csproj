@@ -24,9 +24,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="1.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Design" Version="1.1.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="1.1.0-msbuild3-final" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="1.1.0" />
@@ -40,6 +37,11 @@
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
   </ItemGroup>
+
+  <ItemGroup>
+      <ProjectReference Include="../Athene.Abstractions/Athene.Abstractions.csproj" />
+  </ItemGroup>
+
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
     <Exec Command="bower install" />
   </Target>

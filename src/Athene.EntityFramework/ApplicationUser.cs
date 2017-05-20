@@ -4,13 +4,13 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Athene.Abstractions.Models;
 
-namespace Athene.Inventory.Web.Models
+namespace Athene.EntityFramework
 {
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser, IUser
     {
         public ApplicationUser() {
-            RentedBooks = new HashSet<BookItem>();
+            InventoryItems = new HashSet<InventoryItem>();
         }
         public string Surname { get; set; }
         public string Lastname { get; set; }
@@ -25,8 +25,7 @@ namespace Athene.Inventory.Web.Models
         public Address Address { get; set; }
         [DataType(DataType.Date)]
         public DateTime Birthsday { get; set; }
-        public ICollection<BookItem> RentedBooks { get; set; }
-        [Display(Name="Schüler Nr.")]
+        public ICollection<InventoryItem> InventoryItems { get; set; }
         public string StudentId { get; set; }
         public Student Student { get; set; }
     }

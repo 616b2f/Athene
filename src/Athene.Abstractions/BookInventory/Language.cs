@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Athene.Inventory.Web.Models
+namespace Athene.Abstractions.Models
 {
-    public class Publisher
+    public class Language
     {
         public int Id { get; set; }
         public string Name { get; set; }

@@ -237,3 +237,5 @@ _Pvt_Extensions
 .tern-project
 
 .vscode
+# mac files
+.DS_Store

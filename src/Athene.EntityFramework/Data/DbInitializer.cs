@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using Athene.Inventory.Web.Models;
+using Athene.Abstractions.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace Athene.Inventory.Web.Data
+namespace Athene.EntityFramework.Data
 {
     public static class DbInitializer
     {
