@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 
-namespace Athene.Inventory.Web.Models
+namespace Athene.Inventory.Web.ViewModels
 {
     public class StockLocation
     {
         public StockLocation()
         {
-            this.BookItems = new HashSet<BookItem>();
+            this.BookItems = new HashSet<BookItemViewModel>();
         }
 
         public int Id { get; set; }
@@ -28,6 +28,6 @@ namespace Athene.Inventory.Web.Models
                     this.Position;
             }
         }
-        public ICollection<BookItem> BookItems { get; set; }
+        public ICollection<BookItemViewModel> BookItems { get; set; }
     }
 }

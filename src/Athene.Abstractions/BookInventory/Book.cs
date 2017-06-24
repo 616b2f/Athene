@@ -13,6 +13,18 @@ namespace Athene.Abstractions.Models
         }
         public override int Id { get; set; }
         public override string Name { get { return Title + " " + SubTitle;} }
+        public override IEnumerable<string> Matchcodes 
+        { 
+            get { 
+                var list = new List<string> {
+                    Name,
+                    Title,
+                    SubTitle,
+                    InternationalStandardBookNumber 
+                };
+                return list;
+            }
+        }
         public string Title { get; set; }
         public string SubTitle { get; set; }
         public string Description { get; set; }

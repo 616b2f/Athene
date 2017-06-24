@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Athene.Abstractions.Models;
 using System.Linq;
 
-namespace Athene.Abstractions
+namespace Athene.Abstractions.TestImp
 {
     public class InMemoryUserRepository : IUserRepository
     {

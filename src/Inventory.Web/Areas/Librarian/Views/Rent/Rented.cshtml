@@ -6,7 +6,7 @@
 <h3>@ViewBag.Title</h3>
 @Html.Partial("_UserPreview", Model.User)
 <h3>Geliehene Bücher</h3>
-@foreach (var bookItem in Model.RentedBooks)
+@foreach (var item in Model.RentedItems)
 {
-    @Html.Partial("_RentedBookItemPreview", bookItem)
+    @Html.Partial("_RentedInventoryItemPreview", item)
 }

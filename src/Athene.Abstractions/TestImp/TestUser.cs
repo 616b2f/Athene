@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Athene.Abstractions.Models;
 
-namespace Athene.Abstractions
+namespace Athene.Abstractions.TestImp
 {
     public class TestUser : IUser
     {
@@ -21,5 +21,7 @@ namespace Athene.Abstractions
         public ICollection<InventoryItem> RentedItems { get; set; }
         public string StudentId { get; set; }
         public Student Student { get; set; }
+        public string PhoneNumber { get; set; }
+        public string MobilePhoneNumber { get; set; }
     }
 }

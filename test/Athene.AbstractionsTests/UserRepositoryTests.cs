@@ -2,6 +2,7 @@ using System;
 using Xunit;
 using Athene.Abstractions;
 using Athene.Abstractions.Models;
+using Athene.Abstractions.TestImp;
 
 namespace Athene.AbstractionsTests
 {

@@ -4,12 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-namespace Athene.Inventory.Web.Models
+namespace Athene.Inventory.Web.ViewModels
 {
-    public class Category
+    public class CreateCategoryViewModel
     {
-        [Key]
-        public int Id { get; set; }
         public string Name { get; set; }
     }
 }

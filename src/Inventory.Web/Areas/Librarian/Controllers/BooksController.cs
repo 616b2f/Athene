@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Athene.Inventory.Web.Services;
-using Athene.Inventory.Web.Models;
 using Athene.Inventory.Web.Areas.Librarian.Models.BooksViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Athene.Abstractions;
+using Athene.Abstractions.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 {
@@ -15,10 +17,20 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 	public class BooksController : Controller
 	{
 		private readonly IInventory _inventoryService;
+		private readonly IArticleRepository _articleRepository;
+        private readonly IBookMetaRepository _bookMetaRepository;
+        private readonly UserManager<Web.Models.ApplicationUser> _userManager;
 
-		public BooksController(IInventory inventoryService)
+		public BooksController(
+            IInventory inventoryService, 
+            IArticleRepository articleRepository,
+            IBookMetaRepository bookMetaRepository,
+            UserManager<Web.Models.ApplicationUser> userManager)
 		{
 			_inventoryService = inventoryService;
+            _articleRepository = articleRepository;
+            _bookMetaRepository = bookMetaRepository;
+            _userManager = userManager;
 		}
 
 		[HttpGet]
@@ -35,7 +47,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 			if (string.IsNullOrEmpty(q))
 				return View();
 
-            var books = _inventoryService.SearchForBooks(q);
+            var books = _inventoryService.SearchByMatchcode(q);
             return View(books);
         }
 
@@ -48,21 +60,21 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Book model, int[] authorsIds, int[] categoriesIds)
+        public IActionResult Create(CreateBookViewModel model)
         {
             if (ModelState.IsValid)
             {
-                model.Authors.Clear();
-                foreach(int authorId in authorsIds)
+                var book = new Book();
+                foreach(int authorId in model.authorsIds)
                 {
-                    model.Authors.Add(new Author { Id = authorId });
+                    book.Authors.Add(new Author { Id = authorId });
                 }
-                model.Categories.Clear();
-                foreach(int categoryId in categoriesIds)
+                book.Categories.Clear();
+                foreach(int categoryId in model.categoriesIds)
                 {
-                    model.Categories.Add(new Category { Id = categoryId });
+                    book.Categories.Add(new Category { Id = categoryId });
                 }
-                _inventoryService.AddBook(model);
+                _articleRepository.AddArticle(book);
                 // TODO: add message
                 return RedirectToAction("Index");
             }
@@ -77,7 +89,11 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
             if (bookId == null)
                 return RedirectToAction("Index");
 
-            var book = _inventoryService.FindBookById(bookId.Value);
+            var article = _articleRepository.FindArticleById(bookId.Value);
+            var book = article as Book;
+
+            if (book == null)
+                return RedirectToAction("Index");
 
             var viewModel = new CreateBookItemViewModel
             {
@@ -93,10 +109,18 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
         {
             if (ModelState.IsValid)
             {
-                var book = _inventoryService.FindBookById(model.BookId);
-                var bookItem = new BookItem
+                var article = _articleRepository.FindArticleById(model.BookId);
+                var book = article as Book;
+
+                if (book == null)
                 {
-                    Book = book,
+                    ModelState.AddModelError(string.Empty, "Der Artikel ist kein Buch`");
+                    return View(model);
+                }
+
+                var bookItem = new InventoryItem
+                {
+                    Article = book,
                     StockLocation = new StockLocation
                     {
                         Hall = model.Hall.Value,
@@ -109,14 +133,15 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
                 if (!string.IsNullOrWhiteSpace(model.Note))
                 {
                     //TODO: add userId
-                    var note = new BookItemNote
+                    var note = new ItemNote
                     { 
                         Text = model.Note,
                         CreatedAt = DateTime.Now,
+                        UserId = _userManager.GetUserId(User),
                     };
                     bookItem.Notes.Add(note);
                 }
-                _inventoryService.AddBookItem(bookItem);
+                _inventoryService.AddInventoryItem(bookItem);
                 return RedirectToAction("Index");
             }
 
@@ -125,13 +150,13 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 
         private void LoadCreateViewBags()
         {
-            var languages = _inventoryService.AllLanguages();
+            var languages = _bookMetaRepository.AllLanguages();
             ViewBag.LanguageId = new SelectList(languages, "Id", "Name");
-            var publisher = _inventoryService.AllPublisher();
+            var publisher = _bookMetaRepository.AllPublisher();
             ViewBag.PublisherId = new SelectList(publisher, "Id", "Name");
-            var authors = _inventoryService.AllAuthors();
+            var authors = _bookMetaRepository.AllAuthors();
             ViewBag.Authors = new SelectList(authors, "Id", "FullName");
-            var categories = _inventoryService.AllCategories();
+            var categories = _bookMetaRepository.AllCategories();
             ViewBag.Categories = new SelectList(categories, "Id", "Name");
         }
     }

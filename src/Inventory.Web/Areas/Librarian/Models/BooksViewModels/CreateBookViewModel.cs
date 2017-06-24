@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Athene.Inventory.Web.Models;
+using Athene.Abstractions.Models;
 
 namespace Athene.Inventory.Web.Areas.Librarian.Models.BooksViewModels
 {
@@ -19,5 +19,9 @@ namespace Athene.Inventory.Web.Areas.Librarian.Models.BooksViewModels
         public int PublisherId { get; set; }
         [Required]
         public int LanguageId { get; set; }
+        [Required]
+        public int[] authorsIds { get; set; }
+        [Required]
+        public int[] categoriesIds { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace Athene.Inventory.Web.Models
     public class ApplicationUser : IdentityUser, IUser
     {
         public ApplicationUser() {
-            RentedBooks = new HashSet<BookItem>();
+            RentedItems = new HashSet<InventoryItem>();
         }
         public string Surname { get; set; }
         public string Lastname { get; set; }
@@ -25,9 +25,10 @@ namespace Athene.Inventory.Web.Models
         public Address Address { get; set; }
         [DataType(DataType.Date)]
         public DateTime Birthsday { get; set; }
-        public ICollection<BookItem> RentedBooks { get; set; }
+        public ICollection<InventoryItem> RentedItems { get; set; }
         [Display(Name="Schüler Nr.")]
         public string StudentId { get; set; }
         public Student Student { get; set; }
+        public string MobilePhoneNumber { get; set; }
     }
 }

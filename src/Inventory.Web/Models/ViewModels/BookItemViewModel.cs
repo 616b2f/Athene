@@ -2,14 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Athene.Abstractions.Models;
 
-namespace Athene.Inventory.Web.Models
+namespace Athene.Inventory.Web.ViewModels
 {
-    public class BookItem
+    public class BookItemViewModel
     {
-        public BookItem()
+        public BookItemViewModel()
         {
-            this.Notes = new HashSet<BookItemNote>();
+            this.Notes = new HashSet<ItemNote>();
         }
         [DisplayFormat(DataFormatString = "{0:000000000}")]
         public int Id { get; set; }
@@ -17,11 +18,10 @@ namespace Athene.Inventory.Web.Models
         [Display(Name="Standplatz")]
         public StockLocation StockLocation { get; set; }
         [Display(Name="Notizen")]
-        public ICollection<BookItemNote> Notes { get; set; }
+        public ICollection<ItemNote> Notes { get; set; }
         public string RentedByUserId { get; set; }
         [Display(Name="Geliehen von")]
-        [ForeignKey("RentedByUserId")]
-        public ApplicationUser RentedBy { get; set; }
+        public string RentedByName { get; set; }
         [Display(Name="Geliehen am")]
         public DateTime? RentedAt { get; set; }
         [Display(Name="Kaufdatum")]

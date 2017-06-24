@@ -1,8 +1,7 @@
-namespace Athene.Inventory.Web.Models
+namespace Athene.Inventory.Web.ViewModels
 {
-    public class Author
+    public class CreateAuthorViewModel
     {
-        public int Id { get; set; }
         public string FullName { get; set; }
         public string Info { get; set; }
     }

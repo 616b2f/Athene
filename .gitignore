@@ -239,3 +239,6 @@ _Pvt_Extensions
 .vscode
 # mac files
 .DS_Store
+
+# Athene project
+import/

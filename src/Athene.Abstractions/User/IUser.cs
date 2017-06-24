@@ -12,6 +12,8 @@ namespace Athene.Abstractions.Models
         Gender Gender { get; set; }
         Address Address { get; set; }
         DateTime Birthsday { get; set; }
+        string PhoneNumber { get; set; }
+        string MobilePhoneNumber { get; set; }
         ICollection<InventoryItem> RentedItems { get; set; }
         string StudentId { get; set; }
         Student Student { get; set; }

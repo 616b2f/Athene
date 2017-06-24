@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Athene.Inventory.Web.Services;
-using Athene.Inventory.Web.Models;
 using System.Collections.Generic;
 using Athene.Inventory.Web.Areas.Librarian.Models.RentViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Athene.Abstractions;
+using Athene.Abstractions.Models;
+using Athene.Inventory.Web.Models;
+using System;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,14 +16,14 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
     [Authorize(Policy="Librarian")]
     public class RentController : Controller
     {
-        private readonly IStudentsRepository _usersRepository;
-        private readonly IRentalService _rentalService;
+        private readonly IUserRepository _usersRepository;
         private readonly IInventory _inventoryService;
 
-        public RentController(IStudentsRepository usersRepository, 
-                IRentalService rentalService, IInventory inventoryService) {
+        public RentController(
+            IUserRepository usersRepository, 
+            IInventory inventoryService) 
+        {
             _usersRepository = usersRepository;
-            _rentalService = rentalService;
             _inventoryService = inventoryService;
         }
         // GET: /<controller>/
@@ -36,11 +39,11 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
                 return RedirectToAction("Index");
 
             var user = _usersRepository.FindByUserId(userId);
-            IEnumerable<BookItem> rentedBooks = _rentalService.FindRentedBooks(userId);
+            IEnumerable<InventoryItem> rentedBooks = _inventoryService.FindRentedItemsByUser(userId);
             var viewModel = new RentedViewModel
             {
-                User = user,
-                RentedBooks = rentedBooks,
+                User = (ApplicationUser)user,
+                RentedItems = rentedBooks,
             };
             return View(viewModel);
         }
@@ -55,7 +58,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
             var rentViewModel = new RentViewModel
             {
                 UserId = user.Id,
-                User = user,
+                User = (ApplicationUser)user,
             };
             return View(rentViewModel);
         }
@@ -67,7 +70,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
                 bookItemIds == null)
                 return RedirectToAction("Index");
 
-            _rentalService.RentBook(userId, bookItemIds);
+            _inventoryService.RentInventoryItem(userId, bookItemIds, DateTime.Now);
             return RedirectToAction("Rented", new { userId = userId });
         }
 
@@ -77,15 +80,15 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
             if (string.IsNullOrEmpty(barcode))
                 return Content("");
 
-            var bookItem = _inventoryService.FindBookItemByBarcode(barcode);
+            var inventoryItem = _inventoryService.FindInventoryItemByBarcode(barcode);
 
             //TODO: write proper error handling, with error message on client site
-            if (bookItem == null)
+            if (inventoryItem == null)
                 return Content("");
 
             //TODO: show error if book is allready rented by someone else
 
-            return PartialView("_RentBookItem", bookItem);
+            return PartialView("_RentBookItem", inventoryItem);
         }
     }
 }

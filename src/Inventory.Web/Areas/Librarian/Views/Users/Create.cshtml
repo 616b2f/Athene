@@ -1,4 +1,4 @@
-@model ApplicationUser
+@model Athene.Inventory.Web.Area.Librarian.Models.UsersViewModels.CreateUserViewModel
 @{
     ViewBag.Title = "Schüler aufnehmen";
     Layout = "_Layout";
@@ -32,12 +32,24 @@
           <input class="form-control" asp-for="Gender"/>
       </div>
       <div class="form-group">
-          <label asp-for="Address"></label>
-          <input class="form-control" asp-for="Address"/>
+          <label asp-for="AddressStreet"></label>
+          <input class="form-control" asp-for="AddressStreet"/>
       </div>
       <div class="form-group">
-          <label asp-for="Student.SchoolClass"></label>
-          <select class="form-control" asp-for="Student.SchoolClassId"></select>
+          <label asp-for="AddressZip"></label>
+          <input class="form-control" asp-for="AddressZip"/>
+      </div>
+      <div class="form-group">
+          <label asp-for="AddressCity"></label>
+          <input class="form-control" asp-for="AddressCity"/>
+      </div>
+      <div class="form-group">
+          <label asp-for="AddressCountry"></label>
+          <input class="form-control" asp-for="AddressCountry"/>
+      </div>
+      <div class="form-group">
+          <label asp-for="Student.StudentId"></label>
+          <select class="form-control" asp-for="Student.StudentId"></select>
       </div>
       <button class="btn btn-primary">Hinzufügen</button>
 </form>

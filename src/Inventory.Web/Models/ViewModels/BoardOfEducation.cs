@@ -1,6 +1,6 @@
 using System;
 
-namespace Athene.Inventory.Web.Models
+namespace Athene.Inventory.Web.ViewModels
 {
     public class BoardOfEducation
     {
