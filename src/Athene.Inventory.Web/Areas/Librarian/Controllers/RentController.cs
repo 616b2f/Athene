@@ -80,7 +80,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
             if (string.IsNullOrEmpty(barcode))
                 return Content("");
 
-            var inventoryItem = _inventoryService.FindInventoryItemByBarcode(barcode);
+            var inventoryItem = _inventoryService.FindInventoryItemByBarcode<Book>(barcode);
 
             //TODO: write proper error handling, with error message on client site
             if (inventoryItem == null)

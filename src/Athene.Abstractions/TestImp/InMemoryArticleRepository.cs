@@ -18,6 +18,11 @@ namespace Athene.Abstractions.TestImp
             _articles.Add(article);
         }
 
+        public void AddArticles(IEnumerable<Article> articles)
+        {
+            _articles.AddRange(articles);
+        }
+
         public Article FindArticleById(int articleId)
         {
             return _articles.SingleOrDefault(a => a.Id == articleId);

@@ -5,15 +5,15 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D46DCE19-84D2-47C2-8D9E-1B714F6C197B}"
 EndProject
-Project("{13B669BE-BB05-4DDF-9536-439F39A36129}") = "Inventory.Web", "src\Inventory.Web\Inventory.Web.csproj", "{399A23D8-9432-4E3C-845C-1B307193D605}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{8CD9AE57-2249-4B91-82EF-FB4C2CB3D7E2}"
 EndProject
-Project("{13B669BE-BB05-4DDF-9536-439F39A36129}") = "Inventory.Tests", "test\Inventory.Tests\Inventory.Tests.csproj", "{23C24FF8-C478-4167-8116-50FB87F51405}"
+Project("{13B669BE-BB05-4DDF-9536-439F39A36129}") = "Athene.Inventory.Tests", "test\Athene.Inventory.Tests\Athene.Inventory.Tests.csproj", "{23C24FF8-C478-4167-8116-50FB87F51405}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Athene.Abstractions", "src\Athene.Abstractions\Athene.Abstractions.csproj", "{34C6C6A8-6250-4AA1-8528-85FC5744FCBB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Athene.EntityFramework", "src\Athene.EntityFramework\Athene.EntityFramework.csproj", "{7612FBCA-7AAA-471A-B90D-52CC4DF1EF44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Athene.Inventory.Web", "src\Athene.Inventory.Web\Athene.Inventory.Web.csproj", "{9DD040D6-9AAD-485A-BC69-3EA5F7B02CDC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,18 +28,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{399A23D8-9432-4E3C-845C-1B307193D605}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{399A23D8-9432-4E3C-845C-1B307193D605}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{399A23D8-9432-4E3C-845C-1B307193D605}.Debug|x64.ActiveCfg = Debug|x64
-		{399A23D8-9432-4E3C-845C-1B307193D605}.Debug|x64.Build.0 = Debug|x64
-		{399A23D8-9432-4E3C-845C-1B307193D605}.Debug|x86.ActiveCfg = Debug|x86
-		{399A23D8-9432-4E3C-845C-1B307193D605}.Debug|x86.Build.0 = Debug|x86
-		{399A23D8-9432-4E3C-845C-1B307193D605}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{399A23D8-9432-4E3C-845C-1B307193D605}.Release|Any CPU.Build.0 = Release|Any CPU
-		{399A23D8-9432-4E3C-845C-1B307193D605}.Release|x64.ActiveCfg = Release|x64
-		{399A23D8-9432-4E3C-845C-1B307193D605}.Release|x64.Build.0 = Release|x64
-		{399A23D8-9432-4E3C-845C-1B307193D605}.Release|x86.ActiveCfg = Release|x86
-		{399A23D8-9432-4E3C-845C-1B307193D605}.Release|x86.Build.0 = Release|x86
 		{23C24FF8-C478-4167-8116-50FB87F51405}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{23C24FF8-C478-4167-8116-50FB87F51405}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23C24FF8-C478-4167-8116-50FB87F51405}.Debug|x64.ActiveCfg = Debug|x64
@@ -76,11 +64,23 @@ Global
 		{7612FBCA-7AAA-471A-B90D-52CC4DF1EF44}.Release|x64.Build.0 = Release|x64
 		{7612FBCA-7AAA-471A-B90D-52CC4DF1EF44}.Release|x86.ActiveCfg = Release|x86
 		{7612FBCA-7AAA-471A-B90D-52CC4DF1EF44}.Release|x86.Build.0 = Release|x86
+		{9DD040D6-9AAD-485A-BC69-3EA5F7B02CDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DD040D6-9AAD-485A-BC69-3EA5F7B02CDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DD040D6-9AAD-485A-BC69-3EA5F7B02CDC}.Debug|x64.ActiveCfg = Debug|x64
+		{9DD040D6-9AAD-485A-BC69-3EA5F7B02CDC}.Debug|x64.Build.0 = Debug|x64
+		{9DD040D6-9AAD-485A-BC69-3EA5F7B02CDC}.Debug|x86.ActiveCfg = Debug|x86
+		{9DD040D6-9AAD-485A-BC69-3EA5F7B02CDC}.Debug|x86.Build.0 = Debug|x86
+		{9DD040D6-9AAD-485A-BC69-3EA5F7B02CDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DD040D6-9AAD-485A-BC69-3EA5F7B02CDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DD040D6-9AAD-485A-BC69-3EA5F7B02CDC}.Release|x64.ActiveCfg = Release|x64
+		{9DD040D6-9AAD-485A-BC69-3EA5F7B02CDC}.Release|x64.Build.0 = Release|x64
+		{9DD040D6-9AAD-485A-BC69-3EA5F7B02CDC}.Release|x86.ActiveCfg = Release|x86
+		{9DD040D6-9AAD-485A-BC69-3EA5F7B02CDC}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{399A23D8-9432-4E3C-845C-1B307193D605} = {D46DCE19-84D2-47C2-8D9E-1B714F6C197B}
 		{23C24FF8-C478-4167-8116-50FB87F51405} = {8CD9AE57-2249-4B91-82EF-FB4C2CB3D7E2}
 		{34C6C6A8-6250-4AA1-8528-85FC5744FCBB} = {D46DCE19-84D2-47C2-8D9E-1B714F6C197B}
 		{7612FBCA-7AAA-471A-B90D-52CC4DF1EF44} = {D46DCE19-84D2-47C2-8D9E-1B714F6C197B}
+		{9DD040D6-9AAD-485A-BC69-3EA5F7B02CDC} = {D46DCE19-84D2-47C2-8D9E-1B714F6C197B}
 	EndGlobalSection
 EndGlobal

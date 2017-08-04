@@ -19,10 +19,23 @@ namespace Athene.Abstractions.TestImp
             _inventoryItems.Add(item);
         }
 
-        public InventoryItem FindInventoryItemByBarcode(string barcode)
+        public InventoryItem FindInventoryItemByBarcode<TType>(string barcode) where TType  : Article 
         {
-            return _inventoryItems.SingleOrDefault(x => x.Barcode == barcode);
+            return _inventoryItems.SingleOrDefault(x => 
+                    x.Barcode == barcode &&
+                    x.Article is TType);
         }
+
+        public IEnumerable<InventoryItem> SearchByMatchcode<TType>(string matchcode) where TType : Article
+        {
+            return _inventoryItems
+                .Where(x => 
+                    (x.Id.ToString() == matchcode ||
+                     x.Barcode == matchcode ||
+                     x.Article.Name.Contains(matchcode)) &&
+                     x.Article is TType);
+        }
+
 
         public InventoryItem FindInventoryItemById(int id)
         {
@@ -62,6 +75,11 @@ namespace Athene.Abstractions.TestImp
                 item.RentedByUserId = userId;
                 item.RentedAt = rentedAt;
             }
+        }
+
+        public void AddInventoryItems(IEnumerable<InventoryItem> items)
+        {
+            _inventoryItems.AddRange(items);
         }
     }
 }

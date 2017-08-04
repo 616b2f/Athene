@@ -56,19 +56,19 @@ namespace Athene.Inventory.Web
 
             // Add application services.
             services.AddIdentity<ApplicationUser, IdentityRole>();
-            services.AddSingleton<IInventory>(new Athene.Abstractions.TestImp.InMemoryInventory());
-            services.AddSingleton<IArticleRepository>(new Athene.Abstractions.TestImp.InMemoryArticleRepository());
-            services.AddSingleton<IUserRepository>(new Athene.Abstractions.TestImp.InMemoryUserRepository());
+            services.AddSingleton<IInventory, Athene.Abstractions.TestImp.InMemoryInventory>();
+            services.AddSingleton<IArticleRepository, Athene.Abstractions.TestImp.InMemoryArticleRepository>();
+            services.AddSingleton<IBookMetaRepository, Athene.Abstractions.TestImp.InMemoryBookMetaRepository>();
 
-            services.AddSingleton<IUserStore<ApplicationUser>, InMemoryStore<ApplicationUser, IdentityRole>>();
-            services.AddSingleton<IRoleStore<IdentityRole>, InMemoryStore<ApplicationUser, IdentityRole>>();
-            services.AddSingleton<IUserEmailStore<ApplicationUser>, InMemoryStore<ApplicationUser, IdentityRole>>();
+            var store = new InMemoryStore<ApplicationUser, IdentityRole>();
+            services.AddSingleton<IUserRepository>(store);
+            services.AddSingleton<IUserStore<ApplicationUser>>(store);
+            services.AddSingleton<IRoleStore<IdentityRole>>(store);
+            services.AddSingleton<IUserEmailStore<ApplicationUser>>(store);
             services.AddSingleton<IUserClaimsPrincipalFactory<ApplicationUser>, UserClaimsPrincipalFactory<ApplicationUser, IdentityRole>>();
-            // services.AddSingleton<IUserStore<ApplicationUser>>(new AtheneUserStore<ApplicationUser>());
-            // services.AddSingleton<IRoleStore<ApplicationUser>>(new AtheneRoleStore<ApplicationUser>());
-            services.AddSingleton<UserManager<ApplicationUser>>();
-            services.AddSingleton<RoleManager<IdentityRole>>();
-            services.AddSingleton<SignInManager<ApplicationUser>>();
+            services.AddTransient<UserManager<ApplicationUser>>();
+            services.AddTransient<RoleManager<IdentityRole>>();
+            services.AddTransient<SignInManager<ApplicationUser>>();
 
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
@@ -98,10 +98,12 @@ namespace Athene.Inventory.Web
             });
 
             services.AddMvc();
+
+            services.AddSingleton<TestData>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, UserManager<ApplicationUser> userManager)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TestData testData, UserManager<ApplicationUser> userManager)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -130,7 +132,8 @@ namespace Athene.Inventory.Web
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
 
             app.UseIdentity();
-            TestData.CreateUsers(userManager);
+
+            testData.CreateTestData();
 
             // db.Database.EnsureCreated();
             // if (db.Books.Count() == 0) {

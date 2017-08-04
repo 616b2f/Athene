@@ -2,9 +2,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <PreserveCompilationContext>true</PreserveCompilationContext>
-    <AssemblyName>Inventory.Web</AssemblyName>
+    <AssemblyName>Athene.Inventory.Web</AssemblyName>
     <OutputType>Exe</OutputType>
-    <PackageId>Inventory.Web</PackageId>
+    <PackageId>Athene.Inventory.Web</PackageId>
     <UserSecretsId>aspnet-Inventory.Web-0e25b11d-6baf-468b-b509-95d9f54d0f9f</UserSecretsId>
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wp8+wpa81;</PackageTargetFallback>
   </PropertyGroup>

@@ -6,6 +6,7 @@ using Athene.Abstractions;
 using Athene.Inventory.Web.Areas.Librarian.Models.UsersViewModels;
 using Athene.Inventory.Web.Models;
 using Athene.Abstractions.Models;
+using System.Linq;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -32,7 +33,8 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
             if (string.IsNullOrWhiteSpace(q))
                 return View();
 
-            var users = _usersRepository.Find(q);
+            var users = _usersRepository.Find(q)
+                .Cast<ApplicationUser>();
             return View(users);
         }
 

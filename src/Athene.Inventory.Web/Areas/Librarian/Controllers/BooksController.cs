@@ -47,8 +47,8 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 			if (string.IsNullOrEmpty(q))
 				return View();
 
-            var books = _inventoryService.SearchByMatchcode(q);
-            return View(books);
+            var inventoryItems = _inventoryService.SearchByMatchcode(q);
+            return View(inventoryItems);
         }
 
         [HttpGet]

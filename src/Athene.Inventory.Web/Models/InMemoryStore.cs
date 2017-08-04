@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Athene.Inventory.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Athene.Abstractions;
+using Athene.Abstractions.Models;
 
 namespace Athene.Inventory.Web.Models
 {
@@ -17,7 +19,8 @@ namespace Athene.Inventory.Web.Models
         IUserRoleStore<TUser>,
         IUserPasswordStore<TUser>,
         IQueryableRoleStore<TRole>,
-        IUserEmailStore<TUser>
+        IUserEmailStore<TUser>,
+        IUserRepository
         where TRole : IdentityRole
         where TUser : ApplicationUser
     {
@@ -384,6 +387,23 @@ namespace Athene.Inventory.Web.Models
                         select user;
 
             return Task.FromResult<IList<TUser>>(query.ToList());
+        }
+
+        public IEnumerable<IUser> Find(string matchcode)
+        {
+            return Users.Where(u => 
+                u.FullName.Contains(matchcode) ||
+                u.StudentId.Contains(matchcode));
+        }
+
+        public IUser FindByUserId(string userId)
+        {
+            return Users.SingleOrDefault(u => u.Id.ToString() == userId);
+        }
+
+        public void Add(IUser user)
+        {
+            _users[user.Id] = (TUser)user;
         }
     }
 }

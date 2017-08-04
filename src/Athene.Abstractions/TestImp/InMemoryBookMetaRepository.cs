@@ -12,6 +12,11 @@ namespace Athene.Abstractions.TestImp
         private readonly List<Publisher> _publisher = new List<Publisher>();
         private readonly List<Language> _languages = new List<Language>();
 
+        public void AddAuthor(Author author)
+        {
+            _authors.Add(author);
+        }
+
         public void AddAuthors(IEnumerable<Author> authors)
         {
             _authors.AddRange(authors);
@@ -20,6 +25,11 @@ namespace Athene.Abstractions.TestImp
         public void AddCategories(IEnumerable<Category> categories)
         {
             _category.AddRange(categories);
+        }
+
+        public void AddLanguages(IEnumerable<Language> languages)
+        {
+            _languages.AddRange(languages);
         }
 
         public void AddPublisher(Publisher publisher)
@@ -45,6 +55,26 @@ namespace Athene.Abstractions.TestImp
         public IEnumerable<Publisher> AllPublisher()
         {
             return _publisher;
+        }
+
+        public Author FindAuthorById(int id)
+        {
+            return _authors.SingleOrDefault(a => a.Id == id);
+        }
+
+        public Category FindCategoryById(int id)
+        {
+            return _category.SingleOrDefault(c => c.Id == id);
+        }
+
+        public Language FindLanguageById(int id)
+        {
+            return _languages.SingleOrDefault(l => l.Id == id);
+        }
+
+        public Publisher FindPublisherById(int id)
+        {
+            return _publisher.SingleOrDefault(p => p.Id == id);
         }
     }
 }

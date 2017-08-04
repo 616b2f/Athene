@@ -5,9 +5,9 @@ namespace Athene.Abstractions
 {
     public interface IArticleRepository
     {
-        void AddArticle(Article book);
+        void AddArticle(Article article);
+        void AddArticles(IEnumerable<Article> articles);
         IEnumerable<Article> SearchForArticlesByMatchcode(string matchcode);
         Article FindArticleById(int articleId);
-        // IEnumerable<T> SearchArticleByMatchcode(string matchcode) where T : class;
     }
 }
