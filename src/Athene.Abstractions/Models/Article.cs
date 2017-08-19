@@ -6,6 +6,6 @@ namespace Athene.Abstractions.Models
     {
         public abstract int Id { get; set;}
         public abstract string  Name { get; }
-        public abstract IEnumerable<string> Matchcodes { get; }
+        public abstract IEnumerable<string> Matchcodes { get; set; }
     }
 }

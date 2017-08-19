@@ -1,0 +1,12 @@
+@model IEnumerable<Book>
+@{
+    Layout = "_Layout";
+}
+<table class="table">
+    @foreach (var book in Model)
+    {
+        <tr>
+            <td>@book.InternationalStandardBookNumber</td>
+        </tr>
+    }
+</table>

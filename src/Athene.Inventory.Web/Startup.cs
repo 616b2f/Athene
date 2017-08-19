@@ -11,6 +11,7 @@ using Athene.Inventory.Web.Models;
 using Athene.Inventory.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Athene.Abstractions;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Athene.Inventory.Web
 {
@@ -87,17 +88,18 @@ namespace Athene.Inventory.Web
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
                 options.Lockout.MaxFailedAccessAttempts = 10;
 
-                // Cookie settings
-                options.Cookies.ApplicationCookie.AuthenticationScheme = "Cookies";
-                options.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromDays(150);
-                options.Cookies.ApplicationCookie.LoginPath = "/Account/LogIn";
-                options.Cookies.ApplicationCookie.LogoutPath = "/Account/LogOff";
-
                 // User settings
                 options.User.RequireUniqueEmail = true;
             });
 
             services.AddMvc();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => {
+                    options.ExpireTimeSpan = TimeSpan.FromDays(150);
+                    options.LoginPath = "/Account/LogIn";
+                    options.LogoutPath = "/Account/LogOff";
+                });
 
             services.AddSingleton<TestData>();
         }
@@ -121,17 +123,17 @@ namespace Athene.Inventory.Web
 
             app.UseStaticFiles();
 
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
-            {
-                AuthenticationScheme = "Cookies",
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = true,
-            });
+            // app.UseCookieAuthentication(new CookieAuthenticationOptions
+            // {
+            //     AuthenticationScheme = "Cookies",
+            //     AutomaticAuthenticate = true,
+            //     AutomaticChallenge = true,
+            // });
 
             app.UseSession();
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
 
-            app.UseIdentity();
+            app.UseAuthentication();
 
             testData.CreateTestData();
 

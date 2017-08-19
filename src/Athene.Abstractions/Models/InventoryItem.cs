@@ -18,6 +18,7 @@ namespace Athene.Abstractions.Models
         public IUser RentedBy { get; set; }
         public DateTime? RentedAt { get; set; }
         public DateTime? PurchasedAt { get; set; }
+        public decimal PurchasePrice { get; set; }
         public Condition Condition { get; set; }
     }
 }

@@ -1,7 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
   </PropertyGroup>
-
+  <ItemGroup>
+    <!-- <PackageReference Include="CsvHelper" Version="2.16.3.0" /> -->
+    <ProjectReference Include="..\CsvHelper\src\CsvHelper\CsvHelper.csproj" />
+  </ItemGroup>
 </Project>

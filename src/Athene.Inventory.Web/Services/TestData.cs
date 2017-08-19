@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using Athene.Abstractions;
 using Athene.Abstractions.Models;
+using Athene.Abstractions.Utils;
 using Athene.Inventory.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -411,8 +412,8 @@ namespace Athene.Inventory.Web.Services
                 },
                 Language = spain
             };
-            
-            articleRepo.AddArticles(new [] {
+
+            var books = new [] {
                 book1,
                 book2,
                 book3,
@@ -420,7 +421,17 @@ namespace Athene.Inventory.Web.Services
                 book5,
                 book6,
                 book7,
-            });
+            };
+            PropagateBooksWithMatchcodes(books);
+            articleRepo.AddArticles(books);
+        }
+
+        private static void PropagateBooksWithMatchcodes(Book[] books)
+        {
+            foreach (var book in books)
+            {
+                book.Matchcodes = MatchcodeGenerator.CreateFor(book);
+            }
         }
 
         public static void CreateBookInventoryItems(IInventory inventory, IArticleRepository articleRepo)
