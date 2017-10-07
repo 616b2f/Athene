@@ -10,6 +10,7 @@ namespace Athene.Abstractions.Models
             this.Notes = new HashSet<ItemNote>();
         }
         public int Id { get; set; }
+        public string ExternalId { get; set; }
         public string Barcode { get; set; }
         public Article Article { get; set; }
         public StockLocation StockLocation { get; set; }

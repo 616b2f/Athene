@@ -18,21 +18,21 @@
               </a>
               <ul class="dropdown-menu">
                 <li class="dropdown-header">
-                    Angemeldet als <strong>@UserManager.GetUserName(User)</strong>
+                    @Localizer["Logged in as <strong>{0}</strong>", @UserManager.GetUserName(User)]
                 </li>
                 <li role="separator" class="divider"></li>
                 <li>
-                    <a asp-area="" asp-controller="Manage" asp-action="ChangePassword" title="Manage">Passwort ändern</a>
+                    <a asp-area="" asp-controller="Manage" asp-action="ChangePassword" title="Manage">@Localizer["Change password"]</a>
                 </li>
                 <li role="separator" class="divider"></li>
-                <li><a href="#">Einstellungen</a></li>
+                <li><a href="#">@Localizer["Settings"]</a></li>
                 <li>
                     <form id="logoutForm"
                           asp-area=""
                           asp-controller="Account"
                           asp-action="LogOff"
                           method="post">
-                        <a href="#" onclick="$(this).closest('form').submit()">Ausloggen</a>
+                        <a href="#" onclick="$(this).closest('form').submit()">@Localizer["Sign Out"]</a>
                     </form>
                 </li>
               </ul>
@@ -46,7 +46,7 @@
               <div class="form-group">
                   <div class="input-group" style="display:table">
                       <input name="q" type="text" class="form-control" placeholder="ISBN, Titel, Beschreibung, Autor" />
-                      <span class="input-group-btn"><button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span> Suchen</button></span>
+                      <span class="input-group-btn"><button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span> @Localizer["Search"]</button></span>
                   </div>
               </div>
         </form>
@@ -54,7 +54,7 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li><a asp-area="" asp-controller="Account" asp-action="Register">Registrieren</a></li>
-        <li><a asp-area="" asp-controller="Account" asp-action="Login">Einloggen</a></li>
+        <li><a asp-area="" asp-controller="Account" asp-action="Register">@Localizer["Register"]</a></li>
+        <li><a asp-area="" asp-controller="Account" asp-action="Login">@Localizer["Sign In"]</a></li>
     </ul>
 }

@@ -122,16 +122,16 @@ namespace Athene.AbstractionsTests
             _inventory.AddInventoryItem(inventoryItem);
             var tmpInventoryItem = _inventory.FindInventoryItemById(1);
 
-            Assert.Equal(tmpInventoryItem.Article.Id, 1);
+            Assert.Equal(1 ,tmpInventoryItem.Article.Id);
             Assert.True(tmpInventoryItem.Article is Book);
             var book = tmpInventoryItem.Article as Book;
-            Assert.Equal(book.InternationalStandardBookNumber, "9780132350884");
-            Assert.Equal(tmpInventoryItem.Id, 1);
-            Assert.Equal(tmpInventoryItem.StockLocation.Hall, 1);
-            Assert.Equal(tmpInventoryItem.StockLocation.Corridor, 2);
-            Assert.Equal(tmpInventoryItem.StockLocation.Rack, 3);
-            Assert.Equal(tmpInventoryItem.StockLocation.Level, 4);
-            Assert.Equal(tmpInventoryItem.StockLocation.Position, 5);
+            Assert.Equal("9780132350884", book.InternationalStandardBookNumber);
+            Assert.Equal(1, tmpInventoryItem.Id);
+            Assert.Equal(1, tmpInventoryItem.StockLocation.Hall);
+            Assert.Equal(2, tmpInventoryItem.StockLocation.Corridor);
+            Assert.Equal(3, tmpInventoryItem.StockLocation.Rack);
+            Assert.Equal(4, tmpInventoryItem.StockLocation.Level);
+            Assert.Equal(5, tmpInventoryItem.StockLocation.Position);
         }
     }
 }

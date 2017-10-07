@@ -7,6 +7,17 @@
     {
         <tr>
             <td>@book.InternationalStandardBookNumber</td>
+            <td>@book.Title</td>
+            <td>
+                @foreach (var author in book.Authors)
+                {
+                    @author.FullName
+                    <br />
+                }
+            </td>
+            <td>
+                @book.Publisher?.Name
+            </td>
         </tr>
     }
 </table>

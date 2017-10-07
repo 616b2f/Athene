@@ -6,15 +6,15 @@ namespace Athene.Inventory.Web.Models.AccountViewModels
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Benutzername")]
+        [Display(Name = "Username")]
         public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Passwort")]
+        [Display(Name = "Password")]
         public string Password { get; set; }
 
-        [Display(Name = "Eingeloggt bleiben?")]
+        [Display(Name = "Keep me logged in?")]
         public bool RememberMe { get; set; }
     }
 }

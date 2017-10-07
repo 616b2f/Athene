@@ -92,7 +92,8 @@ namespace Athene.Inventory.Web
                 options.User.RequireUniqueEmail = true;
             });
 
-            services.AddMvc();
+            services.AddMvc()
+                .AddViewLocalization();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => {
