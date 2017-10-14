@@ -54,6 +54,9 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
+        <li>
+            @await Html.PartialAsync("_SelectLanguagePartial")
+        </li>
         <li><a asp-area="" asp-controller="Account" asp-action="Register">@Localizer["Register"]</a></li>
         <li><a asp-area="" asp-controller="Account" asp-action="Login">@Localizer["Sign In"]</a></li>
     </ul>

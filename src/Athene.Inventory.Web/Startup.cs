@@ -14,6 +14,7 @@ using Athene.Abstractions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
 
 namespace Athene.Inventory.Web
 {
@@ -108,6 +109,22 @@ namespace Athene.Inventory.Web
                 });
 
             services.AddSingleton<TestData>();
+
+            services.Configure<RequestLocalizationOptions>(opt =>
+            {
+                string defaultCulture = "en";
+                var supportedCultures = new[]
+                {
+                    new CultureInfo(defaultCulture),
+                    new CultureInfo("de"),
+                };
+
+                opt.DefaultRequestCulture = new RequestCulture(defaultCulture);
+                // // Formatting numbers, dates, etc.
+                // SupportedCultures = supportedCultures,
+                // UI strings that we have localized.
+                opt.SupportedUICultures = supportedCultures;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -115,6 +132,9 @@ namespace Athene.Inventory.Web
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(locOptions.Value);
 
             if (env.IsDevelopment())
             {
@@ -142,24 +162,6 @@ namespace Athene.Inventory.Web
             app.UseAuthentication();
 
             testData.CreateTestData();
-
-            string enUSCulture = "en-US";
-            var supportedCultures = new[]
-            {
-                new CultureInfo(enUSCulture),
-                new CultureInfo("de"),
-                new CultureInfo("de-DE"),
-            };
-
-            app.UseRequestLocalization(new RequestLocalizationOptions
-            {
-                // DefaultRequestCulture = new RequestCulture(enUSCulture),
-                DefaultRequestCulture = new RequestCulture(enUSCulture),
-                // // Formatting numbers, dates, etc.
-                // SupportedCultures = supportedCultures,
-                // UI strings that we have localized.
-                SupportedUICultures = supportedCultures
-            });
 
             // db.Database.EnsureCreated();
             // if (db.Books.Count() == 0) {
