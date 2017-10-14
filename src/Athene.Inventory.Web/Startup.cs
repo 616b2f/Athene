@@ -12,6 +12,8 @@ using Athene.Inventory.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Athene.Abstractions;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 namespace Athene.Inventory.Web
 {
@@ -92,8 +94,11 @@ namespace Athene.Inventory.Web
                 options.User.RequireUniqueEmail = true;
             });
 
+            services.AddJsonLocalization(options => options.ResourcesPath = "Resources");
+
             services.AddMvc()
-                .AddViewLocalization();
+                .AddViewLocalization()
+                .AddDataAnnotationsLocalization();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => {
@@ -137,6 +142,24 @@ namespace Athene.Inventory.Web
             app.UseAuthentication();
 
             testData.CreateTestData();
+
+            string enUSCulture = "en-US";
+            var supportedCultures = new[]
+            {
+                new CultureInfo(enUSCulture),
+                new CultureInfo("de"),
+                new CultureInfo("de-DE"),
+            };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                // DefaultRequestCulture = new RequestCulture(enUSCulture),
+                DefaultRequestCulture = new RequestCulture(enUSCulture),
+                // // Formatting numbers, dates, etc.
+                // SupportedCultures = supportedCultures,
+                // UI strings that we have localized.
+                SupportedUICultures = supportedCultures
+            });
 
             // db.Database.EnsureCreated();
             // if (db.Books.Count() == 0) {
