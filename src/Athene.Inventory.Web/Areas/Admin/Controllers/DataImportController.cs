@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Athene.Abstractions.DataImport;
-using Athene.Abstractions.Models;
+using Athene.Inventory.Abstractions.DataImport;
+using Athene.Inventory.Abstractions.Models;
+using Athene.Inventory.Abstractions.TestImp;
 using Athene.Inventory.Web.Areas.Admin.Models;
 using CsvHelper;
 using Microsoft.AspNetCore.Authorization;
@@ -17,9 +18,15 @@ namespace Athene.Inventory.Web.Areas.Admin.Controllers
     [Authorize(Policy="Librarian")]
     public class DataImportController : Controller
     {
-        private const string _csvSourceType = "csv";
         private const string _booksDataType = "books";
         private const string _invItemsDataType = "invItems";
+        private const string _studentDataType = "students";
+
+        private static IEnumerable<IDataImport> _dataImports = new List<IDataImport> {
+                new CsvDataImport<Book, BookCsvMapping>(),
+                new CsvDataImport<InventoryItem, InventoryItemCsvMapping>(),
+                new CsvDataImport<TestUser, StudentCsvMapping>(),
+        };
 
         [HttpGet]
         public IActionResult Index()
@@ -32,11 +39,12 @@ namespace Athene.Inventory.Web.Areas.Admin.Controllers
         private void PropagadaDataImportViewModel(DataImportViewModel viewModel)
         {
             viewModel.SourceTypes = new SelectList(new Dictionary<string,string>{
-                { "CSV Datei", _csvSourceType },
+                { "CSV Datei", Athene.Inventory.Abstractions.DataImport.Constants.InputFormats.Csv },
             }, "Value", "Key");
             viewModel.DataTypes = new SelectList(new Dictionary<string,string>{
-                { "Buecher", _booksDataType },
-                { "Buch exemplare", _invItemsDataType },
+                { "Buecher", nameof(Book) },
+                { "Buch exemplare", nameof(InventoryItem) },
+                { "Schueler", nameof(TestUser) },
             }, "Value", "Key");
         }
 
@@ -44,25 +52,25 @@ namespace Athene.Inventory.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Upload(DataImportViewModel model)
         {
-            if (model.SourceType != _csvSourceType)
-                throw new NotImplementedException();
-            if (model.DataType != _booksDataType && 
-                model.DataType != _invItemsDataType)
+            var dataImport = _dataImports.SingleOrDefault(x => 
+                x.InputFormat == model.SourceType &&
+                x.OutputFormat == model.DataType);
+            if (dataImport == null)
                 throw new NotImplementedException();
             
-            if (model.SourceType == _csvSourceType && model.DataType == _booksDataType)
+            var items = dataImport.Convert(model.UploadFile.OpenReadStream());
+            switch (dataImport.OutputFormat)
             {
-                var csv = new CsvDataImport<Book, BookCsvMapping>();
-                var items = csv.Convert(model.UploadFile.OpenReadStream());
-                return View("Books", items);
+                case nameof(Book):
+                    return View("Books", items);
+                case nameof(InventoryItem):
+                    return View("InventoryItems", items);
+                case nameof(TestUser):
+                    return View("Students", items);
+                default:
+                    throw new NotImplementedException();
             }
-            if (model.SourceType == _csvSourceType && model.DataType == _invItemsDataType)
-            {
-                var csv = new CsvDataImport<InventoryItem, InventoryItemCsvMapping>();
-                var items = csv.Convert(model.UploadFile.OpenReadStream());
-                return View("InventoryItems", items);
-            }
-            return View();
+            // return View();
         }
     }
 }

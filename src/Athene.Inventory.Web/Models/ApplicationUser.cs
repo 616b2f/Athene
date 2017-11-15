@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Athene.Abstractions.Models;
+using Athene.Inventory.Abstractions.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace Athene.Inventory.Web.Models

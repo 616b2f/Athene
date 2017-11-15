@@ -1,10 +1,10 @@
 using System;
 using Xunit;
-using Athene.Abstractions;
-using Athene.Abstractions.Models;
-using Athene.Abstractions.TestImp;
+using Athene.Inventory.Abstractions;
+using Athene.Inventory.Abstractions.Models;
+using Athene.Inventory.Abstractions.TestImp;
 
-namespace Athene.AbstractionsTests
+namespace Athene.Inventory.AbstractionsTests
 {
     public class UserRepositoryTests
     {

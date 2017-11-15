@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Athene.Abstractions.Models;
+using Athene.Inventory.Abstractions.Models;
 using Athene.Inventory.Web.Models;
 
 namespace Athene.Inventory.Web.Areas.Librarian.Models.RentViewModels

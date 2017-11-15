@@ -1,6 +1,3 @@
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,51 +18,8 @@
     </environment>
 </head>
 <body>
-    <div class="navbar navbar-default ath-navbar-top navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Athene</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                @if (SignInManager.IsSignedIn(User))
-                {
-                    <ul class="nav navbar-nav">
-                        @if (User.IsInRole("Librarian") || User.IsInRole("Administrator"))
-                        {
-                            <li class="dropdown">
-                              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                  <label class="glyphicon glyphicon-wrench"></label>
-                                  Verwalten <span class="caret"></span>
-                              </a>
-                              <ul class="dropdown-menu">
-                                @if (User.IsInRole("Librarian"))
-                                {
-                                    <li><a asp-area="Librarian" asp-controller="Books" asp-action="Index">Bücher verwalten</a></li>
-                                    <li><a asp-area="Librarian" asp-controller="Users" asp-action="Index">Benutzer verwalten</a></li>
-                                    <li><a asp-area="Librarian" asp-controller="Publisher" asp-action="Index">Herausgeber verwalten</a></li>
-                                    <li><a asp-area="Librarian" asp-controller="Authors" asp-action="Index">Autoren verwalten</a></li>
-                                    <li><a asp-area="Librarian" asp-controller="Categories" asp-action="Index">Kategorien verwalten</a></li>
-                                }
-                                @if (User.IsInRole("Administrator"))
-                                {
-                                    <li class="dropdown-header">Administrator</li>
-                                    <li><a asp-area="Admin" asp-controller="DataImport" asp-action="Index">Daten Importieren</a></li>
-                                }
-                              </ul>
-                            </li>
-                        }
-                    </ul>
-                }
-                @await Html.PartialAsync("_LoginPartial")
-            </div>
-        </div>
-    </div>
+    @await Html.PartialAsync("_NavigationPartial")
+
     <div class="container body-content">
         @Html.Partial("_MessageContainer")
         @RenderBody()

@@ -3,8 +3,8 @@ using Athene.Inventory.Web.Services;
 using System.Collections.Generic;
 using Athene.Inventory.Web.Areas.Librarian.Models.RentViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Athene.Abstractions;
-using Athene.Abstractions.Models;
+using Athene.Inventory.Abstractions;
+using Athene.Inventory.Abstractions.Models;
 using Athene.Inventory.Web.Models;
 using System;
 

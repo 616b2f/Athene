@@ -2,10 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using Athene.Inventory.Web.Services;
 using Microsoft.AspNetCore.Authorization;
 using Athene.Inventory.Web.Extensions;
-using Athene.Abstractions;
+using Athene.Inventory.Abstractions;
 using Athene.Inventory.Web.Areas.Librarian.Models.UsersViewModels;
 using Athene.Inventory.Web.Models;
-using Athene.Abstractions.Models;
+using Athene.Inventory.Abstractions.Models;
 using System.Linq;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860

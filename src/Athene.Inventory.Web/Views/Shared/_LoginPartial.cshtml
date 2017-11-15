@@ -7,6 +7,9 @@
 {
         <ul class="nav navbar-nav navbar-right">
             <li>
+                @await Html.PartialAsync("_SelectLanguagePartial")
+            </li>
+            <li>
                 <a href="#">
                     <span class="glyphicon glyphicon-bell"></span>
                 </a>
@@ -45,7 +48,7 @@
               method="get">
               <div class="form-group">
                   <div class="input-group" style="display:table">
-                      <input name="q" type="text" class="form-control" placeholder="ISBN, Titel, Beschreibung, Autor" />
+                      <input name="q" type="text" class="form-control" placeholder="@Localizer["ISBN, Title, Description, Author"]" />
                       <span class="input-group-btn"><button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span> @Localizer["Search"]</button></span>
                   </div>
               </div>

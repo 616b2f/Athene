@@ -1,5 +1,5 @@
-using Athene.Abstractions;
-using Athene.Abstractions.Models;
+using Athene.Inventory.Abstractions;
+using Athene.Inventory.Abstractions.Models;
 using Athene.Inventory.Web.Services;
 using Athene.Inventory.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;

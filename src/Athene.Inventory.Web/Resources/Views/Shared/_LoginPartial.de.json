@@ -3,5 +3,8 @@
     "Sign In": "Anmelden",
     "Sign Out": "Abmelden",
     "Search": "Suchen",
-    "Change password": "Password ändern"
+    "Change password": "Password ändern",
+    "Logged in as <strong>{0}</strong>": "Angemeldet als <strong>{0}</strong>",
+    "Settings": "Einstellungen",
+    "ISBN, Title, Description, Author": "ISBN, Titel, Beschreibung, Autor"
 }

@@ -6,8 +6,8 @@ using Athene.Inventory.Web.Services;
 using Athene.Inventory.Web.Areas.Librarian.Models.BooksViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Athene.Abstractions;
-using Athene.Abstractions.Models;
+using Athene.Inventory.Abstractions;
+using Athene.Inventory.Abstractions.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace Athene.Inventory.Web.Areas.Librarian.Controllers

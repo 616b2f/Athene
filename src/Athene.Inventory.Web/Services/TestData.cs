@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using Athene.Abstractions;
-using Athene.Abstractions.Models;
-using Athene.Abstractions.Utils;
+using Athene.Inventory.Abstractions;
+using Athene.Inventory.Abstractions.Models;
+using Athene.Inventory.Abstractions.Utils;
 using Athene.Inventory.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -104,21 +104,44 @@ namespace Athene.Inventory.Web.Services
                    SchoolClass = schoolClass3
                 },
             };
+            var student3 = new ApplicationUser
+            {
+                UserName = "teststudent3@athene.com",
+                Email =  "teststudent3@athene.com",
+                Surname = "Simon",
+                Lastname = "Mustermann",
+                Gender = Gender.Female,
+                Birthsday = new DateTime(1979, 6, 1),
+                Student = new Student {
+                   StudentId = "43335BD",
+                   SchoolClass = schoolClass3
+                },
+            };
 
             var librarianCLaim = new Claim(ClaimTypes.Role, "Librarian");
             var adminCLaim = new Claim(ClaimTypes.Role, "Administrator");
             var studentClaim = new Claim(ClaimTypes.Role, "Student");
 
+            var dataImportPermission = new Claim(Constants.ClaimTypes.Permission, "DataImport");
+            var rentBookPermission = new Claim(Constants.ClaimTypes.Permission, "RentBooks");
+
             var res1 = userManager.CreateAsync(adminUser, "Admin123!").Result;
             var res2 = userManager.CreateAsync(librarianUser, "Test123!").Result;
             var res3 = userManager.CreateAsync(student1, "Test123!").Result;
             var res4 = userManager.CreateAsync(student2, "Test123!").Result;
+            var res5 = userManager.CreateAsync(student3, "Test123!").Result;
 
             userManager.AddClaimAsync(adminUser, adminCLaim);
-            userManager.AddClaimAsync(adminUser, librarianCLaim);
+            userManager.AddClaimAsync(adminUser, dataImportPermission);
+            
             userManager.AddClaimAsync(librarianUser, librarianCLaim);
+            userManager.AddClaimAsync(librarianUser, dataImportPermission);
+
             userManager.AddClaimAsync(student1, studentClaim);
+            userManager.AddClaimAsync(student1, rentBookPermission);
+
             userManager.AddClaimAsync(student2, studentClaim);
+            userManager.AddClaimAsync(student2, rentBookPermission);
         }
 
         public static void CreateBookMeta(IBookMetaRepository bookMetaRepo)

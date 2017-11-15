@@ -22,7 +22,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="../Athene.Abstractions/Athene.Abstractions.csproj" />
+    <ProjectReference Include="../Athene.Inventory.Abstractions/Athene.Inventory.Abstractions.csproj" />
   </ItemGroup>
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
     <Exec Command="bower install" />

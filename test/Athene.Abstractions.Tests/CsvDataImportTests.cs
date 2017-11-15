@@ -4,9 +4,9 @@ using System.Text;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
-using Athene.Abstractions;
-using Athene.Abstractions.Models;
-using Athene.Abstractions.DataImport;
+using Athene.Inventory.Abstractions;
+using Athene.Inventory.Abstractions.Models;
+using Athene.Inventory.Abstractions.DataImport;
 
 namespace  Athene.AbstractionTests
 {
@@ -31,8 +31,8 @@ namespace  Athene.AbstractionTests
         [Fact]
         public void CsvInventoryItems_Books_Convert_Successfull()
         {
-            var fileContent = "30137	9783507106062	30.95	2017-03-29	0" + Environment.NewLine +
-                "30326	9783507106161 	20.94	2017-03-28	0";
+            var fileContent = "30137\t9783507106062\t30.95\t2017-03-29\t0" + Environment.NewLine +
+                "30326\t9783507106161\t20.94\t2017-03-28\t0";
 
             var ms = new MemoryStream(Encoding.UTF8.GetBytes(fileContent));
             var csv = new CsvDataImport<InventoryItem, InventoryItemCsvMapping>();

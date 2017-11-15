@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 using Athene.Inventory.Web.Models;
 using Athene.Inventory.Web.Services;
 using Microsoft.AspNetCore.Identity;
-using Athene.Abstractions;
+using Athene.Inventory.Abstractions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
@@ -60,9 +60,9 @@ namespace Athene.Inventory.Web
 
             // Add application services.
             services.AddIdentity<ApplicationUser, IdentityRole>();
-            services.AddSingleton<IInventory, Athene.Abstractions.TestImp.InMemoryInventory>();
-            services.AddSingleton<IArticleRepository, Athene.Abstractions.TestImp.InMemoryArticleRepository>();
-            services.AddSingleton<IBookMetaRepository, Athene.Abstractions.TestImp.InMemoryBookMetaRepository>();
+            services.AddSingleton<IInventory, Athene.Inventory.Abstractions.TestImp.InMemoryInventory>();
+            services.AddSingleton<IArticleRepository, Athene.Inventory.Abstractions.TestImp.InMemoryArticleRepository>();
+            services.AddSingleton<IBookMetaRepository, Athene.Inventory.Abstractions.TestImp.InMemoryBookMetaRepository>();
 
             var store = new InMemoryStore<ApplicationUser, IdentityRole>();
             services.AddSingleton<IUserRepository>(store);

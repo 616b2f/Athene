@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using Athene.Abstractions.Models;
+using Athene.Inventory.Abstractions.Models;
 
 namespace Athene.Inventory.Web.Areas.Librarian.Models.BooksViewModels
 {
