@@ -10,7 +10,7 @@ using Athene.Inventory.Web.ViewModels;
 namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 {
     [Area("Librarian")]
-    [Authorize(Policy="Librarian")]
+    [Authorize(Policy=Constants.Policies.Librarian)]
     public class AuthorsController : Controller
     {
         private readonly IInventory _inventoryService;

@@ -403,6 +403,8 @@ namespace Athene.Inventory.Web.Models
 
         public void Add(IUser user)
         {
+            if (user.Id == null)
+                user.Id = Guid.NewGuid().ToString();
             _users[user.Id] = (TUser)user;
         }
     }

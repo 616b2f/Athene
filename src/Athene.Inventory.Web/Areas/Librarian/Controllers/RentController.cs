@@ -13,7 +13,7 @@ using System;
 namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 {
     [Area("Librarian")]
-    [Authorize(Policy="Librarian")]
+    [Authorize(Policy=Constants.Policies.Librarian)]
     public class RentController : Controller
     {
         private readonly IUserRepository _usersRepository;

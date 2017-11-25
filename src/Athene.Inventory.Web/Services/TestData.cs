@@ -106,9 +106,9 @@ namespace Athene.Inventory.Web.Services
                 },
             };
 
-            var librarianCLaim = new Claim(ClaimTypes.Role, "Librarian");
-            var adminCLaim = new Claim(ClaimTypes.Role, "Administrator");
-            var studentClaim = new Claim(ClaimTypes.Role, "Student");
+            var librarianRole = new Claim(ClaimTypes.Role, "Librarian");
+            var adminRole = new Claim(ClaimTypes.Role, "Administrator");
+            var studentRole = new Claim(ClaimTypes.Role, "Student");
 
             var dataImportBooksPermission = new Claim(Constants.ClaimTypes.Permission, Constants.Permissions.DataImportBooks);
             var dataImportUsersPermission = new Claim(Constants.ClaimTypes.Permission, Constants.Permissions.DataImportUsers);
@@ -123,21 +123,21 @@ namespace Athene.Inventory.Web.Services
             var res4 = userManager.CreateAsync(student2, "Test123!").Result;
             var res5 = userManager.CreateAsync(student3, "Test123!").Result;
 
-            userManager.AddClaimAsync(adminUser, adminCLaim);
+            userManager.AddClaimAsync(adminUser, adminRole);
             userManager.AddClaimAsync(adminUser, dataImportPermission);
             userManager.AddClaimAsync(adminUser, dataImportBooksPermission);
             userManager.AddClaimAsync(adminUser, dataImportUsersPermission);
             userManager.AddClaimAsync(adminUser, dataImportInventoryItemsPermission);
             userManager.AddClaimAsync(adminUser, administrateInventoryPermission);
             
-            userManager.AddClaimAsync(librarianUser, librarianCLaim);
+            userManager.AddClaimAsync(librarianUser, librarianRole);
             userManager.AddClaimAsync(librarianUser, dataImportBooksPermission);
             userManager.AddClaimAsync(librarianUser, administrateInventoryPermission);
 
-            userManager.AddClaimAsync(student1, studentClaim);
+            userManager.AddClaimAsync(student1, studentRole);
             userManager.AddClaimAsync(student1, rentBookPermission);
 
-            userManager.AddClaimAsync(student2, studentClaim);
+            userManager.AddClaimAsync(student2, studentRole);
             userManager.AddClaimAsync(student2, rentBookPermission);
         }
 

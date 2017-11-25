@@ -11,9 +11,11 @@
     <Content Update="wwwroot\**\*;**\*.cshtml;Areas\**\*.cshtml;appsettings.json;web.config">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <None Include="wwwroot\images\back_to_school_banner.jpg" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AspNetCore.Localization.Json" Version="0.1.2-dev" />
+    <PackageReference Include="AutoMapper" Version="6.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="System.AppContext" Version="4.3.0" />
     <!-- <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink.Loader" Version="14.0.1" /> -->
@@ -38,8 +40,5 @@
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="wwwroot\images\back_to_school_banner.jpg" />
   </ItemGroup>
 </Project>

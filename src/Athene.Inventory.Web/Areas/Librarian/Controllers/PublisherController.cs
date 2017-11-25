@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 {
     [Area("Librarian")]
-    [Authorize(Policy="Librarian")]
+    [Authorize(Policy=Constants.Policies.Librarian)]
     public class PublisherController : Controller
     {
         private readonly IInventory _inventoryService;

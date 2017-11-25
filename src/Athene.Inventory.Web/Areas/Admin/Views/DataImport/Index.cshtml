@@ -2,7 +2,7 @@
 @{
     Layout = "_Layout";
 }
-<h4>Daten Importieren</h4>
+<h4>@Localizer["Data Import"]</h4>
 <form asp-action="Upload" enctype="multipart/form-data">
     <div class="form-group">
         <label asp-for="SourceType"></label>
@@ -18,5 +18,5 @@
         <input type="file" asp-for="UploadFile" accept=".txt,.csv" />
     </div>
     </div>
-    <button class="btn btn-primary">Upload</button>
+    <button class="btn btn-primary">@Localizer["Upload"]</button>
 </form>

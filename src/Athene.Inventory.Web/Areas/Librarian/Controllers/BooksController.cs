@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Identity;
 namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 {
 	[Area("Librarian")]
-	[Authorize(Policy = "Librarian")]
+	[Authorize(Policy=Constants.Policies.Librarian)]
 	public class BooksController : Controller
 	{
 		private readonly IInventory _inventoryService;
