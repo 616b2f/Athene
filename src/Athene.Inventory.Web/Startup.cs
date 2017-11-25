@@ -15,27 +15,17 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Athene.Inventory.Web
 {
     public class Startup
     {
-        public static IConfigurationRoot Configuration { get; private set; }
+        public static IConfiguration Configuration { get; private set; }
 
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-
-            if (env.IsDevelopment())
-            {
-                builder.AddUserSecrets<Startup>();
-            }
-
-            builder.AddEnvironmentVariables();
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -51,9 +41,14 @@ namespace Athene.Inventory.Web
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("Administrator", policy => policy.RequireRole("Administrator"));
-                options.AddPolicy("Librarian", policy => policy.RequireRole("Librarian", "Administrator"));
+                options.AddPolicy(Constants.Policies.Administrator, policy => policy.RequireRole(Constants.Roles.Administrator));
+                options.AddPolicy(Constants.Policies.Librarian, policy => policy.RequireRole(Constants.Roles.Librarian));
+                options.AddPolicy(Constants.Policies.AdministrateInventory, policy => 
+                    policy.RequireClaim(Constants.ClaimTypes.Permission, Constants.Permissions.AdministrateInventory));
+                options.AddPolicy(Constants.Policies.DataImport, policy => 
+                    policy.RequireClaim(Constants.ClaimTypes.Permission, Constants.Permissions.DataImport));
             });
+            services.AddScoped<IAuthorizationService, DefaultAuthorizationService>();
 
             services.AddDistributedMemoryCache();
             services.AddSession();
@@ -70,12 +65,12 @@ namespace Athene.Inventory.Web
             services.AddSingleton<IRoleStore<IdentityRole>>(store);
             services.AddSingleton<IUserEmailStore<ApplicationUser>>(store);
             services.AddSingleton<IUserClaimsPrincipalFactory<ApplicationUser>, UserClaimsPrincipalFactory<ApplicationUser, IdentityRole>>();
-            services.AddTransient<UserManager<ApplicationUser>>();
-            services.AddTransient<RoleManager<IdentityRole>>();
-            services.AddTransient<SignInManager<ApplicationUser>>();
+            services.AddScoped<UserManager<ApplicationUser>>();
+            services.AddScoped<RoleManager<IdentityRole>>();
+            services.AddScoped<SignInManager<ApplicationUser>>();
 
-            services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
+            services.AddScoped<IEmailSender, AuthMessageSender>();
+            services.AddScoped<ISmsSender, AuthMessageSender>();
 
             // Configure Identity
             services.Configure<IdentityOptions>(options =>
@@ -108,8 +103,6 @@ namespace Athene.Inventory.Web
                     options.LogoutPath = "/Account/LogOff";
                 });
 
-            services.AddSingleton<TestData>();
-
             services.Configure<RequestLocalizationOptions>(opt =>
             {
                 string defaultCulture = "en";
@@ -128,7 +121,7 @@ namespace Athene.Inventory.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TestData testData, UserManager<ApplicationUser> userManager)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -161,8 +154,7 @@ namespace Athene.Inventory.Web
 
             app.UseAuthentication();
 
-            testData.CreateTestData();
-
+            //UserManager<ApplicationUser> userManager
             // db.Database.EnsureCreated();
             // if (db.Books.Count() == 0) {
             //     db.Initialize(userManager);

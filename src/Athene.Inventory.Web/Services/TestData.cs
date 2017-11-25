@@ -7,30 +7,18 @@ using Athene.Inventory.Abstractions.Utils;
 using Athene.Inventory.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Athene.Inventory.Web.Services
 {
-    public class TestData
+    public static class TestData
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IArticleRepository _articleRepo;
-        private readonly IBookMetaRepository _bookMetaRepo;
-        private readonly IInventory _inventory;
-        public TestData(
-            UserManager<ApplicationUser> userManager,
-            IArticleRepository articleRepo,
-            IBookMetaRepository bookMetaRepo,
-            IInventory inventory
-        )
+        public static void Initialize(IServiceProvider provider)
         {
-            _userManager = userManager;
-            _articleRepo = articleRepo;
-            _bookMetaRepo = bookMetaRepo;
-            _inventory = inventory;
-        }
-
-        public void CreateTestData()
-        {
+            var _userManager = provider.GetService<UserManager<ApplicationUser>>();
+            var _articleRepo = provider.GetService<IArticleRepository>();
+            var _bookMetaRepo = provider.GetService<IBookMetaRepository>();
+            var _inventory = provider.GetService<IInventory>();
             TestData.CreateUsers(_userManager);
             TestData.CreateBookMeta(_bookMetaRepo);
             TestData.CreateBookArticles(_articleRepo, _bookMetaRepo);
@@ -122,8 +110,12 @@ namespace Athene.Inventory.Web.Services
             var adminCLaim = new Claim(ClaimTypes.Role, "Administrator");
             var studentClaim = new Claim(ClaimTypes.Role, "Student");
 
-            var dataImportPermission = new Claim(Constants.ClaimTypes.Permission, "DataImport");
-            var rentBookPermission = new Claim(Constants.ClaimTypes.Permission, "RentBooks");
+            var dataImportBooksPermission = new Claim(Constants.ClaimTypes.Permission, Constants.Permissions.DataImportBooks);
+            var dataImportUsersPermission = new Claim(Constants.ClaimTypes.Permission, Constants.Permissions.DataImportUsers);
+            var dataImportInventoryItemsPermission = new Claim(Constants.ClaimTypes.Permission, Constants.Permissions.DataImportInventoryItems);
+            var rentBookPermission = new Claim(Constants.ClaimTypes.Permission, Constants.Permissions.RentBooks);
+            var dataImportPermission = new Claim(Constants.ClaimTypes.Permission, Constants.Permissions.DataImport);
+            var administrateInventoryPermission = new Claim(Constants.ClaimTypes.Permission, Constants.Permissions.AdministrateInventory);
 
             var res1 = userManager.CreateAsync(adminUser, "Admin123!").Result;
             var res2 = userManager.CreateAsync(librarianUser, "Test123!").Result;
@@ -133,9 +125,14 @@ namespace Athene.Inventory.Web.Services
 
             userManager.AddClaimAsync(adminUser, adminCLaim);
             userManager.AddClaimAsync(adminUser, dataImportPermission);
+            userManager.AddClaimAsync(adminUser, dataImportBooksPermission);
+            userManager.AddClaimAsync(adminUser, dataImportUsersPermission);
+            userManager.AddClaimAsync(adminUser, dataImportInventoryItemsPermission);
+            userManager.AddClaimAsync(adminUser, administrateInventoryPermission);
             
             userManager.AddClaimAsync(librarianUser, librarianCLaim);
-            userManager.AddClaimAsync(librarianUser, dataImportPermission);
+            userManager.AddClaimAsync(librarianUser, dataImportBooksPermission);
+            userManager.AddClaimAsync(librarianUser, administrateInventoryPermission);
 
             userManager.AddClaimAsync(student1, studentClaim);
             userManager.AddClaimAsync(student1, rentBookPermission);
