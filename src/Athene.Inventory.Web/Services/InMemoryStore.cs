@@ -405,6 +405,11 @@ namespace Athene.Inventory.Web.Models
             return Users.SingleOrDefault(u => u.Id.ToString() == userId);
         }
 
+        public IEnumerable<IUser> FindByUserIds(IEnumerable<string> userIds)
+        {
+            return Users.Where(u => userIds.Contains(u.Id));
+        }
+
         public void Add(IUser user)
         {
             if (user.Id == null)

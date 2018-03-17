@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Athene.Inventory.Abstractions;
 using Athene.Inventory.Abstractions.Models;
 using Athene.Inventory.Web.Extensions;
@@ -17,6 +19,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
     {
 		private readonly IInventory _inventoryService;
 		private readonly IArticleRepository _articleRepository;
+		private readonly IUserRepository _userRepository;
         private readonly IStringLocalizer<SharedResource> _localizer;
         private readonly UserManager<Web.Models.ApplicationUser> _userManager;
 
@@ -24,11 +27,13 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
             IInventory inventoryService, 
             IArticleRepository articleRepository,
             IStringLocalizer<SharedResource> localizer,
+            IUserRepository userRepository,
             UserManager<Web.Models.ApplicationUser> userManager)
 		{
 			_inventoryService = inventoryService;
             _articleRepository = articleRepository;
             _localizer = localizer;
+            _userRepository = userRepository;
             _userManager = userManager;
 		}
 
@@ -57,8 +62,22 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 				return RedirectToAction("Index");
 
             var inventoryItems = _inventoryService.FindInventoryItemsByArticleId(new[] { id });
+            var userIds = inventoryItems.Select(x => x.RentedByUserId);
+            var users = _userRepository.FindByUserIds(userIds);
+            PropagateInventoryItemsWithUsers(inventoryItems, users);
             var viewModel = inventoryItems.ToDetailsViewModels();
             return View(viewModel);
+        }
+
+        private void PropagateInventoryItemsWithUsers(IEnumerable<InventoryItem> inventoryItems, IEnumerable<IUser> users)
+        {
+            foreach (var item in inventoryItems)
+            {
+                if (!string.IsNullOrWhiteSpace(item.RentedByUserId))
+                {
+                    item.RentedBy = users.SingleOrDefault(x => x.Id == item.RentedByUserId);
+                }
+            }
         }
     }
 }

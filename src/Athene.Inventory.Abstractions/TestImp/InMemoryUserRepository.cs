@@ -25,5 +25,10 @@ namespace Athene.Inventory.Abstractions.TestImp
         {
             return _user.SingleOrDefault(u => u.Id.ToString() == userId);
         }
+
+        public IEnumerable<IUser> FindByUserIds(IEnumerable<string> userIds)
+        {
+            return _user.Where(x => userIds.Contains(x.Id));
+        }
     }
 }
