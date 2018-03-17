@@ -5,7 +5,7 @@ namespace Athene.Inventory.Abstractions
 {
     public interface IUserRepository
     {
-        IEnumerable<IUser> Find(string matchcode);
+        IEnumerable<IUser> FindByMatchcode(string matchcode);
         IUser FindByUserId(string userId);
         void Add(IUser user);
     }

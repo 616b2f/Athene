@@ -389,11 +389,15 @@ namespace Athene.Inventory.Web.Models
             return Task.FromResult<IList<TUser>>(query.ToList());
         }
 
-        public IEnumerable<IUser> Find(string matchcode)
+        public IEnumerable<IUser> FindByMatchcode(string matchcode)
         {
-            return Users.Where(u => 
-                u.FullName.Contains(matchcode) ||
-                u.StudentId.Contains(matchcode));
+            var normalizedMatchcode = matchcode.ToLower();
+            return Users
+                .Where(u => 
+                    u.FullName.ToLower().Contains(normalizedMatchcode) ||
+                    (u.StudentId != null &&
+                     u.StudentId.Contains(normalizedMatchcode)))
+                .ToArray();
         }
 
         public IUser FindByUserId(string userId)

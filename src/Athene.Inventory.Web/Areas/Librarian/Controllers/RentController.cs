@@ -7,6 +7,8 @@ using Athene.Inventory.Abstractions;
 using Athene.Inventory.Abstractions.Models;
 using Athene.Inventory.Web.Models;
 using System;
+using Athene.Inventory.Web.Extensions;
+using Microsoft.Extensions.Localization;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,13 +18,16 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
     [Authorize(Policy=Constants.Policies.Librarian)]
     public class RentController : Controller
     {
+        private readonly IStringLocalizer<SharedResource> _localizer;
         private readonly IUserRepository _usersRepository;
         private readonly IInventory _inventoryService;
 
         public RentController(
+            IStringLocalizer<SharedResource> localizer,
             IUserRepository usersRepository, 
             IInventory inventoryService) 
         {
+            _localizer = localizer;
             _usersRepository = usersRepository;
             _inventoryService = inventoryService;
         }
@@ -55,6 +60,13 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
                 return RedirectToAction("Index");
 
             var user = _usersRepository.FindByUserId(userId);
+
+            if (user == null)
+            {
+                this.SetUserMessage(UserMessageType.Error, _localizer["Error_UserNotFound"]);
+                return RedirectToAction("Index");
+            }
+
             var rentViewModel = new RentViewModel
             {
                 UserId = user.Id,
@@ -82,13 +94,15 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 
             var inventoryItem = _inventoryService.FindInventoryItemByBarcode<Book>(barcode);
 
+            if (inventoryItem == null)
+                inventoryItem = _inventoryService.FindInventoryItemByExternalId<Book>(barcode);
             //TODO: write proper error handling, with error message on client site
             if (inventoryItem == null)
                 return Content("");
 
             //TODO: show error if book is allready rented by someone else
 
-            return PartialView("_RentBookItem", inventoryItem);
+            return PartialView("_RentInventoryItem", inventoryItem);
         }
     }
 }

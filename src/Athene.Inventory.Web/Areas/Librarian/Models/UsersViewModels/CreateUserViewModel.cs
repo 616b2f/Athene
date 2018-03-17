@@ -6,7 +6,9 @@ namespace Athene.Inventory.Web.Areas.Librarian.Models.UsersViewModels
 {
     public class CreateUserViewModel
     {
+        [Required]
         public string Surname { get; set; }
+        [Required]
         public string Lastname { get; set; }
         public Gender Gender { get; set; }
         public string AddressStreet { get; set; }

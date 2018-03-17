@@ -3,7 +3,7 @@
 <div class="panel panel-default panel-body">
     <div class="media">
         <div class="media-left">
-            <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTcxIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE3MSAxODAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzEwMCV4MTgwCkNyZWF0ZWQgd2l0aCBIb2xkZXIuanMgMi42LjAuCkxlYXJuIG1vcmUgYXQgaHR0cDovL2hvbGRlcmpzLmNvbQooYykgMjAxMi0yMDE1IEl2YW4gTWFsb3BpbnNreSAtIGh0dHA6Ly9pbXNreS5jbwotLT48ZGVmcz48c3R5bGUgdHlwZT0idGV4dC9jc3MiPjwhW0NEQVRBWyNob2xkZXJfMTU5ODgxYjRlYzAgdGV4dCB7IGZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0IH0gXV0+PC9zdHlsZT48L2RlZnM+PGcgaWQ9ImhvbGRlcl8xNTk4ODFiNGVjMCI+PHJlY3Qgd2lkdGg9IjE3MSIgaGVpZ2h0PSIxODAiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSI1OS41NTQ2ODc1IiB5PSI5NC41Ij4xNzF4MTgwPC90ZXh0PjwvZz48L2c+PC9zdmc+">
+            <img src="@Model.ImageUrl">
         </div>
         <div class="media-body"> 
             <div class="row">
@@ -58,21 +58,27 @@
                     }
                     else
                     {
-                        <label>Nicht verfügbar</label>
+                        <label>@Localizer["Not Available"]</label>
                     }
                 </div>
                 <div class="col-md-12">
-                    <label asp-for="OwnedBooks"></label>
-                    @if (Model.OwnedBooks.Count > 0)
+                    <label asp-for="InventoryItems"></label>
+                    @if (Model.InventoryItems.Count > 0)
                     {
-                        @foreach (var bookItem in Model.OwnedBooks)
-                        {
-                            @Html.Partial("_BookItemPreview", bookItem)
-                        }
+                        <label>@Localizer["Total"]:</label>
+                        <span>@Model.InventoryItems.Count()</span>
+                        <label>@Localizer["Not borrowed"]:</label>
+                        <span>@Model.InventoryItems.Where(x => x.RentedBy == null).Count()</span>
+                        <label>@Localizer["Borrowed"]:</label>
+                        <span>@Model.InventoryItems.Where(x => x.RentedBy != null).Count()</span>
+                        // @foreach (var invItem in Model.InventoryItems)
+                        // {
+                        //     @Html.Partial("_InventoryItemPreview", invItem)
+                        // }
                     }
                     else
                     {
-                        <label>Nicht verfügbar</label>
+                        <label>@Localizer["Not Available"]</label>
                     }
                 </div>
             </div>

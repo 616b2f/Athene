@@ -11,11 +11,11 @@ namespace Athene.Inventory.Abstractions.Models
 
         public int Id { get; set; }
 
-        public int Hall { get; set; }
-        public int Corridor { get; set; }
-        public int Rack { get; set; }
-        public int Level { get; set; }
-        public int Position { get; set; }
+        public string Hall { get; set; }
+        public string Corridor { get; set; }
+        public string Rack { get; set; }
+        public string Level { get; set; }
+        public string Position { get; set; }
 
         public string OneLiner
         {

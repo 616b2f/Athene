@@ -1,0 +1,33 @@
+@using Athene.Inventory.Abstractions.Models
+@model InventoryItem
+
+<div class="panel panel-default panel-body">
+    <div class="row">
+        <div class="col-md-6">
+            @if (Model.Article is Book)
+            {
+                var book = Model.Article as Book;
+
+                @book.Title<br />
+                @book.SubTitle<br />
+                <label asp-for="@book.InternationalStandardBookNumber"></label>
+                @book.InternationalStandardBookNumber
+            }
+        </div>
+        <div class="col-md-6">
+            <label asp-for="Id"></label>
+            @Model.Id<br />
+            <label asp-for="StockLocation"></label>
+            @if (Model.StockLocation != null)
+            {
+                @Model.StockLocation.OneLiner<br />
+            }
+            else
+            {
+                @Localizer["Not defined"]<br />
+            }
+            <label asp-for="RentedAt"></label>
+            @Model.RentedAt
+        </div>
+    </div>
+</div>

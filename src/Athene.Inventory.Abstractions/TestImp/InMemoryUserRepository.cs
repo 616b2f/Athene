@@ -13,11 +13,12 @@ namespace Athene.Inventory.Abstractions.TestImp
             _user.Add(user);
         }
 
-        public IEnumerable<IUser> Find(string matchcode)
+        public IEnumerable<IUser> FindByMatchcode(string matchcode)
         {
+            var normalizedMatchcode = matchcode.ToLower();
             return _user.Where(u => 
-                u.FullName.Contains(matchcode) ||
-                u.StudentId.Contains(matchcode));
+                u.FullName.ToLower().Contains(normalizedMatchcode) ||
+                u.StudentId.ToLower().Contains(normalizedMatchcode));
         }
 
         public IUser FindByUserId(string userId)

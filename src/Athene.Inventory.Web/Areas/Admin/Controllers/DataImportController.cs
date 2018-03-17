@@ -24,9 +24,17 @@ namespace Athene.Inventory.Web.Areas.Admin.Controllers
     public class DataImportController : Controller
     {
         private readonly IUserRepository _userRepo;
-        public DataImportController(IUserRepository userRepo)
+        private readonly IInventory _inventory;
+        private readonly IArticleRepository _articleRepo;
+
+        public DataImportController(
+            IUserRepository userRepo,
+            IInventory inventory,
+            IArticleRepository articleRepo)
         {
             _userRepo = userRepo;
+            _inventory = inventory;
+            _articleRepo = articleRepo;
         }
 
         private const string _booksDataType = "books";
@@ -69,34 +77,83 @@ namespace Athene.Inventory.Web.Areas.Admin.Controllers
                 throw new NotImplementedException();
             
             var items = dataImport.Convert(model.UploadFile.OpenReadStream());
+            string serialisedData = "";
+            string cachePrefix = "";
+            string viewName = "";
             switch (dataImport.OutputFormat)
             {
                 case nameof(Book):
-                    return View("Books", items);
+                    var books = (IEnumerable<Book>)items;
+                    serialisedData = JsonConvert.SerializeObject(books);
+                    cachePrefix = _booksDataType;
+                    viewName = "Books";
+                    break;
                 case nameof(InventoryItem):
-                    return View("InventoryItems", items);
+                    var invItems = (IEnumerable<InventoryItem>)items;
+                    MapToArticles(invItems);
+                    serialisedData = JsonConvert.SerializeObject(invItems, new JsonSerializerSettings {
+                        TypeNameHandling = TypeNameHandling.All
+                    });
+                    cachePrefix = _invItemsDataType;
+                    viewName = "InventoryItems";
+                    break;
                 case nameof(TestUser):
                     var users = (IEnumerable<IUser>)items;
-                    var serialisedData = JsonConvert.SerializeObject(users);
-                    var importId = Guid.NewGuid();
-                    ViewBag.ImportId = importId;
-                    HttpContext.Session.SetString("Students_" + importId, serialisedData);
+                    serialisedData = JsonConvert.SerializeObject(users);
                     items = users.Select(u => u.ToViewModel());
-                    return View("Students", items);
+                    cachePrefix = _studentDataType;
+                    viewName = "Students";
+                    break;
                 default:
                     throw new NotImplementedException();
             }
-            // return View();
+            string importId = $"{cachePrefix}_{Guid.NewGuid()}";
+            ViewBag.ImportId = importId;
+            HttpContext.Session.SetString(importId, serialisedData);
+            return View(viewName, items);
+        }
+
+        private void MapToArticles(IEnumerable<InventoryItem> invItems)
+        {
+            foreach (var invItem in invItems)
+            {
+                if (invItem.Article is Book)
+                {
+                    var book = invItem.Article as Book;
+                    var result = _articleRepo.SearchForArticlesByMatchcode(book.InternationalStandardBookNumber);
+                    // TODO: if found more then 1 add error for imported inventoryItem and if Article is null too
+                    if (result.Count() <= 1)
+                        invItem.Article = (Book)result.FirstOrDefault();
+                    else
+                        invItem.Article = null;
+                }
+            }
         }
 
         [HttpPost]
         public IActionResult Import(string importId)
         {
-            var cacheImportId = "Students_" + importId;
-            var serializedData = HttpContext.Session.GetString(cacheImportId);
-            var users = JsonConvert.DeserializeObject<IEnumerable<ApplicationUser>>(serializedData);
-            ImportAllUsers(users);
-            ViewBag.ImportedQuantity = users.Count();
+            string serializedData = HttpContext.Session.GetString(importId);
+            if (importId.StartsWith(_booksDataType))
+            {
+                var books = JsonConvert.DeserializeObject<IEnumerable<Book>>(serializedData);
+                _articleRepo.AddArticles(books);
+                ViewBag.ImportedQuantity = books.Count();
+            }
+            else if (importId.StartsWith(_invItemsDataType))
+            {
+                var invItems = JsonConvert.DeserializeObject<IEnumerable<InventoryItem>>(serializedData, new JsonSerializerSettings {
+                        TypeNameHandling = TypeNameHandling.All
+                    });
+                _inventory.AddInventoryItems(invItems);
+                ViewBag.ImportedQuantity = invItems.Count();
+            }
+            else if (importId.StartsWith(_studentDataType))
+            {
+                var users = JsonConvert.DeserializeObject<IEnumerable<ApplicationUser>>(serializedData);
+                ImportAllUsers(users);
+                ViewBag.ImportedQuantity = users.Count();
+            }
             return View("ImportResult");
         }
 

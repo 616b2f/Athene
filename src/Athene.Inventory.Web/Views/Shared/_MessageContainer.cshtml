@@ -7,7 +7,7 @@
         TempData["messageType"] != null)
     {
         message = TempData["messageValue"].ToString();
-        type = TempData["messageType"] as UserMessageType?;
+        type = (UserMessageType)TempData["messageType"];
     }
     string alertClass = "";
     if (type != null)

@@ -11,6 +11,7 @@ namespace Athene.Inventory.Abstractions.DataImport
         public InventoryItemCsvMapping()
         {
             Map(x => x.ExternalId).Index(0);
+            Map(x => x.Barcode).Index(0);
             Map(x => x.Article).ConvertUsing(row => 
                 new Book { InternationalStandardBookNumber = row.GetField<string>(1)?.Trim() });
             Map(x => x.PurchasePrice).ConvertUsing(row => row.GetField<decimal>(2));

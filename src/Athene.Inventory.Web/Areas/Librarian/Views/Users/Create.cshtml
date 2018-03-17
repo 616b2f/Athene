@@ -1,15 +1,13 @@
 @model Athene.Inventory.Web.Areas.Librarian.Models.UsersViewModels.CreateUserViewModel
+@using Athene.Inventory.Abstractions.Models;
 @{
-    ViewBag.Title = "Schüler aufnehmen";
+    ViewBag.Title = @Localizer["Add Student"];
     Layout = "_Layout";
 }
 
 <div class="row">
-	<div class="col-md-6">
+	<div class="col-md-12">
 		<h3>@ViewBag.Title</h3>
-	</div>
-	<div class="col-md-6">
-		@Html.Partial("_MessageContainer")
 	</div>
 </div>
 <form asp-controller="Users"
@@ -29,7 +27,7 @@
       </div>
       <div class="form-group">
           <label asp-for="Gender"></label>
-          <input class="form-control" asp-for="Gender"/>
+          <select class="form-control" asp-for="Gender" asp-items="Html.GetEnumSelectList<Gender>()"></select>
       </div>
       <div class="form-group">
           <label asp-for="AddressStreet"></label>
@@ -49,7 +47,7 @@
       </div>
       <div class="form-group">
           <label asp-for="Student.StudentId"></label>
-          <select class="form-control" asp-for="Student.StudentId"></select>
+          <input class="form-control" asp-for="Student.StudentId">
       </div>
-      <button class="btn btn-primary">Hinzufügen</button>
+      <button class="btn btn-primary">@Localizer["Add"]</button>
 </form>

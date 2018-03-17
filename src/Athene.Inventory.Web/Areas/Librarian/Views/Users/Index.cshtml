@@ -1,15 +1,12 @@
 @model IEnumerable<ApplicationUser>
 @{
     Layout = "_Layout";
-    ViewBag.Title = "Suche";
+    ViewBag.Title = @Localizer["Search"];
 }
 
 <div class="row">
-    <div class="col-md-6">
-        <h3>Benutzersuche</h3>
-    </div>
-    <div class="col-md-6">
-        @Html.Partial("_MessageContainer")
+    <div class="col-md-12">
+        <h3>@Localizer["Search Users"]</h3>
     </div>
 </div>
 <div class="row">
@@ -22,7 +19,7 @@
             <span class="input-group-btn">
                 <button class="btn btn-primary" type="submit">
                     <span class="glyphicon glyphicon-search">
-                    </span> Suchen
+                    </span> @Localizer["Search"]
                 </button>
             </span>
         </div>
@@ -32,7 +29,7 @@
            asp-controller="Users"
            asp-action="Create">
             <span class="glyphicon glyphicon-plus">
-            </span> Hinzufügen
+            </span> @Localizer["Add"]
         </a>
     </div>
 </div>
@@ -41,11 +38,11 @@
 }
 else if (Model.Count() == 0)
 {
- <p>Nichts gefunden</p>
+ <p>@Localizer["Nothing found"]</p>
 }
 else if (Model.Count() > 0)
 {
-    @Model.Count() @:Treffer<br/>
+    @Localizer["{0} Match", Model.Count()]<br/>
     @foreach (var user in Model)
     {
         @Html.Partial("_UserPreview", user)

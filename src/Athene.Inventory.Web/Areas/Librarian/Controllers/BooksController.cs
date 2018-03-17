@@ -9,6 +9,10 @@ using Microsoft.AspNetCore.Http;
 using Athene.Inventory.Abstractions;
 using Athene.Inventory.Abstractions.Models;
 using Microsoft.AspNetCore.Identity;
+using Athene.Inventory.Web.Mappers;
+using Athene.Inventory.Web.ViewModels;
+using Athene.Inventory.Web.Extensions;
+using Microsoft.Extensions.Localization;
 
 namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 {
@@ -19,37 +23,22 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 		private readonly IInventory _inventoryService;
 		private readonly IArticleRepository _articleRepository;
         private readonly IBookMetaRepository _bookMetaRepository;
+        private readonly IStringLocalizer<SharedResource> _localizer;
         private readonly UserManager<Web.Models.ApplicationUser> _userManager;
 
 		public BooksController(
             IInventory inventoryService, 
             IArticleRepository articleRepository,
             IBookMetaRepository bookMetaRepository,
+            IStringLocalizer<SharedResource> localizer,
             UserManager<Web.Models.ApplicationUser> userManager)
 		{
 			_inventoryService = inventoryService;
             _articleRepository = articleRepository;
             _bookMetaRepository = bookMetaRepository;
+            _localizer = localizer;
             _userManager = userManager;
 		}
-
-		[HttpGet]
-        public IActionResult Index(string q)
-        {
-            ViewBag.SearchTargets = new List<string>
-            {
-                "Alle",
-                "Bücher",
-                "Zeitschriften",
-                "Magazine",
-            };
-
-			if (string.IsNullOrEmpty(q))
-				return View();
-
-            var inventoryItems = _inventoryService.SearchByMatchcode(q);
-            return View(inventoryItems);
-        }
 
         [HttpGet]
         public IActionResult Create()
@@ -75,8 +64,8 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
                     book.Categories.Add(new Category { Id = categoryId });
                 }
                 _articleRepository.AddArticle(book);
-                // TODO: add message
-                return RedirectToAction("Index");
+                this.SetUserMessage(UserMessageType.Success, _localizer["Success_BookCreated"]);
+                return RedirectToAction("Index", "Inventory");
             }
 
             LoadCreateViewBags();
@@ -84,71 +73,105 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddToStore(int? bookId)
+        public IActionResult AddToStore(int? articleId)
         {
-            if (bookId == null)
-                return RedirectToAction("Index");
+            if (articleId == null)
+                return RedirectToAction("Index", "Inventory");
 
-            var article = _articleRepository.FindArticleById(bookId.Value);
-            var book = article as Book;
+            var article = _articleRepository.FindArticleById(articleId.Value);
 
-            if (book == null)
-                return RedirectToAction("Index");
+            if (article == null)
+                return RedirectToAction("Index", "Inventory");
 
-            var viewModel = new CreateBookItemViewModel
+            var viewModel = new CreateInventoryItemViewModel
             {
-                BookId = book.Id,
-                Book = book,
+                ArticleId = article.Id,
+                Article = article,
             };
             return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddToStore(CreateBookItemViewModel model)
+        public IActionResult AddToStore(CreateInventoryItemViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var article = _articleRepository.FindArticleById(model.BookId);
-                var book = article as Book;
+                var article = _articleRepository.FindArticleById(model.ArticleId);
 
-                if (book == null)
+                if (article == null)
                 {
-                    ModelState.AddModelError(string.Empty, "Der Artikel ist kein Buch`");
+                    ModelState.AddModelError(string.Empty, "Artikel not found`");
                     return View(model);
                 }
 
-                var bookItem = new InventoryItem
-                {
-                    Article = book,
-                    StockLocation = new StockLocation
-                    {
-                        Hall = model.Hall.Value,
-                        Corridor = model.Corridor.Value,
-                        Rack = model.Rack.Value,
-                        Level = model.Level.Value,
-                        Position = model.Position.Value,
-                    }
-                };
+                var inventoryItem = model.ToModel();
+                inventoryItem.Article = article;
                 if (!string.IsNullOrWhiteSpace(model.Note))
                 {
-                    //TODO: add userId
                     var note = new ItemNote
                     { 
                         Text = model.Note,
                         CreatedAt = DateTime.Now,
                         UserId = _userManager.GetUserId(User),
                     };
-                    bookItem.Notes.Add(note);
+                    inventoryItem.Notes.Add(note);
                 }
-                _inventoryService.AddInventoryItem(bookItem);
-                return RedirectToAction("Index");
+                _inventoryService.AddInventoryItem(inventoryItem);
+                return RedirectToAction("Index", "Inventory");
             }
 
             return View(model);
         }
 
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+                return RedirectToAction("Index", "Inventory");
+
+            var book = _articleRepository.FindArticleById(id.Value) as Book;
+
+            if (book == null)
+            {
+                this.SetUserMessage(UserMessageType.Error, _localizer["Error_BookNotFound"]);
+                return RedirectToAction("Index", "Inventory");
+            }
+
+            var viewModel = book.ToEditViewModel();
+            LoadEditViewBags();
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(EditBookViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var book = viewModel.ToModel();
+                _articleRepository.UpdateArticle(book);
+                this.SetUserMessage(UserMessageType.Success, _localizer["Success_BookCreated"]);
+                return RedirectToAction("Index", "Inventory");
+            }
+
+            LoadEditViewBags();
+            return View(viewModel);
+        }
+
         private void LoadCreateViewBags()
+        {
+            var languages = _bookMetaRepository.AllLanguages();
+            ViewBag.LanguageId = new SelectList(languages, "Id", "Name");
+            var publisher = _bookMetaRepository.AllPublisher();
+            ViewBag.PublisherId = new SelectList(publisher, "Id", "Name");
+            var authors = _bookMetaRepository.AllAuthors();
+            ViewBag.Authors = new SelectList(authors, "Id", "FullName");
+            var categories = _bookMetaRepository.AllCategories();
+            ViewBag.Categories = new SelectList(categories, "Id", "Name");
+        }
+
+        private void LoadEditViewBags()
         {
             var languages = _bookMetaRepository.AllLanguages();
             ViewBag.LanguageId = new SelectList(languages, "Id", "Name");

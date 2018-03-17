@@ -20,11 +20,11 @@ namespace Athene.Inventory.Abstractions.DataImport
                 new Student 
                 {
                     StudentId = row.GetField(2),
-                    SchoolClass = new SchoolClass(row.GetField(5), null),
+                    SchoolClass = new SchoolClass(row.GetField(5), new School{ Name = row.GetField(6)}),
                 }
             );
-            Map(x => x.Address).ConvertUsing(row => new Address(row.GetField(6), row.GetField(7), row.GetField(8), ""));
-            Map(x => x.PhoneNumber).ConvertUsing(row => row.GetField(9));
+            Map(x => x.Address).ConvertUsing(row => new Address(row.GetField(7), row.GetField(8), row.GetField(9), ""));
+            Map(x => x.PhoneNumber).ConvertUsing(row => row.GetField(10));
 
             // Map(x => x.Article).ConvertUsing(row => 
             //     new Book { InternationalStandardBookNumber = row.GetField<string>(1)?.Trim() });

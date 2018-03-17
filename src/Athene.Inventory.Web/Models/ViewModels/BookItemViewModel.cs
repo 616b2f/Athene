@@ -16,7 +16,7 @@ namespace Athene.Inventory.Web.ViewModels
         public int Id { get; set; }
         public Book Book { get; set; }
         [Display(Name="Standplatz")]
-        public StockLocation StockLocation { get; set; }
+        public StockLocationViewModel StockLocation { get; set; }
         [Display(Name="Notizen")]
         public ICollection<ItemNote> Notes { get; set; }
         public string RentedByUserId { get; set; }

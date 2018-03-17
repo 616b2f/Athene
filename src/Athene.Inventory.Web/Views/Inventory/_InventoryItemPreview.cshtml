@@ -1,0 +1,24 @@
+@model InventoryItem
+
+<div class="row">
+    <div class="col-md-12">
+        <label asp-for="StockLocation"></label>
+        @if (Model.StockLocation == null)
+        {
+            @Localizer["Not set"]
+        }
+        else
+        {
+            @Model.StockLocation.OneLiner
+        }
+        <label>@Localizer["State"]</label>
+        @if (Model.RentedBy == null)
+        {
+            @Localizer["Not borrowed"]
+        }
+        else
+        {
+            @Localizer["Borrowed"]
+        }
+    </div>
+</div>

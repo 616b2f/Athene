@@ -7,6 +7,7 @@ namespace Athene.Inventory.Abstractions
     {
         void AddArticle(Article article);
         void AddArticles(IEnumerable<Article> articles);
+        void UpdateArticle(Article article);
         IEnumerable<Article> SearchForArticlesByMatchcode(string matchcode);
         Article FindArticleById(int articleId);
     }

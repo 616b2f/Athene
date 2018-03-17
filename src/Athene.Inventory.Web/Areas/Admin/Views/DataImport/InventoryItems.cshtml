@@ -3,7 +3,7 @@
     Layout = "_Layout";
 }
 
-@foreach (var item in Model)
+<!-- @foreach (var item in Model)
 {
    <div class="row">
        <div class="col-md-3">
@@ -23,3 +23,44 @@
        </div>
    </div> 
 }
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Import">
+            <input id="importid" name="importid" type="hidden" value="@ViewBag.ImportId">
+            <button class="btn btn-primary" type="submit">@Localizer["Import"]</button>
+        </form>
+    </div>
+</div> -->
+
+<table class="table">
+    <tr>
+        <th>@Html.DisplayNameFor(m => m.FirstOrDefault().ExternalId)</th>
+        <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Barcode)</th>
+        <th>@Localizer["EAN"]</th>
+        <th>@Html.DisplayNameFor(m => m.FirstOrDefault().PurchasePrice)</th>
+        <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Condition)</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.ExternalId</td>
+            <td>@item.Barcode</td>
+            <td>
+                @if(item.Article is Book)
+                {
+                    @(((Book)item.Article).InternationalStandardBookNumber)
+                }
+            </td>
+            <td>@item.PurchasePrice</td>
+            <td>@item.Condition</td>
+        </tr>
+    }
+    <tr>
+        <td colspan="4">
+            <form asp-action="Import">
+                <input id="importid" name="importid" type="hidden" value="@ViewBag.ImportId">
+                <button class="btn btn-primary" type="submit">@Localizer["Import"]</button>
+            </form>
+        </td>
+    </tr>
+</table>

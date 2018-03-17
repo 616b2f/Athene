@@ -4,27 +4,27 @@ using Athene.Inventory.Abstractions.Models;
 
 namespace Athene.Inventory.Web.Areas.Librarian.Models.BooksViewModels
 {
-    public class CreateBookItemViewModel
+    public class CreateInventoryItemViewModel
     {
         [Required]
-        public int BookId { get; set; }
-        public Book Book { get; set; }
+        public int ArticleId { get; set; }
+        public Article Article { get; set; }
 
         [Required]
         [Display(Name="Halle")]
-        public int? Hall { get; set; }
+        public string Hall { get; set; }
         [Required]
         [Display(Name="Gang")]
-        public int? Corridor { get; set; }
+        public string Corridor { get; set; }
         [Required]
         [Display(Name="Regal")]
-        public int? Rack { get; set; }
+        public string Rack { get; set; }
         [Required]
         [Display(Name="Ebene")]
-        public int? Level { get; set; }
+        public string Level { get; set; }
         [Required]
         [Display(Name="Position")]
-        public int? Position { get; set; }
+        public string Position { get; set; }
 
         [Required, DataType(DataType.Date)]
         [Display(Name="Kaufdatum")]

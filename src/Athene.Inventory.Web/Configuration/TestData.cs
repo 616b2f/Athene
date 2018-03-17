@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Athene.Inventory.Web.Services
+namespace Athene.Inventory.Web
 {
     public static class TestData
     {
@@ -442,16 +442,7 @@ namespace Athene.Inventory.Web.Services
                 book6,
                 book7,
             };
-            PropagateBooksWithMatchcodes(books);
             articleRepo.AddArticles(books);
-        }
-
-        private static void PropagateBooksWithMatchcodes(Book[] books)
-        {
-            foreach (var book in books)
-            {
-                book.Matchcodes = MatchcodeGenerator.CreateFor(book);
-            }
         }
 
         public static void CreateBookInventoryItems(IInventory inventory, IArticleRepository articleRepo)
@@ -466,47 +457,50 @@ namespace Athene.Inventory.Web.Services
 
             var inv1 = new InventoryItem 
             {
+                Id = 1,
                 Barcode = "DDC8C0EC7E0B4EB094A058762AC38FE7",
                 Article = book1,
                 PurchasedAt = new DateTime(2016, 3, 20),
                 Condition = Condition.LikeNew,
                 StockLocation = new StockLocation
                 {
-                    Hall = 1,
-                    Corridor = 1,
-                    Rack = 1,
-                    Level = 1,
-                    Position = 1,
+                    Hall = "1",
+                    Corridor = "1",
+                    Rack = "1",
+                    Level = "1",
+                    Position = "1",
                 }
             };
             var inv2 = new InventoryItem 
             {
+                Id = 2,
                 Barcode = "DC71308FA060404C847B87A1C9D18533",
                 Article = book1,
                 PurchasedAt = new DateTime(2016, 3, 20),
                 Condition = Condition.VeryGood,
                 StockLocation = new StockLocation
                 {
-                    Hall = 1,
-                    Corridor = 1,
-                    Rack = 1,
-                    Level = 1,
-                    Position = 1,
+                    Hall = "1",
+                    Corridor = "1",
+                    Rack = "1",
+                    Level = "1",
+                    Position = "1",
                 }
             };
             var inv3 = new InventoryItem 
             {
+                Id = 3,
                 Barcode = "185CCEB1353E4C2A95894C540C756722",
                 Article = book2,
                 PurchasedAt = new DateTime(2016, 3, 20),
                 Condition = Condition.LikeNew,
                 StockLocation = new StockLocation
                 {
-                    Hall = 1,
-                    Corridor = 1,
-                    Rack = 1,
-                    Level = 1,
-                    Position = 2,
+                    Hall = "1",
+                    Corridor = "1",
+                    Rack = "1",
+                    Level = "1",
+                    Position = "2",
                 }
             };
 

@@ -39,16 +39,7 @@ namespace Athene.Inventory.Web
             //     .AddEntityFrameworkStores<InventoryDbContext>()
             //     .AddDefaultTokenProviders();
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy(Constants.Policies.Administrator, policy => policy.RequireRole(Constants.Roles.Administrator));
-                options.AddPolicy(Constants.Policies.Librarian, policy => 
-                    policy.RequireRole(Constants.Roles.Librarian, Constants.Roles.Administrator));
-                options.AddPolicy(Constants.Policies.AdministrateInventory, policy => 
-                    policy.RequireClaim(Constants.ClaimTypes.Permission, Constants.Permissions.AdministrateInventory));
-                options.AddPolicy(Constants.Policies.DataImport, policy => 
-                    policy.RequireClaim(Constants.ClaimTypes.Permission, Constants.Permissions.DataImport));
-            });
+            services.AddAthenePolicies();
             services.AddScoped<IAuthorizationService, DefaultAuthorizationService>();
 
             services.AddDistributedMemoryCache();
@@ -171,6 +162,5 @@ namespace Athene.Inventory.Web
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
-
     }
 }

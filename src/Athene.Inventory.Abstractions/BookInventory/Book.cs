@@ -7,9 +7,9 @@ namespace Athene.Inventory.Abstractions.Models
     {
         public Book() 
         {
-            this.Authors = new HashSet<Author>();
-            this.InventoryItems = new HashSet<InventoryItem>();
-            this.Categories = new HashSet<Category>();
+            this.Authors = new List<Author>();
+            this.Categories = new List<Category>();
+            this.Matchcodes = new List<string>();
         }
         public override int Id { get; set; }
         public override string Name { get { return Title + " " + SubTitle;} }
@@ -25,6 +25,5 @@ namespace Athene.Inventory.Abstractions.Models
         public ICollection<Category> Categories { get; set; }
         public int LanguageId { get; set; }
         public Language Language { get; set; }
-        public ICollection<InventoryItem> InventoryItems { get; set; }
     }
 }

@@ -16,13 +16,33 @@ namespace Athene.Inventory.Abstractions.TestImp
 
         public void AddInventoryItem(InventoryItem item)
         {
+            if (item.Id == 0)
+            {
+                int maxId = _inventoryItems.Max(x => x.Id);
+                item.Id = maxId + 1;
+            }
             _inventoryItems.Add(item);
+        }
+
+        public void AddInventoryItems(IEnumerable<InventoryItem> items)
+        {
+            foreach (var item in items)
+            {
+                AddInventoryItem(item);
+            }
         }
 
         public InventoryItem FindInventoryItemByBarcode<TType>(string barcode) where TType  : Article 
         {
             return _inventoryItems.SingleOrDefault(x => 
                     x.Barcode == barcode &&
+                    x.Article is TType);
+        }
+
+        public InventoryItem FindInventoryItemByExternalId<TType>(string externalId) where TType  : Article 
+        {
+            return _inventoryItems.SingleOrDefault(x => 
+                    x.ExternalId == externalId &&
                     x.Article is TType);
         }
 
@@ -36,15 +56,19 @@ namespace Athene.Inventory.Abstractions.TestImp
                      x.Article is TType);
         }
 
-
         public InventoryItem FindInventoryItemById(int id)
         {
             return _inventoryItems.SingleOrDefault(x => x.Id == id);
         }
 
-        public IEnumerable<InventoryItem> FindInventoryItemById(int[] ids)
+        public IEnumerable<InventoryItem> FindInventoryItemsById(int[] ids)
         {
             return _inventoryItems.Where(x => ids.Contains(x.Id)).AsEnumerable();
+        }
+
+        public IEnumerable<InventoryItem> FindInventoryItemsByArticleId(int[] ids)
+        {
+            return _inventoryItems.Where(x => ids.Contains(x.Article.Id)).AsEnumerable();
         }
 
         public IEnumerable<InventoryItem> SearchByMatchcode(string matchcode)
@@ -69,17 +93,12 @@ namespace Athene.Inventory.Abstractions.TestImp
 
         public void RentInventoryItem(string userId, int[] inventoryItemIds, DateTime rentedAt)
         {
-            var items = FindInventoryItemById(inventoryItemIds);
+            var items = FindInventoryItemsById(inventoryItemIds);
             foreach (var item in items)
             {
                 item.RentedByUserId = userId;
                 item.RentedAt = rentedAt;
             }
-        }
-
-        public void AddInventoryItems(IEnumerable<InventoryItem> items)
-        {
-            _inventoryItems.AddRange(items);
         }
     }
 }

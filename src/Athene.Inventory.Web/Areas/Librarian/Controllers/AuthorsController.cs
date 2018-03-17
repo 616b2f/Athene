@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Athene.Inventory.Abstractions;
 using Athene.Inventory.Abstractions.Models;
 using Athene.Inventory.Web.ViewModels;
+using Athene.Inventory.Web.Mappers;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 {
     [Area("Librarian")]
@@ -27,7 +27,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
         public IActionResult Index()
         {
             var authors = _bookMetaRepository.AllAuthors();
-            return View(authors);
+            return View(authors.ToViewModels());
         }
 
         [HttpGet]
@@ -42,11 +42,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
         {
             if (ModelState.IsValid)
             {
-                var author = new Author
-                {
-                    FullName = model.FullName,
-                    Info = model.Info,
-                };
+                var author = model.ToEntity();
                 var authors = new List<Author>();
                 authors.Add(author);
                 _bookMetaRepository.AddAuthors(authors);

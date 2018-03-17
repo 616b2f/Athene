@@ -5,7 +5,7 @@ namespace Athene.Inventory.Abstractions.Models
 {
     public class School
     {
-        private School() {
+        public School() {
             InventoryItems = new HashSet<InventoryItem>();
         }
         public School(string name, string shortName, Address address,

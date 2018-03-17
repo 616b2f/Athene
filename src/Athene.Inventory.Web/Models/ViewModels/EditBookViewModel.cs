@@ -1,27 +1,36 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Athene.Inventory.Abstractions.Models;
 
-namespace Athene.Inventory.Web.Areas.Librarian.Models.BooksViewModels
+namespace Athene.Inventory.Web.ViewModels
 {
-    public class CreateBookViewModel
-    {
-        public CreateBookViewModel() {
+   public class EditBookViewModel
+   {
+        public EditBookViewModel() {
             this.Authors = new HashSet<Author>();
+            this.Categories = new HashSet<Category>();
         }
         [Required]
+        public int Id { get; set; }
+        [Required]
         public string Title { get; set; }
+        public string SubTitle { get; set; }
         public string Description { get; set; }
         [RegularExpression(@"^(97(8|9))?\d{9}(\d|X)$")]
         public string InternationalStandardBookNumber { get; set; }
         public ICollection<Author> Authors { get; set; }
         [Required]
         public int PublisherId { get; set; }
+        public Publisher Publisher { get; set; }
+        public DateTime? PublishedAt { get; set; }
         [Required]
         public int LanguageId { get; set; }
         [Required]
         public int[] authorsIds { get; set; }
         [Required]
         public int[] categoriesIds { get; set; }
-    }
+        public ICollection<Category> Categories { get; set; }
+        public Language Language { get; set; }
+   } 
 }

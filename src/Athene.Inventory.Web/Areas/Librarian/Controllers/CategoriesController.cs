@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Athene.Inventory.Abstractions;
 using Athene.Inventory.Web.ViewModels;
 using Athene.Inventory.Abstractions.Models;
+using Athene.Inventory.Web.Mappers;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 namespace Athene.Inventory.Web.Areas.Librarian.Controllers
@@ -26,8 +27,8 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            var authors = _bookMetaRepository.AllCategories();
-            return View(authors);
+            var categories = _bookMetaRepository.AllCategories();
+            return View(categories.ToViewModels());
         }
 
         [HttpGet]
@@ -43,10 +44,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
             if (ModelState.IsValid)
             {
                 //TODO: set message
-                var category = new Category
-                {
-                    Name = model.Name,
-                };
+                var category = model.ToEntity();
                 var categories = new List<Category>();
                 categories.Add(category);
                 _bookMetaRepository.AddCategories(categories);

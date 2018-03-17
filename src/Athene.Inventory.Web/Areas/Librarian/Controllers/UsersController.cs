@@ -7,6 +7,8 @@ using Athene.Inventory.Web.Areas.Librarian.Models.UsersViewModels;
 using Athene.Inventory.Web.Models;
 using Athene.Inventory.Abstractions.Models;
 using System.Linq;
+using Microsoft.Extensions.Localization;
+using Athene.Inventory.Web.Mappers;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,13 +18,16 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
     [Authorize(Policy=Constants.Policies.Librarian)]
     public class UsersController : Controller
     {
+        private readonly IStringLocalizer<SharedResource> _localizer;
         private readonly IInventory _inventoryService;
         private readonly IUserRepository _usersRepository;
 
         public UsersController(
+            IStringLocalizer<SharedResource> localizer,
             IInventory inventoryService,
             IUserRepository usersRepository) 
         {
+            _localizer = localizer;
             _inventoryService = inventoryService;
             _usersRepository = usersRepository;
         }
@@ -33,7 +38,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
             if (string.IsNullOrWhiteSpace(q))
                 return View();
 
-            var users = _usersRepository.Find(q)
+            var users = _usersRepository.FindByMatchcode(q)
                 .Cast<ApplicationUser>();
             return View(users);
         }
@@ -48,22 +53,12 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(CreateUserViewModel model)
         {
-            //TODO: use a ViewModel instead of ApplicationUser
             if (ModelState.IsValid) {
-                var appUser = new ApplicationUser
-                {
-                    Surname = model.Surname,
-                    Lastname = model.Lastname,
-                    Gender = model.Gender,
-                    Address = new Address(model.AddressStreet, model.AddressZip, model.AddressCity, model.AddressCountry),
-                    Birthsday = model.Birthsday,
-                    StudentId = model.StudentId,
-                };
-                _usersRepository.Add(appUser);
-                this.SetUserMessage(UserMessageType.Success, "Benutzer erfolgreich erstellt");
+                _usersRepository.Add(model.ToEntity());
+                this.SetUserMessage(UserMessageType.Success, _localizer["Success_UserCreated"]);
                 return RedirectToAction("Index");
             }
-            this.SetUserMessage(UserMessageType.Error, "Fehler beim Speichern aufgetreten.");
+            this.SetUserMessage(UserMessageType.Error, _localizer["Error_WhileSaving"]);
             return View(model);
         }
     }
