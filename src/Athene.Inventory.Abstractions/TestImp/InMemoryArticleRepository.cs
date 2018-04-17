@@ -52,6 +52,7 @@ namespace Athene.Inventory.Abstractions.TestImp
 
         public IEnumerable<Article> SearchForArticlesByMatchcode(string matchcode)
         {
+            matchcode = matchcode.ToLower().Trim(); // normalize matchcode
             return _articles.Where(a => a.Matchcodes.Any(m => m.Contains(matchcode)));
         }
 

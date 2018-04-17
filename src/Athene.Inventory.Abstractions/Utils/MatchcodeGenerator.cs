@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Athene.Inventory.Abstractions.Models;
 
 namespace Athene.Inventory.Abstractions.Utils
@@ -18,7 +19,7 @@ namespace Athene.Inventory.Abstractions.Utils
                 list.Add(book.Title);
             if (!string.IsNullOrWhiteSpace(book.SubTitle))
                 list.Add(book.SubTitle);
-            return list;
+            return list.Select(x => x.ToLower());
         }
     }
 }
