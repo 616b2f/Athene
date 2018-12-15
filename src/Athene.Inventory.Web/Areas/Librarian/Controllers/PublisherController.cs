@@ -12,11 +12,11 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
     [Authorize(Policy=Constants.Policies.Librarian)]
     public class PublisherController : Controller
     {
-        private readonly IInventory _inventoryService;
+        private readonly IInventoryRepository _inventoryService;
         private readonly IBookMetaRepository _bookMetaRepository;
 
         public PublisherController(
-            IInventory inventoryService,
+            IInventoryRepository inventoryService,
             IBookMetaRepository bookMetaRepository) 
         {
             _inventoryService = inventoryService;

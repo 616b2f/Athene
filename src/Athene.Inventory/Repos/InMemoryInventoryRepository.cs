@@ -5,11 +5,11 @@ using Athene.Inventory.Abstractions.Models;
 
 namespace Athene.Inventory.Abstractions.TestImp
 {
-    public class InMemoryInventory : IInventory
+    public class InMemoryInventoryRepository : IInventoryRepository
     {
         private readonly List<InventoryItem> _inventoryItems;
 
-        public InMemoryInventory()
+        public InMemoryInventoryRepository()
         {
             _inventoryItems = new List<InventoryItem>();
         }

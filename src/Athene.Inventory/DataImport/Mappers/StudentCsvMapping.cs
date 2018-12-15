@@ -1,13 +1,11 @@
 using System;
 using System.Globalization;
-using System.Linq;
 using Athene.Inventory.Abstractions.Models;
-using Athene.Inventory.Abstractions.TestImp;
 using CsvHelper.Configuration;
 
 namespace Athene.Inventory.Abstractions.DataImport
 {
-    public class StudentCsvMapping : CsvClassMap<TestUser>
+    public class StudentCsvMapping : CsvClassMap<ApplicationUser>
     {
         public StudentCsvMapping()
         {

@@ -19,12 +19,12 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
     public class UsersController : Controller
     {
         private readonly IStringLocalizer<SharedResource> _localizer;
-        private readonly IInventory _inventoryService;
+        private readonly IInventoryRepository _inventoryService;
         private readonly IUserRepository _usersRepository;
 
         public UsersController(
             IStringLocalizer<SharedResource> localizer,
-            IInventory inventoryService,
+            IInventoryRepository inventoryService,
             IUserRepository usersRepository) 
         {
             _localizer = localizer;

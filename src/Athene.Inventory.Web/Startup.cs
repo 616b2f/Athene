@@ -16,6 +16,8 @@ using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
+using Athene.Inventory.Data.Contexts;
+using Athene.Inventory.Data.Services;
 
 namespace Athene.Inventory.Web
 {
@@ -32,34 +34,42 @@ namespace Athene.Inventory.Web
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            // services.AddDbContext<InventoryDbContext>(options =>
-            //     options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            string selectedDb = Configuration.GetValue("Database", "none");
+            if (selectedDb == Constants.Databases.Sqlite)
+                services.AddDbContext<InventoryDbContext>(options =>
+                    options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            // else if (selectedDb == Constants.Databases.MySql)
+            //     services.AddDbContext<InventoryDbContext>(builder =>
+            //         builder.UseMySql(connectionString, opt => {
+            //         opt.MigrationsAssembly(migrationsAssembly);
+            //         opt.EnableRetryOnFailure();
+            //     });
 
-            // services.AddIdentity<ApplicationUser, IdentityRole>()
-            //     .AddEntityFrameworkStores<InventoryDbContext>()
-            //     .AddDefaultTokenProviders();
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<InventoryDbContext>()
+                .AddDefaultTokenProviders();
 
             services.AddAthenePolicies();
-            services.AddScoped<IAuthorizationService, DefaultAuthorizationService>();
+            services.AddTransient<IAuthorizationService, DefaultAuthorizationService>();
 
             services.AddDistributedMemoryCache();
             services.AddSession();
 
             // Add application services.
-            services.AddIdentity<ApplicationUser, IdentityRole>();
-            services.AddSingleton<IInventory, Athene.Inventory.Abstractions.TestImp.InMemoryInventory>();
-            services.AddSingleton<IArticleRepository, Athene.Inventory.Abstractions.TestImp.InMemoryArticleRepository>();
-            services.AddSingleton<IBookMetaRepository, Athene.Inventory.Abstractions.TestImp.InMemoryBookMetaRepository>();
+            services.AddTransient<IInventoryRepository, InventoryRepository>();
+            services.AddTransient<IArticleRepository, ArticleRepository>();
+            services.AddTransient<IBookMetaRepository, BookMetaRepository>();
 
-            var store = new InMemoryStore<ApplicationUser, IdentityRole>();
-            services.AddSingleton<IUserRepository>(store);
-            services.AddSingleton<IUserStore<ApplicationUser>>(store);
-            services.AddSingleton<IRoleStore<IdentityRole>>(store);
-            services.AddSingleton<IUserEmailStore<ApplicationUser>>(store);
-            services.AddSingleton<IUserClaimsPrincipalFactory<ApplicationUser>, UserClaimsPrincipalFactory<ApplicationUser, IdentityRole>>();
-            services.AddScoped<UserManager<ApplicationUser>>();
-            services.AddScoped<RoleManager<IdentityRole>>();
-            services.AddScoped<SignInManager<ApplicationUser>>();
+            // add in memory user store
+            // var store = new InMemoryStore<ApplicationUser, IdentityRole>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            // services.AddSingleton<IUserStore<ApplicationUser>>(store);
+            // services.AddSingleton<IRoleStore<IdentityRole>>(store);
+            // services.AddSingleton<IUserEmailStore<ApplicationUser>>(store);
+            // services.AddSingleton<IUserClaimsPrincipalFactory<ApplicationUser>, UserClaimsPrincipalFactory<ApplicationUser, IdentityRole>>();
+            // services.AddScoped<UserManager<ApplicationUser>>();
+            // services.AddScoped<RoleManager<IdentityRole>>();
+            // services.AddScoped<SignInManager<ApplicationUser>>();
 
             services.AddScoped<IEmailSender, AuthMessageSender>();
             services.AddScoped<ISmsSender, AuthMessageSender>();
@@ -84,16 +94,24 @@ namespace Athene.Inventory.Web
 
             services.AddJsonLocalization(options => options.ResourcesPath = "Resources");
 
-            services.AddMvc()
-                .AddViewLocalization()
-                .AddDataAnnotationsLocalization();
+            // services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            //     .AddCookie(options => {
+            //         options.ExpireTimeSpan = TimeSpan.FromDays(150);
+            //         options.LoginPath = "/Account/Login";
+            //         options.LogoutPath = "/Account/Logoff";
+            //     });
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options => {
-                    options.ExpireTimeSpan = TimeSpan.FromDays(150);
-                    options.LoginPath = "/Account/LogIn";
-                    options.LogoutPath = "/Account/LogOff";
-                });
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+                options.Cookie.Name = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.LoginPath = "/Account/Login";
+                options.AccessDeniedPath = "/Account/AccessDenied";
+                options.SlidingExpiration = true;
+            });
 
             services.Configure<RequestLocalizationOptions>(opt =>
             {
@@ -110,6 +128,10 @@ namespace Athene.Inventory.Web
                 // UI strings that we have localized.
                 opt.SupportedUICultures = supportedCultures;
             });
+
+            services.AddMvc()
+                .AddViewLocalization()
+                .AddDataAnnotationsLocalization();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -133,24 +155,8 @@ namespace Athene.Inventory.Web
             }
 
             app.UseStaticFiles();
-
-            // app.UseCookieAuthentication(new CookieAuthenticationOptions
-            // {
-            //     AuthenticationScheme = "Cookies",
-            //     AutomaticAuthenticate = true,
-            //     AutomaticChallenge = true,
-            // });
-
             app.UseSession();
-            // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
-
             app.UseAuthentication();
-
-            //UserManager<ApplicationUser> userManager
-            // db.Database.EnsureCreated();
-            // if (db.Books.Count() == 0) {
-            //     db.Initialize(userManager);
-            // }
 
             app.UseMvc(routes =>
             {

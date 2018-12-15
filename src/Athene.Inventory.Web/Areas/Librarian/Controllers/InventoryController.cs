@@ -17,18 +17,18 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
     [Authorize(Policy=Constants.Policies.Librarian)]
     public class InventoryController : Controller
     {
-		private readonly IInventory _inventoryService;
+		private readonly IInventoryRepository _inventoryService;
 		private readonly IArticleRepository _articleRepository;
 		private readonly IUserRepository _userRepository;
         private readonly IStringLocalizer<SharedResource> _localizer;
-        private readonly UserManager<Web.Models.ApplicationUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
 		public InventoryController(
-            IInventory inventoryService, 
+            IInventoryRepository inventoryService, 
             IArticleRepository articleRepository,
             IStringLocalizer<SharedResource> localizer,
             IUserRepository userRepository,
-            UserManager<Web.Models.ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager)
 		{
 			_inventoryService = inventoryService;
             _articleRepository = articleRepository;

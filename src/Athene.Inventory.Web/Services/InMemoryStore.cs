@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Athene.Inventory.Abstractions;
 using Athene.Inventory.Abstractions.Models;
+using Athene.Inventory.Data;
 
 namespace Athene.Inventory.Web.Models
 {

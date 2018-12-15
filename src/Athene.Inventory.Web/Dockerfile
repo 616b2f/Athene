@@ -1,19 +1,21 @@
-FROM microsoft/dotnet:latest
+FROM microsoft/dotnet:2.1.401-sdk-alpine as build
 
-RUN apt-get update && \
-    apt-get install -y sqlite3 libsqlite3-dev && \
-    rm -rf /var/lib/apt/lists/*
+RUN apk update && \
+    apk add sqlite && \
+    rm -rf /etc/apk/repositories
 
-COPY . /app
+COPY . /src
 
+WORKDIR /src/src/Athene.Inventory.Web/
+RUN dotnet restore Athene.Inventory.Web.csproj
+# RUN dotnet build Athene.Inventory.Web.csproj -c Release -o /app
+
+FROM build as publish
+# RUN dotnet ef database update --startup-project Athene.Inventory.Web.csproj
+RUN dotnet publish Athene.Inventory.Web.csproj --no-restore -c Release -o /app
+
+FROM microsoft/dotnet:2.1.5-aspnetcore-runtime-alpine AS base
 WORKDIR /app
-
-RUN ["dotnet", "restore"]
-
-RUN ["dotnet", "build"]
-
-RUN ["dotnet", "ef", "database", "update"]
-
-EXPOSE 5000/tcp
-
-CMD ["dotnet", "run", "--server.urls", "http://*:5000"]
+COPY --from=publish /app .
+EXPOSE 80/tcp
+ENTRYPOINT ["dotnet", "Athene.Inventory.Web.dll"]

@@ -8,6 +8,12 @@ namespace Athene.Inventory.Web
             public const string Permission = "permission";
         }
 
+        public static class Databases
+        {
+            public const string Sqlite = "sqlite";
+            public const string MySql = "mysql";
+        }
+
         public static class Policies 
         {
             public const string Administrator = "Administrator";

@@ -11,7 +11,7 @@ Project("{13B669BE-BB05-4DDF-9536-439F39A36129}") = "Athene.Inventory.Tests", "t
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Athene.Inventory.Abstractions", "src\Athene.Inventory.Abstractions\Athene.Inventory.Abstractions.csproj", "{34C6C6A8-6250-4AA1-8528-85FC5744FCBB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Athene.Inventory.EntityFramework", "src\Athene.Inventory.EntityFramework\Athene.Inventory.EntityFramework.csproj", "{7612FBCA-7AAA-471A-B90D-52CC4DF1EF44}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Athene.Inventory.Data", "src\Athene.Inventory.Data\Athene.Inventory.Data.csproj", "{7612FBCA-7AAA-471A-B90D-52CC4DF1EF44}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Athene.Inventory.Web", "src\Athene.Inventory.Web\Athene.Inventory.Web.csproj", "{9DD040D6-9AAD-485A-BC69-3EA5F7B02CDC}"
 EndProject

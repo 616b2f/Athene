@@ -15,11 +15,11 @@ namespace Athene.Inventory.Web.Controllers
     [Authorize]
     public class InventoryController : Controller
     {
-        private readonly IInventory _inventory;
+        private readonly IInventoryRepository _inventory;
         private readonly IArticleRepository _articleRepo;
 
         public InventoryController(
-            IInventory inventory,
+            IInventoryRepository inventory,
             IArticleRepository articleRepo) 
         {
             _inventory = inventory;

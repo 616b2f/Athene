@@ -20,12 +20,12 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
     {
         private readonly IStringLocalizer<SharedResource> _localizer;
         private readonly IUserRepository _usersRepository;
-        private readonly IInventory _inventoryService;
+        private readonly IInventoryRepository _inventoryService;
 
         public RentController(
             IStringLocalizer<SharedResource> localizer,
             IUserRepository usersRepository, 
-            IInventory inventoryService) 
+            IInventoryRepository inventoryService) 
         {
             _localizer = localizer;
             _usersRepository = usersRepository;

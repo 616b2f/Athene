@@ -1,22 +1,18 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Athene.Inventory.Abstractions;
 using Athene.Inventory.Abstractions.DataImport;
 using Athene.Inventory.Abstractions.Models;
-using Athene.Inventory.Abstractions.TestImp;
 using Athene.Inventory.Web.Areas.Admin.Models;
 using Athene.Inventory.Web.Mappers;
-using Athene.Inventory.Web.Models;
-using CsvHelper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 
-namespace Athene.Inventory.Web.Areas.Admin.Controllers 
+namespace Athene.Inventory.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Policy=Constants.Policies.DataImport)]
@@ -24,12 +20,12 @@ namespace Athene.Inventory.Web.Areas.Admin.Controllers
     public class DataImportController : Controller
     {
         private readonly IUserRepository _userRepo;
-        private readonly IInventory _inventory;
+        private readonly IInventoryRepository _inventory;
         private readonly IArticleRepository _articleRepo;
 
         public DataImportController(
             IUserRepository userRepo,
-            IInventory inventory,
+            IInventoryRepository inventory,
             IArticleRepository articleRepo)
         {
             _userRepo = userRepo;
@@ -44,7 +40,7 @@ namespace Athene.Inventory.Web.Areas.Admin.Controllers
         private static IEnumerable<IDataImport> _dataImports = new List<IDataImport> {
                 new CsvDataImport<Book, BookCsvMapping>(),
                 new CsvDataImport<InventoryItem, InventoryItemCsvMapping>(),
-                new CsvDataImport<TestUser, StudentCsvMapping>(),
+                new CsvDataImport<ApplicationUser, StudentCsvMapping>(),
         };
 
         [HttpGet]
@@ -63,7 +59,7 @@ namespace Athene.Inventory.Web.Areas.Admin.Controllers
             viewModel.DataTypes = new SelectList(new Dictionary<string,string>{
                 { "Buecher", nameof(Book) },
                 { "Buch exemplare", nameof(InventoryItem) },
-                { "Schueler", nameof(TestUser) },
+                { "Schueler", nameof(ApplicationUser) },
             }, "Value", "Key");
         }
 
@@ -97,7 +93,7 @@ namespace Athene.Inventory.Web.Areas.Admin.Controllers
                     cachePrefix = _invItemsDataType;
                     viewName = "InventoryItems";
                     break;
-                case nameof(TestUser):
+                case nameof(ApplicationUser):
                     var users = (IEnumerable<IUser>)items;
                     serialisedData = JsonConvert.SerializeObject(users);
                     items = users.Select(u => u.ToViewModel());

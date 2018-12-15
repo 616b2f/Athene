@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  athene:
+    image: athene:v0.1
+    build:
+      context: .
+      dockerfile: src/Athene.Inventory.Web/Dockerfile
+    # volumes:
+    #   - athene-data:/app/bin/Debug/netcoreapp2.0/
+    # volumes:
+    #   - ./src/Athene.Inventory.Web/Inventory.db:/app/Inventory.db:rw
+    ports:
+      - 5000:80
+# volumes:
+#   athene-data:                       # Kompositions-interner Bezeichner (s. services:*:volumes)

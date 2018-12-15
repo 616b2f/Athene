@@ -18,7 +18,7 @@ namespace Athene.Inventory.Web
             var _userManager = provider.GetService<UserManager<ApplicationUser>>();
             var _articleRepo = provider.GetService<IArticleRepository>();
             var _bookMetaRepo = provider.GetService<IBookMetaRepository>();
-            var _inventory = provider.GetService<IInventory>();
+            var _inventory = provider.GetService<IInventoryRepository>();
             TestData.CreateUsers(_userManager);
             TestData.CreateBookMeta(_bookMetaRepo);
             TestData.CreateBookArticles(_articleRepo, _bookMetaRepo);
@@ -445,7 +445,7 @@ namespace Athene.Inventory.Web
             articleRepo.AddArticles(books);
         }
 
-        public static void CreateBookInventoryItems(IInventory inventory, IArticleRepository articleRepo)
+        public static void CreateBookInventoryItems(IInventoryRepository inventory, IArticleRepository articleRepo)
         {
             var book1 = articleRepo.FindArticleById(1);
             var book2 = articleRepo.FindArticleById(2);
@@ -455,6 +455,9 @@ namespace Athene.Inventory.Web
             var book6 = articleRepo.FindArticleById(6);
             var book7 = articleRepo.FindArticleById(7);
 
+            var sl1 = new StockLocation { Hall = "1", Corridor = "1", Rack = "1", Level = "1", Position = "1", };
+            var sl2 = new StockLocation { Hall = "1", Corridor = "1", Rack = "1", Level = "1", Position = "2", };
+
             var inv1 = new InventoryItem 
             {
                 Id = 1,
@@ -462,14 +465,7 @@ namespace Athene.Inventory.Web
                 Article = book1,
                 PurchasedAt = new DateTime(2016, 3, 20),
                 Condition = Condition.LikeNew,
-                StockLocation = new StockLocation
-                {
-                    Hall = "1",
-                    Corridor = "1",
-                    Rack = "1",
-                    Level = "1",
-                    Position = "1",
-                }
+                StockLocation = sl1
             };
             var inv2 = new InventoryItem 
             {
@@ -478,14 +474,7 @@ namespace Athene.Inventory.Web
                 Article = book1,
                 PurchasedAt = new DateTime(2016, 3, 20),
                 Condition = Condition.VeryGood,
-                StockLocation = new StockLocation
-                {
-                    Hall = "1",
-                    Corridor = "1",
-                    Rack = "1",
-                    Level = "1",
-                    Position = "1",
-                }
+                StockLocation = sl1
             };
             var inv3 = new InventoryItem 
             {
@@ -494,14 +483,7 @@ namespace Athene.Inventory.Web
                 Article = book2,
                 PurchasedAt = new DateTime(2016, 3, 20),
                 Condition = Condition.LikeNew,
-                StockLocation = new StockLocation
-                {
-                    Hall = "1",
-                    Corridor = "1",
-                    Rack = "1",
-                    Level = "1",
-                    Position = "2",
-                }
+                StockLocation = sl2
             };
 
             inventory.AddInventoryItems(new [] 

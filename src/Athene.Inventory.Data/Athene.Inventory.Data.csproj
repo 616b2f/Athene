@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup> 
+  <ItemGroup>
+    <ProjectReference Include="../Athene.Inventory.Abstractions/Athene.Inventory.Abstractions.csproj" />
+    <ProjectReference Include="../Athene.Inventory/Athene.Inventory.csproj" />
+  </ItemGroup>
+  <ItemGroup> 
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0" PrivateAssets="All" />
+  </ItemGroup>
+</Project>

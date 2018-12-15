@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Athene.Inventory.Data.Contexts;
 using Athene.Inventory.Web.Services;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -23,8 +25,12 @@ namespace Athene.Inventory.Web
 
                 try
                 {
-                    // Requires using RazorPagesMovie.Models;
-                    TestData.Initialize(services);
+                    var inventoryDbContext = services.GetService<InventoryDbContext>();
+                    // inventoryDbContext.Database.EnsureDeleted();
+                    // var isCreated = inventoryDbContext.Database.EnsureCreated();
+                    inventoryDbContext.Database.Migrate();
+                    if (!inventoryDbContext.Users.Any())
+                        TestData.Initialize(services);
                 }
                 catch (Exception ex)
                 {

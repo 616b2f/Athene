@@ -18,9 +18,14 @@
 <form id="selectLanguage" asp-area="" asp-controller="Home" 
         asp-action="SetLanguage" asp-route-returnUrl="@returnUrl" 
         method="post" class="navbar-form" role="form">
-    <select name="culture"
-        onchange="this.form.submit();"
-        class="form-control"
-        asp-for="@requestCulture.RequestCulture.UICulture.Name" asp-items="@cultureItems">
-    </select>
+    <div class="input-group">
+        <div class="input-group-addon">
+            <span class="glyphicon glyphicon-globe"></span>
+        </div>
+        <select name="culture"
+            onchange="this.form.submit();"
+            class="form-control"
+            asp-for="@requestCulture.RequestCulture.UICulture.Name" asp-items="@cultureItems">
+        </select>
+    </div>
 </form>
