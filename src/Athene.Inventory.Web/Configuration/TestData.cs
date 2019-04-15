@@ -117,28 +117,28 @@ namespace Athene.Inventory.Web
             var dataImportPermission = new Claim(Constants.ClaimTypes.Permission, Constants.Permissions.DataImport);
             var administrateInventoryPermission = new Claim(Constants.ClaimTypes.Permission, Constants.Permissions.AdministrateInventory);
 
-            var res1 = userManager.CreateAsync(adminUser, "Admin123!").Result;
-            var res2 = userManager.CreateAsync(librarianUser, "Test123!").Result;
-            var res3 = userManager.CreateAsync(student1, "Test123!").Result;
-            var res4 = userManager.CreateAsync(student2, "Test123!").Result;
-            var res5 = userManager.CreateAsync(student3, "Test123!").Result;
+            userManager.CreateAsync(adminUser, "Admin123!").Wait();
+            userManager.CreateAsync(librarianUser, "Test123!").Wait();
+            userManager.CreateAsync(student1, "Test123!").Wait();
+            userManager.CreateAsync(student2, "Test123!").Wait();
+            userManager.CreateAsync(student3, "Test123!").Wait();
 
-            userManager.AddClaimAsync(adminUser, adminRole);
-            userManager.AddClaimAsync(adminUser, dataImportPermission);
-            userManager.AddClaimAsync(adminUser, dataImportBooksPermission);
-            userManager.AddClaimAsync(adminUser, dataImportUsersPermission);
-            userManager.AddClaimAsync(adminUser, dataImportInventoryItemsPermission);
-            userManager.AddClaimAsync(adminUser, administrateInventoryPermission);
+            userManager.AddClaimAsync(adminUser, adminRole).Wait();
+            userManager.AddClaimAsync(adminUser, dataImportPermission).Wait();
+            userManager.AddClaimAsync(adminUser, dataImportBooksPermission).Wait();
+            userManager.AddClaimAsync(adminUser, dataImportUsersPermission).Wait();
+            userManager.AddClaimAsync(adminUser, dataImportInventoryItemsPermission).Wait();
+            userManager.AddClaimAsync(adminUser, administrateInventoryPermission).Wait();
             
-            userManager.AddClaimAsync(librarianUser, librarianRole);
-            userManager.AddClaimAsync(librarianUser, dataImportBooksPermission);
-            userManager.AddClaimAsync(librarianUser, administrateInventoryPermission);
+            userManager.AddClaimAsync(librarianUser, librarianRole).Wait();
+            userManager.AddClaimAsync(librarianUser, dataImportBooksPermission).Wait();
+            userManager.AddClaimAsync(librarianUser, administrateInventoryPermission).Wait();
 
-            userManager.AddClaimAsync(student1, studentRole);
-            userManager.AddClaimAsync(student1, rentBookPermission);
+            userManager.AddClaimAsync(student1, studentRole).Wait();
+            userManager.AddClaimAsync(student1, rentBookPermission).Wait();
 
-            userManager.AddClaimAsync(student2, studentRole);
-            userManager.AddClaimAsync(student2, rentBookPermission);
+            userManager.AddClaimAsync(student2, studentRole).Wait();
+            userManager.AddClaimAsync(student2, rentBookPermission).Wait();
         }
 
         public static void CreateBookMeta(IBookMetaRepository bookMetaRepo)

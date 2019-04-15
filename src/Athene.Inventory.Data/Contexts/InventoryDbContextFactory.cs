@@ -11,7 +11,8 @@ namespace Athene.Inventory.Data
         {
             var builder = new DbContextOptionsBuilder<InventoryDbContext>();
             // builder.user
-            builder.UseSqlite("Data Source=Inventory.db");
+            // builder.UseSqlite("Data Source=Inventory.db");
+            builder.UseMySql("server=localhost;port=3306;database=db;uid=root;password=root");
             return new InventoryDbContext(builder.Options);
             // throw new System.NotImplementedException();
         }

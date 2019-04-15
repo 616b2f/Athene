@@ -35,15 +35,21 @@ namespace Athene.Inventory.Web
         {
             // Add framework services.
             string selectedDb = Configuration.GetValue("Database", "none");
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
             if (selectedDb == Constants.Databases.Sqlite)
+            {
                 services.AddDbContext<InventoryDbContext>(options =>
-                    options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-            // else if (selectedDb == Constants.Databases.MySql)
-            //     services.AddDbContext<InventoryDbContext>(builder =>
-            //         builder.UseMySql(connectionString, opt => {
-            //         opt.MigrationsAssembly(migrationsAssembly);
-            //         opt.EnableRetryOnFailure();
-            //     });
+                    options.UseSqlite(connectionString));
+            }
+            else if (selectedDb == Constants.Databases.MySql)
+            {
+                services.AddDbContext<InventoryDbContext>(builder =>
+                    builder.UseMySql(connectionString, opt => {
+                        // opt.MigrationsAssembly(migrationsAssembly);
+                        opt.EnableRetryOnFailure();
+                    })
+                );
+            }
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<InventoryDbContext>()

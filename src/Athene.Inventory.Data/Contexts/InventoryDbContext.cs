@@ -61,7 +61,7 @@ namespace Athene.Inventory.Data.Contexts
             builder.Entity<Article>(opt => 
             {
                 opt.HasKey(x => x.Id);
-                opt.HasMany(x => x.InventoryItems);
+                opt.HasMany(x => x.InventoryItems).WithOne();
                 // opt.HasMany(x => x.Matchcodes);
                 opt.Ignore(x => x.Matchcodes);
             });
@@ -69,7 +69,7 @@ namespace Athene.Inventory.Data.Contexts
             builder.Entity<InventoryItem>(opt => 
             {
                 opt.HasKey(x => x.Id);
-                opt.HasOne(x => x.Article).WithMany();
+                opt.HasOne(x => x.Article).WithMany().HasForeignKey();
                 opt.Ignore(x => x.RentedBy);
             });
 

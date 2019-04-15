@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
@@ -12,12 +13,12 @@ namespace Athene.Inventory.Data.Migrations
                 name: "Address",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    City = table.Column<string>(type: "TEXT", nullable: true),
-                    Country = table.Column<string>(type: "TEXT", nullable: true),
-                    Street = table.Column<string>(type: "TEXT", nullable: true),
-                    Zip = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    City = table.Column<string>(type: "longtext", nullable: true),
+                    Country = table.Column<string>(type: "longtext", nullable: true),
+                    Street = table.Column<string>(type: "longtext", nullable: true),
+                    Zip = table.Column<string>(type: "longtext", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -28,10 +29,10 @@ namespace Athene.Inventory.Data.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true)
+                    Id = table.Column<string>(type: "varchar(127)", nullable: false),
+                    ConcurrencyStamp = table.Column<string>(type: "longtext", nullable: true),
+                    Name = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -42,9 +43,9 @@ namespace Athene.Inventory.Data.Migrations
                 name: "BoardOfEducation",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "longtext", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -55,9 +56,9 @@ namespace Athene.Inventory.Data.Migrations
                 name: "Languages",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "longtext", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -68,9 +69,9 @@ namespace Athene.Inventory.Data.Migrations
                 name: "Publisher",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "longtext", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -81,13 +82,13 @@ namespace Athene.Inventory.Data.Migrations
                 name: "StockLocations",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Corridor = table.Column<string>(type: "TEXT", nullable: true),
-                    Hall = table.Column<string>(type: "TEXT", nullable: true),
-                    Level = table.Column<string>(type: "TEXT", nullable: true),
-                    Position = table.Column<string>(type: "TEXT", nullable: true),
-                    Rack = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Corridor = table.Column<string>(type: "varchar(127)", nullable: true),
+                    Hall = table.Column<string>(type: "varchar(127)", nullable: true),
+                    Level = table.Column<string>(type: "varchar(127)", nullable: true),
+                    Position = table.Column<string>(type: "varchar(127)", nullable: true),
+                    Rack = table.Column<string>(type: "varchar(127)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -98,11 +99,11 @@ namespace Athene.Inventory.Data.Migrations
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
-                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true),
-                    RoleId = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ClaimType = table.Column<string>(type: "longtext", nullable: true),
+                    ClaimValue = table.Column<string>(type: "longtext", nullable: true),
+                    RoleId = table.Column<string>(type: "varchar(127)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -119,12 +120,12 @@ namespace Athene.Inventory.Data.Migrations
                 name: "Schools",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    AddressId = table.Column<int>(type: "INTEGER", nullable: true),
-                    BoardOfEducationId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
-                    ShortName = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    AddressId = table.Column<int>(type: "int", nullable: true),
+                    BoardOfEducationId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "longtext", nullable: true),
+                    ShortName = table.Column<string>(type: "longtext", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -147,17 +148,17 @@ namespace Athene.Inventory.Data.Migrations
                 name: "Articles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Discriminator = table.Column<string>(type: "TEXT", nullable: false),
-                    ImageUrl = table.Column<string>(type: "TEXT", nullable: true),
-                    Description = table.Column<string>(type: "TEXT", nullable: true),
-                    InternationalStandardBookNumber = table.Column<string>(type: "TEXT", nullable: true),
-                    LanguageId = table.Column<int>(type: "INTEGER", nullable: true),
-                    PublishedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    PublisherId = table.Column<int>(type: "INTEGER", nullable: true),
-                    SubTitle = table.Column<string>(type: "TEXT", nullable: true),
-                    Title = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Discriminator = table.Column<string>(type: "longtext", nullable: false),
+                    ImageUrl = table.Column<string>(type: "longtext", nullable: true),
+                    Description = table.Column<string>(type: "longtext", nullable: true),
+                    InternationalStandardBookNumber = table.Column<string>(type: "longtext", nullable: true),
+                    LanguageId = table.Column<int>(type: "int", nullable: true),
+                    PublishedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    PublisherId = table.Column<int>(type: "int", nullable: true),
+                    SubTitle = table.Column<string>(type: "longtext", nullable: true),
+                    Title = table.Column<string>(type: "longtext", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -180,10 +181,10 @@ namespace Athene.Inventory.Data.Migrations
                 name: "SchoolClass",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
-                    SchoolId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "longtext", nullable: true),
+                    SchoolId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -200,11 +201,11 @@ namespace Athene.Inventory.Data.Migrations
                 name: "Authors",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    BookId = table.Column<int>(type: "INTEGER", nullable: true),
-                    FullName = table.Column<string>(type: "TEXT", nullable: true),
-                    Info = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    BookId = table.Column<int>(type: "int", nullable: true),
+                    FullName = table.Column<string>(type: "longtext", nullable: true),
+                    Info = table.Column<string>(type: "longtext", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -221,10 +222,10 @@ namespace Athene.Inventory.Data.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    BookId = table.Column<int>(type: "INTEGER", nullable: true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    BookId = table.Column<int>(type: "int", nullable: true),
+                    Name = table.Column<string>(type: "longtext", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -241,8 +242,8 @@ namespace Athene.Inventory.Data.Migrations
                 name: "Student",
                 columns: table => new
                 {
-                    StudentId = table.Column<string>(type: "TEXT", nullable: false),
-                    SchoolClassId = table.Column<int>(type: "INTEGER", nullable: false)
+                    StudentId = table.Column<string>(type: "varchar(127)", nullable: false),
+                    SchoolClassId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -259,28 +260,28 @@ namespace Athene.Inventory.Data.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "INTEGER", nullable: false),
-                    AddressId = table.Column<int>(type: "INTEGER", nullable: true),
-                    Birthsday = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true),
-                    Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
-                    Gender = table.Column<int>(type: "INTEGER", nullable: false),
-                    Lastname = table.Column<string>(type: "TEXT", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
-                    MobilePhoneNumber = table.Column<string>(type: "TEXT", nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    PasswordHash = table.Column<string>(type: "TEXT", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
-                    SecurityStamp = table.Column<string>(type: "TEXT", nullable: true),
-                    StudentId = table.Column<string>(type: "TEXT", nullable: true),
-                    Surname = table.Column<string>(type: "TEXT", nullable: true),
-                    TwoFactorEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
-                    UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true)
+                    Id = table.Column<string>(type: "varchar(127)", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false),
+                    AddressId = table.Column<int>(type: "int", nullable: true),
+                    Birthsday = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    ConcurrencyStamp = table.Column<string>(type: "longtext", nullable: true),
+                    Email = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    Gender = table.Column<int>(type: "int", nullable: false),
+                    Lastname = table.Column<string>(type: "longtext", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: true),
+                    MobilePhoneNumber = table.Column<string>(type: "longtext", nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
+                    PasswordHash = table.Column<string>(type: "longtext", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "longtext", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    SecurityStamp = table.Column<string>(type: "longtext", nullable: true),
+                    StudentId = table.Column<string>(type: "varchar(127)", nullable: true),
+                    Surname = table.Column<string>(type: "longtext", nullable: true),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    UserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -303,12 +304,12 @@ namespace Athene.Inventory.Data.Migrations
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ApplicationUserId = table.Column<string>(type: "TEXT", nullable: true),
-                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
-                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true),
-                    UserId = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ApplicationUserId = table.Column<string>(type: "varchar(127)", nullable: true),
+                    ClaimType = table.Column<string>(type: "longtext", nullable: true),
+                    ClaimValue = table.Column<string>(type: "longtext", nullable: true),
+                    UserId = table.Column<string>(type: "varchar(127)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -331,11 +332,11 @@ namespace Athene.Inventory.Data.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
-                    ProviderKey = table.Column<string>(type: "TEXT", nullable: false),
-                    ApplicationUserId = table.Column<string>(type: "TEXT", nullable: true),
-                    ProviderDisplayName = table.Column<string>(type: "TEXT", nullable: true),
-                    UserId = table.Column<string>(type: "TEXT", nullable: false)
+                    LoginProvider = table.Column<string>(type: "varchar(127)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "varchar(127)", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "varchar(127)", nullable: true),
+                    ProviderDisplayName = table.Column<string>(type: "longtext", nullable: true),
+                    UserId = table.Column<string>(type: "varchar(127)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -358,9 +359,9 @@ namespace Athene.Inventory.Data.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    RoleId = table.Column<string>(type: "TEXT", nullable: false),
-                    ApplicationUserId = table.Column<string>(type: "TEXT", nullable: true)
+                    UserId = table.Column<string>(type: "varchar(127)", nullable: false),
+                    RoleId = table.Column<string>(type: "varchar(127)", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "varchar(127)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -389,10 +390,10 @@ namespace Athene.Inventory.Data.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Value = table.Column<string>(type: "TEXT", nullable: true)
+                    UserId = table.Column<string>(type: "varchar(127)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "varchar(127)", nullable: false),
+                    Name = table.Column<string>(type: "varchar(127)", nullable: false),
+                    Value = table.Column<string>(type: "longtext", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -409,20 +410,20 @@ namespace Athene.Inventory.Data.Migrations
                 name: "InventoryItems",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ApplicationUserId = table.Column<string>(type: "TEXT", nullable: true),
-                    ArticleId = table.Column<int>(type: "INTEGER", nullable: true),
-                    ArticleId1 = table.Column<int>(type: "INTEGER", nullable: true),
-                    Barcode = table.Column<string>(type: "TEXT", nullable: true),
-                    Condition = table.Column<int>(type: "INTEGER", nullable: false),
-                    ExternalId = table.Column<string>(type: "TEXT", nullable: true),
-                    PurchasePrice = table.Column<decimal>(type: "TEXT", nullable: false),
-                    PurchasedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    RentedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    RentedByUserId = table.Column<string>(type: "TEXT", nullable: true),
-                    SchoolId = table.Column<int>(type: "INTEGER", nullable: true),
-                    StockLocationId = table.Column<int>(type: "INTEGER", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ApplicationUserId = table.Column<string>(type: "varchar(127)", nullable: true),
+                    ArticleId = table.Column<int>(type: "int", nullable: true),
+                    ArticleId1 = table.Column<int>(type: "int", nullable: true),
+                    Barcode = table.Column<string>(type: "longtext", nullable: true),
+                    Condition = table.Column<int>(type: "int", nullable: false),
+                    ExternalId = table.Column<string>(type: "longtext", nullable: true),
+                    PurchasePrice = table.Column<decimal>(type: "decimal(65, 30)", nullable: false),
+                    PurchasedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    RentedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    RentedByUserId = table.Column<string>(type: "longtext", nullable: true),
+                    SchoolId = table.Column<int>(type: "int", nullable: true),
+                    StockLocationId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -463,12 +464,12 @@ namespace Athene.Inventory.Data.Migrations
                 name: "ItemNote",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    InventoryItemId = table.Column<int>(type: "INTEGER", nullable: true),
-                    Text = table.Column<string>(type: "TEXT", nullable: true),
-                    UserId = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    InventoryItemId = table.Column<int>(type: "int", nullable: true),
+                    Text = table.Column<string>(type: "longtext", nullable: true),
+                    UserId = table.Column<string>(type: "longtext", nullable: true)
                 },
                 constraints: table =>
                 {
