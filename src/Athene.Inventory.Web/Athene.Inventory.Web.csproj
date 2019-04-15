@@ -14,6 +14,7 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.4" />
     <PackageReference Include="System.AppContext" Version="4.3.0" />
+    <PackageReference Include="Kowalew.AspNetCore.Localization.Json" Version="0.1.2-alpha1" />
     <!-- <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink.Loader" Version="14.0.1" /> -->
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0">
       <PrivateAssets>All</PrivateAssets>
@@ -23,7 +24,6 @@
     <ProjectReference Include="../Athene.Inventory.Abstractions/Athene.Inventory.Abstractions.csproj" />
     <ProjectReference Include="../Athene.Inventory/Athene.Inventory.csproj" />
     <ProjectReference Include="../Athene.Inventory.Data/Athene.Inventory.Data.csproj" />
-    <ProjectReference Include="../../ext/Ak.AspNetCore.Localization.Json/src/AspNetCore.Localization.Json/AspNetCore.Localization.Json.csproj" />
   </ItemGroup>
   <!-- <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
     <Exec Command="bower install" />
