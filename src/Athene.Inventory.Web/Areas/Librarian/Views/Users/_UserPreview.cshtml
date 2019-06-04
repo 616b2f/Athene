@@ -1,0 +1,18 @@
+@model User
+
+<div class="panel panel-default panel-body">
+    <label asp-for="FullName"></label>
+    @Model.FullName<br />
+    <label asp-for="Birthsday"></label>
+    @Model.Birthsday.ToString("dd.MM.yyyy")<br />
+    <a class="btn btn-primary"
+       asp-controller="Rent" 
+       asp-action="Rented" 
+       asp-route-userId="@Model.Id">
+       Geliehene Bücher</a>
+    <a class="btn btn-primary"
+        asp-controller="Rent"
+        asp-action="Rent"
+        asp-route-userId="@Model.Id">
+        Bücher leihen</a>
+</div>

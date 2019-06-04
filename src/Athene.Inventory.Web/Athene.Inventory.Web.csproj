@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <UserSecretsId>aspnet-Inventory.Web-0e25b11d-6baf-468b-b509-95d9f54d0f9f</UserSecretsId>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Update="wwwroot\**\*;**\*.cshtml;Areas\**\*.cshtml;appsettings.json;web.config">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
+    <PackageReference Include="System.AppContext" Version="4.3.0" />
+    <PackageReference Include="Kowalew.AspNetCore.Localization.Json" Version="0.1.2-alpha1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Athene.Inventory/Athene.Inventory.csproj" />
+    <ProjectReference Include="../Athene.Inventory.Data/Athene.Inventory.Data.csproj" />
+  </ItemGroup>
+  <!-- <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
+    <Exec Command="bower install" />
+  </Target> -->
+  <Target Name="SpicNSpan" AfterTargets="Clean">
+    <!-- Remove obj folder -->
+    <RemoveDir Directories="$(BaseIntermediateOutputPath)" />
+    <!-- Remove bin folder -->
+    <RemoveDir Directories="$(BaseOutputPath)" />
+  </Target>
+  <ItemGroup>
+    <DotNetCliToolReference Include="BundlerMinifier.Core" Version="2.2.301" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
+  </ItemGroup>
+</Project>

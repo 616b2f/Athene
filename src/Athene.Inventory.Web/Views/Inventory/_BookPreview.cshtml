@@ -1,0 +1,87 @@
+@model Book
+
+<div class="panel panel-default panel-body">
+    <div class="media">
+        <div class="media-left">
+            <img src="@Model.ImageUrl">
+        </div>
+        <div class="media-body"> 
+            <div class="row">
+                <div class="col-md-12">
+                    <label asp-for="Title"></label>
+                    @Model.Title
+                    @if (!string.IsNullOrEmpty(Model.SubTitle))
+                    {
+                        <br />
+                        <label asp-for="SubTitle"></label>
+                        @Model.SubTitle
+                    }
+                </div>
+                <div class="col-md-12">
+                    <label asp-for="Description"></label>
+                    @if (!string.IsNullOrEmpty(Model.Description))
+                    {
+                        <br />
+                        @Model.Description
+                    }
+                    else
+                    {
+                        <label>-</label>
+                    }
+                </div>
+                <div class="col-md-12">
+                    <span class="glyphicon glyphicon-tag"></span>
+                    @if (Model.Categories.Count > 0)
+                    {
+                        @foreach (var category in Model.Categories)
+                        {
+                            <span class="label label-default">
+                                @string.Format("#{0}", category.Name)
+                            </span>
+                        }
+                    }
+                    else
+                    {
+                        <label>-</label>
+                    }
+                </div>
+                <div class="col-md-12">
+                    <label asp-for="Authors"></label>
+                    @if (Model.Authors.Count > 0)
+                    {
+                        @foreach (var author in Model.Authors)
+                        {
+                            <span>
+                                @author.FullName
+                            </span>
+                        }
+                    }
+                    else
+                    {
+                        <label>@Localizer["Not Available"]</label>
+                    }
+                </div>
+                <div class="col-md-12">
+                    <label asp-for="InventoryItems"></label>
+                    @if (Model.InventoryItems.Count > 0)
+                    {
+                        <label>@Localizer["Total"]:</label>
+                        <span>@Model.InventoryItems.Count()</span>
+                        <label>@Localizer["Not borrowed"]:</label>
+                        <span>@Model.InventoryItems.Where(x => x.RentedBy == null).Count()</span>
+                        <label>@Localizer["Borrowed"]:</label>
+                        <span>@Model.InventoryItems.Where(x => x.RentedBy != null).Count()</span>
+                        // @foreach (var invItem in Model.InventoryItems)
+                        // {
+                        //     @Html.Partial("_InventoryItemPreview", invItem)
+                        // }
+                    }
+                    else
+                    {
+                        <label>@Localizer["Not Available"]</label>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

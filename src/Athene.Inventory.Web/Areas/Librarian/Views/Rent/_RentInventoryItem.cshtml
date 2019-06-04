@@ -1,0 +1,32 @@
+@using Athene.Inventory.Abstractions.Models
+@model InventoryItem
+
+@{
+    var book = Model.Article as Book;
+}
+<div class="row ath-bookitem">
+    <div class="col-md-6">
+        @Html.Hidden("bookItemIds", Model.Id)
+        @book.Title<br />
+        @book.SubTitle<br />
+        <label>ISBN</label>
+        @book.InternationalStandardBookNumber
+    </div>
+    <div class="col-md-6">
+        <button type="button" class="close" data-dismiss="ath-bookitem" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <span class="glyphicon glyphicon-barcode"></span>
+        <!--<label asp-for="Id"></label>-->
+        @Html.DisplayFor(model => model.Barcode)<br />
+        <label asp-for="StockLocation"></label>
+        @if (Model.StockLocation != null)
+        {
+            @Model.StockLocation.OneLiner
+        }
+        else
+        {
+            @Localizer["Not defined"]
+        }
+    </div>
+</div>

@@ -1,0 +1,15 @@
+@model Athene.Inventory.Abstractions.Models.Book
+
+<div class="panel panel-default panel-body">
+    <label asp-for="ArticleId"></label>
+    @Model.ArticleId<br/>
+    <label asp-for="Title"></label>
+    @Model.Title<br/>
+    <label asp-for="Description"></label>
+    <p>
+        @Model.Description
+    </p>
+    <a class="btn btn-primary" asp-controller="Books" asp-action="Edit" asp-route-id="@Model.ArticleId">@Localizer["Edit"]</a>
+    <a class="btn btn-primary" asp-controller="Inventory" asp-action="ShowInventoryItems" asp-route-id="@Model.ArticleId">@Localizer["Show owned copies"]</a>
+    <a class="btn btn-primary" asp-controller="Books" asp-action="AddToStore" asp-route-articleId="@Model.ArticleId">@Localizer["Add to inventory"]</a>
+</div>

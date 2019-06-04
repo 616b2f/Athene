@@ -1,0 +1,48 @@
+@model IEnumerable<Athene.Inventory.Web.Areas.Admin.Models.StudentViewModel>
+@{
+    Layout = "_Layout";
+}
+
+<table class="table">
+    <tr>
+        <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Surname)</th>
+        <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Lastname)</th>
+        <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Gender)</th>
+        <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Birthsday)</th>
+        <th>@Html.DisplayNameFor(m => m.FirstOrDefault().PhoneNumber)</th>
+        <th>@Html.DisplayNameFor(m => m.FirstOrDefault().MobilePhoneNumber)</th>
+        <th>@Html.DisplayNameFor(m => m.FirstOrDefault().StudentId)</th>
+        <th>@Html.DisplayNameFor(m => m.FirstOrDefault().SchoolClass)</th>
+        <th>@Html.DisplayNameFor(m => m.FirstOrDefault().SchoolName)</th>
+        <th>@Html.DisplayNameFor(m => m.FirstOrDefault().AddressStreet)</th>
+        <th>@Html.DisplayNameFor(m => m.FirstOrDefault().AddressZip)</th>
+        <th>@Html.DisplayNameFor(m => m.FirstOrDefault().AddressCity)</th>
+        <th>@Html.DisplayNameFor(m => m.FirstOrDefault().AddressCountry)</th>
+    </tr>
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.Surname</td>
+            <td>@user.Lastname</td>
+            <td>@user.Gender</td>
+            <td>@user.Birthsday.ToString(Constants.DateFormat)</td>
+            <td>@user.PhoneNumber</td>
+            <td>@user.MobilePhoneNumber</td>
+            <td>@user.StudentId</td>
+            <td>@user.SchoolClass</td>
+            <td>@user.SchoolName</td>
+            <td>@user.AddressStreet</td>
+            <td>@user.AddressZip</td>
+            <td>@user.AddressCity</td>
+            <td>@user.AddressCountry</td>
+        </tr>
+    }
+        <tr>
+            <td colspan="13">
+                <form asp-action="Import">
+                    <input id="importid" name="importid" type="hidden" value="@ViewBag.ImportId">
+                    <button class="btn btn-primary" type="submit">@Localizer["Import"]</button>
+                </form>
+            </td>
+        </tr>
+</table>

@@ -1,0 +1,104 @@
+@model CreateBookViewModel
+@{
+    Layout = "_Layout";
+    var authors = ViewBag.Authors as SelectList;
+    var categories = ViewBag.Categories as SelectList;
+}
+
+<div class="row">
+	<div class="col-md-12">
+		<h3>Buch hinzufügen</h3>
+	</div>
+</div>
+@Html.ValidationSummary()
+<form asp-area="Librarian" asp-controller="Books" asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Title"></label>
+        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class="form-control" }})
+    </div>
+    <div class="form-group">
+        <label asp-for="SubTitle"></label>
+        @Html.EditorFor(model => model.SubTitle, new { htmlAttributes = new { @class="form-control" }})
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class="form-control" }})
+    </div>
+    <div class="form-group">
+        <label asp-for="InternationalStandardBookNumber"></label>
+        @Html.EditorFor(model => model.InternationalStandardBookNumber, new { htmlAttributes = new { @class="form-control" }})
+    </div>
+    <div class="form-group">
+        <div class="form-horizontal ath-input-collection">
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label asp-for="Authors"></label>
+                    <button class="btn btn-success ath-btn-add" type="button"><span class="glyphicon glyphicon-plus"></span></button>
+                </div>
+            </div>
+            <div class="form-group ath-input-item">
+                <div class="col-md-11">
+                    @Html.DropDownList("AuthorsIds", authors, new { @class="form-control" })
+                </div>
+                <div class="col-md-1">
+                    <button class="btn btn-danger ath-btn-remove" type="button"><span class="glyphicon glyphicon-minus"></span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="form-horizontal ath-input-collection">
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label asp-for="Categories"></label>
+                    <button class="btn btn-success ath-btn-add" type="button"><span class="glyphicon glyphicon-plus"></span></button>
+                </div>
+            </div>
+            <div class="form-group ath-input-item">
+                <div class="col-md-11">
+                    @Html.DropDownList("CategoriesIds", categories, new { @class="form-control" })
+                </div>
+                <div class="col-md-1">
+                    <button class="btn btn-danger ath-btn-remove" type="button"><span class="glyphicon glyphicon-minus"></span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Publisher"></label>
+        @Html.DropDownListFor(model => model.PublisherId, null, new { @class="form-control" })
+    </div>
+    <div class="form-group">
+        <label asp-for="PublishedAt"></label>
+        @Html.EditorFor(model => model.PublishedAt, new { htmlAttributes = new { @class="form-control" }})
+    </div>
+    <div class="form-group">
+        <label asp-for="Language"></label>
+        @Html.DropDownListFor(model => model.LanguageId, null, new { @class="form-control" })
+    </div>
+    <button class="btn btn-primary" type="submit">Hinzufügen</button>
+</form>
+
+@section Scripts 
+{
+    <script>
+        $(document).ready(function() {
+            $(".ath-input-collection").on("click", ".ath-btn-add", function () {
+                var parent = $(this).closest(".ath-input-collection");
+                var item = $(parent).find(".ath-input-item").first();
+                var newItem = item.clone();
+                newItem.appendTo(parent);
+            });
+            $(".ath-input-collection").on("click", ".ath-btn-remove", function () {
+                var parent = $(this).closest(".ath-input-collection");
+                var itemQuantity = parent.find(".ath-input-item").size();
+                var item = $(this).closest(".ath-input-item");
+                console.log(itemQuantity);
+                if (itemQuantity > 1)
+                {
+                    item.remove();
+                }
+            });
+        });
+    </script>
+}

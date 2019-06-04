@@ -1,0 +1,37 @@
+@model IEnumerable<Book>
+@{
+    Layout = "_Layout";
+}
+<table class="table">
+    <tr>
+        <th>@Html.DisplayNameFor(m => m.FirstOrDefault().InternationalStandardBookNumber)</th>
+        <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Title)</th>
+        <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Authors)</th>
+        <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Publisher)</th>
+    </tr>
+    @foreach (var book in Model)
+    {
+        <tr>
+            <td>@book.InternationalStandardBookNumber</td>
+            <td>@book.Title</td>
+            <td>
+                @foreach (var author in book.Authors)
+                {
+                    @author.FullName
+                    <br />
+                }
+            </td>
+            <td>
+                @book.Publisher?.Name
+            </td>
+        </tr>
+    }
+    <tr>
+        <td colspan="4">
+            <form asp-action="Import">
+                <input id="importid" name="importid" type="hidden" value="@ViewBag.ImportId">
+                <button class="btn btn-primary" type="submit">@Localizer["Import"]</button>
+            </form>
+        </td>
+    </tr>
+</table>

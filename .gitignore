@@ -237,3 +237,10 @@ _Pvt_Extensions
 .tern-project
 
 .vscode
+# mac files
+.DS_Store
+
+# Athene project
+import/
+
+[Ii]nventory.db

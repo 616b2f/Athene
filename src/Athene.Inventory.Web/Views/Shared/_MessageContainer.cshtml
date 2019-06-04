@@ -1,0 +1,30 @@
+﻿@using Athene.Inventory.Web.Services
+@using Athene.Inventory.Web.Extensions
+@{
+    string message = ViewBag.MessageValue;
+    UserMessageType? type = ViewBag.MessageType;
+    if (TempData["messageValue"] != null &&
+        TempData["messageType"] != null)
+    {
+        message = TempData["messageValue"].ToString();
+        type = (UserMessageType)TempData["messageType"];
+    }
+    string alertClass = "";
+    if (type != null)
+    {
+        alertClass = (
+            type == UserMessageType.Warning ? "alert-warning" :
+            type == UserMessageType.Success ? "alert-success" :
+            type == UserMessageType.Error ? "alert-danger" :
+            type == UserMessageType.Info ? "alert-info" :
+            "");
+    }
+}
+
+@if (message != null && type != null)
+{
+    <div class="alert @alertClass text-center" data-dismiss="alert" role="alert" style="margin-top:10px;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        @message
+    </div>
+}
