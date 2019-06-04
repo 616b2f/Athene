@@ -1,13 +1,10 @@
 using System;
-using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Athene.Inventory.Web.Models;
 using Athene.Inventory.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Athene.Inventory.Abstractions;
@@ -17,6 +14,9 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
 using Athene.Inventory.Data.Contexts;
+using Athene.Inventory.Data;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Athene.Inventory.Data.Services;
 
 namespace Athene.Inventory.Web
@@ -33,6 +33,13 @@ namespace Athene.Inventory.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // services.Configure<CookiePolicyOptions>(options =>
+            // {
+            //     // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+            //     options.CheckConsentNeeded = context => true;
+            //     options.MinimumSameSitePolicy = SameSiteMode.None;
+            // });
+
             // Add framework services.
             string selectedDb = Configuration.GetValue("Database", "none");
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -51,7 +58,7 @@ namespace Athene.Inventory.Web
                 );
             }
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<InventoryDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -62,13 +69,16 @@ namespace Athene.Inventory.Web
             services.AddSession();
 
             // Add application services.
-            services.AddTransient<IInventoryRepository, InventoryRepository>();
-            services.AddTransient<IArticleRepository, ArticleRepository>();
-            services.AddTransient<IBookMetaRepository, BookMetaRepository>();
+            services.AddTransient<IInventoryProvider, InventoryProvider>();
+            services.AddTransient<IArticleProvider, ArticleProvider>();
+            services.AddTransient<IBookMetaProvider, BookMetaProvider>();
+            services.AddTransient<IUserProvider<User>, UserProvider>();
+
+            services.AddTransient<IUnitOfWork<User>, UnitOfWork>();
 
             // add in memory user store
             // var store = new InMemoryStore<ApplicationUser, IdentityRole>();
-            services.AddTransient<IUserRepository, UserRepository>();
+            // services.AddTransient<IUserRepository, UserRepository>();
             // services.AddSingleton<IUserStore<ApplicationUser>>(store);
             // services.AddSingleton<IRoleStore<IdentityRole>>(store);
             // services.AddSingleton<IUserEmailStore<ApplicationUser>>(store);
@@ -136,16 +146,14 @@ namespace Athene.Inventory.Web
             });
 
             services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddViewLocalization()
                 .AddDataAnnotationsLocalization();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
             var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
             app.UseRequestLocalization(locOptions.Value);
 
@@ -153,14 +161,16 @@ namespace Athene.Inventory.Web
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-                app.UseBrowserLink();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
             }
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
+            // app.UseCookiePolicy();
             app.UseSession();
             app.UseAuthentication();
 

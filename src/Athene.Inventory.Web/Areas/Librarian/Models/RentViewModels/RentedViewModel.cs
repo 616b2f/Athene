@@ -6,7 +6,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Models.RentViewModels
 {
     public class RentedViewModel
     {
-        public ApplicationUser User { get; set; }
+        public User User { get; set; }
         public IEnumerable<InventoryItem> RentedItems { get; set; }
     }
 }

@@ -14,20 +14,19 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
     [Authorize(Policy=Constants.Policies.Librarian)]
     public class CategoriesController : Controller
     {
-        private readonly IInventoryRepository _inventoryService;
-        private readonly IBookMetaRepository _bookMetaRepository;
+        private readonly IUnitOfWork<User> _unitOfWork;
+        private readonly IBookMetaProvider _bookMetaProvider;
 
-        public CategoriesController(
-            IInventoryRepository inventoryService,
-            IBookMetaRepository bookMetaRepository) 
+        public CategoriesController(IUnitOfWork<User> unitOfWork,
+            IBookMetaProvider bookMetaProvider) 
         {
-            _inventoryService = inventoryService;
-            _bookMetaRepository = bookMetaRepository;
+            _unitOfWork = unitOfWork;
+            _bookMetaProvider = bookMetaProvider;
         }
         // GET: /<controller>/
         public IActionResult Index()
         {
-            var categories = _bookMetaRepository.AllCategories();
+            var categories = _bookMetaProvider.AllCategories();
             return View(categories.ToViewModels());
         }
 
@@ -45,9 +44,12 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
             {
                 //TODO: set message
                 var category = model.ToEntity();
-                var categories = new List<Category>();
-                categories.Add(category);
-                _bookMetaRepository.AddCategories(categories);
+                var categories = new List<Category>
+                {
+                    category
+                };
+                _unitOfWork.BookMetas.AddCategories(categories);
+                _unitOfWork.SaveChanges();
                 return RedirectToAction("Index");
             }
 

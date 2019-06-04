@@ -9,7 +9,7 @@
 		<h3>@Localizer["Search"]</h3>
 	</div>
 	<div class="col-md-6">
-		@Html.Partial("_MessageContainer")
+		<partial name="_MessageContainer">
 	</div>
 </div>
 
@@ -26,9 +26,9 @@ else
     @Localizer["{0} match", Model.FoundQuantity]<br/>
     @foreach (var article in Model.Items)
     {
-		@if (article is Book)
-		{
-			@Html.Partial("_BookPreview", article as Book)
-		}
+			@if (article is Book)
+			{
+				@await Html.PartialAsync("_BookPreview", article as Book)
+			}
     }
 }

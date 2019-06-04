@@ -18,14 +18,14 @@
     </environment>
 </head>
 <body>
-    @await Html.PartialAsync("_NavigationPartial")
+    <partial name="_NavigationPartial" />
 
     <div class="container body-content">
-        @Html.Partial("_MessageContainer")
+        <partial name="_MessageContainer" />
         @RenderBody()
     </div>
 
-    @await Html.PartialAsync("_FooterPartial")
+    <partial name="_FooterPartial" />
 
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>

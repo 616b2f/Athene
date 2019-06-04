@@ -18,18 +18,21 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
     [Authorize(Policy=Constants.Policies.Librarian)]
     public class RentController : Controller
     {
+        private readonly IUnitOfWork<User> _unitOfWork;
         private readonly IStringLocalizer<SharedResource> _localizer;
-        private readonly IUserRepository _usersRepository;
-        private readonly IInventoryRepository _inventoryService;
+        private readonly IUserProvider<User> _usersProvider;
+        private readonly IInventoryProvider _inventoryProvider;
 
         public RentController(
+            IUnitOfWork<User> unitOfWork,
             IStringLocalizer<SharedResource> localizer,
-            IUserRepository usersRepository, 
-            IInventoryRepository inventoryService) 
+            IUserProvider<User> usersProvider, 
+            IInventoryProvider inventoryProvider) 
         {
+            _unitOfWork = unitOfWork;
             _localizer = localizer;
-            _usersRepository = usersRepository;
-            _inventoryService = inventoryService;
+            _usersProvider = usersProvider;
+            _inventoryProvider = inventoryProvider;
         }
         // GET: /<controller>/
         public IActionResult Index()
@@ -43,11 +46,11 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
             if (string.IsNullOrEmpty(userId))
                 return RedirectToAction("Index");
 
-            var user = _usersRepository.FindByUserId(userId);
-            IEnumerable<InventoryItem> rentedBooks = _inventoryService.FindRentedItemsByUser(userId);
+            var user = _usersProvider.FindByUserId(userId);
+            IEnumerable<InventoryItem> rentedBooks = _inventoryProvider.FindRentedItemsByUser(userId);
             var viewModel = new RentedViewModel
             {
-                User = (ApplicationUser)user,
+                User = user,
                 RentedItems = rentedBooks,
             };
             return View(viewModel);
@@ -59,7 +62,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
             if (string.IsNullOrEmpty(userId))
                 return RedirectToAction("Index");
 
-            var user = _usersRepository.FindByUserId(userId);
+            var user = _usersProvider.FindByUserId(userId);
 
             if (user == null)
             {
@@ -70,7 +73,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
             var rentViewModel = new RentViewModel
             {
                 UserId = user.Id,
-                User = (ApplicationUser)user,
+                User = user,
             };
             return View(rentViewModel);
         }
@@ -82,8 +85,14 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
                 bookItemIds == null)
                 return RedirectToAction("Index");
 
-            _inventoryService.RentInventoryItem(userId, bookItemIds, DateTime.Now);
-            return RedirectToAction("Rented", new { userId = userId });
+            var inventoryItems = _unitOfWork.Inventories.FindInventoryItemsById(bookItemIds);
+            var now = DateTime.Now;
+            foreach (var invItem in inventoryItems)
+            {
+                invItem.Rent(userId, now); // pass date, because we rent all at once (at the same time)
+            }
+            _unitOfWork.SaveChanges();
+            return RedirectToAction("Rented", new { userId });
         }
 
         [HttpGet]
@@ -92,10 +101,10 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
             if (string.IsNullOrEmpty(barcode))
                 return Content("");
 
-            var inventoryItem = _inventoryService.FindInventoryItemByBarcode<Book>(barcode);
+            var inventoryItem = _inventoryProvider.FindInventoryItemByBarcode<Book>(barcode);
 
             if (inventoryItem == null)
-                inventoryItem = _inventoryService.FindInventoryItemByExternalId<Book>(barcode);
+                inventoryItem = _inventoryProvider.FindInventoryItemByExternalId<Book>(barcode);
             //TODO: write proper error handling, with error message on client site
             if (inventoryItem == null)
                 return Content("");

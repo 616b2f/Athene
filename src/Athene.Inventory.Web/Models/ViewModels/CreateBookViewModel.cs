@@ -25,9 +25,9 @@ namespace Athene.Inventory.Web.ViewModels
         [Required]
         public int LanguageId { get; set; }
         [Required]
-        public int[] authorsIds { get; set; }
+        public int[] AuthorsIds { get; set; }
         [Required]
-        public int[] categoriesIds { get; set; }
+        public int[] CategoriesIds { get; set; }
         public ICollection<Category> Categories { get; set; }
         public Language Language { get; set; }
     }

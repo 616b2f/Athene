@@ -1,4 +1,4 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
@@ -8,8 +8,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{8CD9AE57-2249-4B91-82EF-FB4C2CB3D7E2}"
 EndProject
 Project("{13B669BE-BB05-4DDF-9536-439F39A36129}") = "Athene.Inventory.Tests", "test\Athene.Inventory.Tests\Athene.Inventory.Tests.csproj", "{23C24FF8-C478-4167-8116-50FB87F51405}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Athene.Inventory.Abstractions", "src\Athene.Inventory.Abstractions\Athene.Inventory.Abstractions.csproj", "{34C6C6A8-6250-4AA1-8528-85FC5744FCBB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Athene.Inventory.Data", "src\Athene.Inventory.Data\Athene.Inventory.Data.csproj", "{7612FBCA-7AAA-471A-B90D-52CC4DF1EF44}"
 EndProject
@@ -40,18 +38,6 @@ Global
 		{23C24FF8-C478-4167-8116-50FB87F51405}.Release|x64.Build.0 = Release|x64
 		{23C24FF8-C478-4167-8116-50FB87F51405}.Release|x86.ActiveCfg = Release|x86
 		{23C24FF8-C478-4167-8116-50FB87F51405}.Release|x86.Build.0 = Release|x86
-		{34C6C6A8-6250-4AA1-8528-85FC5744FCBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{34C6C6A8-6250-4AA1-8528-85FC5744FCBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{34C6C6A8-6250-4AA1-8528-85FC5744FCBB}.Debug|x64.ActiveCfg = Debug|x64
-		{34C6C6A8-6250-4AA1-8528-85FC5744FCBB}.Debug|x64.Build.0 = Debug|x64
-		{34C6C6A8-6250-4AA1-8528-85FC5744FCBB}.Debug|x86.ActiveCfg = Debug|x86
-		{34C6C6A8-6250-4AA1-8528-85FC5744FCBB}.Debug|x86.Build.0 = Debug|x86
-		{34C6C6A8-6250-4AA1-8528-85FC5744FCBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{34C6C6A8-6250-4AA1-8528-85FC5744FCBB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{34C6C6A8-6250-4AA1-8528-85FC5744FCBB}.Release|x64.ActiveCfg = Release|x64
-		{34C6C6A8-6250-4AA1-8528-85FC5744FCBB}.Release|x64.Build.0 = Release|x64
-		{34C6C6A8-6250-4AA1-8528-85FC5744FCBB}.Release|x86.ActiveCfg = Release|x86
-		{34C6C6A8-6250-4AA1-8528-85FC5744FCBB}.Release|x86.Build.0 = Release|x86
 		{7612FBCA-7AAA-471A-B90D-52CC4DF1EF44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7612FBCA-7AAA-471A-B90D-52CC4DF1EF44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7612FBCA-7AAA-471A-B90D-52CC4DF1EF44}.Debug|x64.ActiveCfg = Debug|x64
@@ -79,7 +65,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{23C24FF8-C478-4167-8116-50FB87F51405} = {8CD9AE57-2249-4B91-82EF-FB4C2CB3D7E2}
-		{34C6C6A8-6250-4AA1-8528-85FC5744FCBB} = {D46DCE19-84D2-47C2-8D9E-1B714F6C197B}
 		{7612FBCA-7AAA-471A-B90D-52CC4DF1EF44} = {D46DCE19-84D2-47C2-8D9E-1B714F6C197B}
 		{9DD040D6-9AAD-485A-BC69-3EA5F7B02CDC} = {D46DCE19-84D2-47C2-8D9E-1B714F6C197B}
 	EndGlobalSection

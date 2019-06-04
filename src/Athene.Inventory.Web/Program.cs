@@ -18,7 +18,7 @@ namespace Athene.Inventory.Web
     {
         public static void Main(string[] args)
         {
-            var host = BuildWebHost(args);
+            var host = CreateWebHostBuilder(args).Build();
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
@@ -29,8 +29,7 @@ namespace Athene.Inventory.Web
                     // inventoryDbContext.Database.EnsureDeleted();
                     // var isCreated = inventoryDbContext.Database.EnsureCreated();
                     inventoryDbContext.Database.Migrate();
-                    if (!inventoryDbContext.Users.Any())
-                        TestData.Initialize(services);
+                    TestData.Initialize(services);
                 }
                 catch (Exception ex)
                 {
@@ -42,9 +41,14 @@ namespace Athene.Inventory.Web
             host.Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) => 
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) => 
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .Build();
+                .ConfigureLogging((hostingContext, logging) =>
+                {
+                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                    logging.AddConsole();
+                    logging.AddDebug();
+                })
+                .UseStartup<Startup>();
     }
 }

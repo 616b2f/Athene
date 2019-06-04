@@ -4,9 +4,9 @@
     Layout = "_Layout";
 }
 <h3>@ViewBag.Title</h3>
-@Html.Partial("_UserPreview", Model.User)
+<partial name="_UserPreview" for="User">
 <h3>@Localizer["Rented Books"]</h3>
 @foreach (var item in Model.RentedItems)
 {
-    @Html.Partial("_RentedInventoryItemPreview", item)
+    @await Html.PartialAsync("_RentedInventoryItemPreview", item)
 }

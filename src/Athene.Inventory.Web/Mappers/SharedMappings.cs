@@ -10,7 +10,7 @@ namespace Athene.Inventory.Web.Mappers
 {
     public static class SharedMappings 
     {
-        private static IMapper Mapper;
+        private static readonly IMapper Mapper;
 
         static SharedMappings()
         {
@@ -63,9 +63,9 @@ namespace Athene.Inventory.Web.Mappers
             return Mapper.Map<IEnumerable<CategoryViewModel>>(categories);
         }
 
-        public static ApplicationUser ToEntity(this CreateUserViewModel viewModel)
+        public static User ToEntity(this CreateUserViewModel viewModel)
         {
-            return Mapper.Map<ApplicationUser>(viewModel);
+            return Mapper.Map<User>(viewModel);
         }
 
         public static InventoryItem ToModel(this CreateInventoryItemViewModel viewModel)
@@ -73,9 +73,9 @@ namespace Athene.Inventory.Web.Mappers
             return Mapper.Map<InventoryItem>(viewModel);
         }
 
-        public static ApplicationUser ToModel(this CreateUserViewModel viewModel)
+        public static User ToModel(this CreateUserViewModel viewModel)
         {
-            return Mapper.Map<ApplicationUser>(viewModel);
+            return Mapper.Map<User>(viewModel);
         }
 
         public static EditBookViewModel ToEditViewModel(this Book model)
@@ -83,9 +83,9 @@ namespace Athene.Inventory.Web.Mappers
             return Mapper.Map<EditBookViewModel>(model);
         }
 
-        public static Book ToModel(this EditBookViewModel viewModel)
+        public static void ToModel(this EditBookViewModel viewModel, Book book)
         {
-            return Mapper.Map<Book>(viewModel);
+            Mapper.Map<EditBookViewModel,Book>(viewModel, book);
         }
 
         public static IEnumerable<InventoryItemDetailsViewModel> ToDetailsViewModels(this IEnumerable<InventoryItem> model)

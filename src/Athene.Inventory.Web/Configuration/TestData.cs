@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using Athene.Inventory.Abstractions;
 using Athene.Inventory.Abstractions.Models;
-using Athene.Inventory.Abstractions.Utils;
+using Athene.Inventory.Data.Contexts;
 using Athene.Inventory.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -13,19 +14,47 @@ namespace Athene.Inventory.Web
 {
     public static class TestData
     {
-        public static void Initialize(IServiceProvider provider)
+        public static void Initialize(IServiceProvider services)
         {
-            var _userManager = provider.GetService<UserManager<ApplicationUser>>();
-            var _articleRepo = provider.GetService<IArticleRepository>();
-            var _bookMetaRepo = provider.GetService<IBookMetaRepository>();
-            var _inventory = provider.GetService<IInventoryRepository>();
-            TestData.CreateUsers(_userManager);
-            TestData.CreateBookMeta(_bookMetaRepo);
-            TestData.CreateBookArticles(_articleRepo, _bookMetaRepo);
-            TestData.CreateBookInventoryItems(_inventory, _articleRepo);
+            var inventoryDbContext = services.GetService<InventoryDbContext>();
+            if (!inventoryDbContext.Users.Any())
+                TestData.InitializeUsers(services);
+            if (!inventoryDbContext.Publisher.Any())
+                TestData.InitializeBookMeta(services);
+            if (!inventoryDbContext.Articles.Any())
+                TestData.InitializeBookArticles(services);
+            if (!inventoryDbContext.InventoryItems.Any())
+                TestData.InitializeInventoryItems(services);
         }
 
-        public static void CreateUsers(UserManager<ApplicationUser> userManager)
+        public static void InitializeUsers(IServiceProvider provider)
+        {
+            var _userManager = provider.GetService<UserManager<User>>();
+            TestData.CreateUsers(_userManager);
+        }
+
+        public static void InitializeBookMeta(IServiceProvider provider)
+        {
+            var unitOfWork = provider.GetService<IUnitOfWork<User>>();
+            TestData.CreateBookMeta(unitOfWork.BookMetas);
+            unitOfWork.SaveChanges();
+        }
+
+        public static void InitializeBookArticles(IServiceProvider provider)
+        {
+            var unitOfWork = provider.GetService<IUnitOfWork<User>>();
+            TestData.CreateBookArticles(unitOfWork.Articles, unitOfWork.BookMetas);
+            unitOfWork.SaveChanges();
+        }
+
+        public static void InitializeInventoryItems(IServiceProvider provider)
+        {
+            var unitOfWork = provider.GetService<IUnitOfWork<User>>();
+            TestData.CreateBookInventoryItems(unitOfWork.Inventories, unitOfWork.Articles);
+            unitOfWork.SaveChanges();
+        }
+
+        public static void CreateUsers(UserManager<User> userManager)
         {
             /* Board of education */
             var boardOfEducation = new BoardOfEducation("Landrat");
@@ -48,7 +77,7 @@ namespace Athene.Inventory.Web
             school2.SchoolClasses.Add(schoolClass3);
             school2.SchoolClasses.Add(schoolClass4);
 
-            var adminUser = new ApplicationUser
+            var adminUser = new User
             {
                 UserName = "admin@athene.com",
                 Email =  "admin@athene.com",
@@ -56,7 +85,7 @@ namespace Athene.Inventory.Web
                 Lastname = "Mustermann",
                 Birthsday = new DateTime(1988, 1, 1),
             };
-            var librarianUser = new ApplicationUser
+            var librarianUser = new User
             {
                 UserName = "u.musterfrau@athene.com",
                 Email =  "u.musterfrau@athene.com",
@@ -66,7 +95,7 @@ namespace Athene.Inventory.Web
             };
 
             /* students */
-            var student1 = new ApplicationUser
+            var student1 = new User
             {
                 UserName = "teststudent1@athene.com",
                 Email =  "teststudent1@athene.com",
@@ -79,7 +108,7 @@ namespace Athene.Inventory.Web
                    SchoolClass = schoolClass1
                 },
             };
-            var student2 = new ApplicationUser
+            var student2 = new User
             {
                 UserName = "teststudent2@athene.com",
                 Email =  "teststudent2@athene.com",
@@ -92,7 +121,7 @@ namespace Athene.Inventory.Web
                    SchoolClass = schoolClass3
                 },
             };
-            var student3 = new ApplicationUser
+            var student3 = new User
             {
                 UserName = "teststudent3@athene.com",
                 Email =  "teststudent3@athene.com",
@@ -302,33 +331,33 @@ namespace Athene.Inventory.Web
 
             var book1 = new Book
             {
-                Id = 1,
+                ArticleId = 1,
                 InternationalStandardBookNumber = "9780132350884",
                 Title = "Clean Code",
                 SubTitle = "A Handbook of Agile Software Craftsmanship",
                 Description = "Noted software expert Robert C. Martin presents a revolutionary paradigm with Clean Code: A Handbook of Agile Software Craftsmanship . Martin has teamed up with his colleagues from Object Mentor to distill their best agile practice of cleaning code “on the fly” into a book that will instill within you the values of a software craftsman and make you a better programmer–but only if you work at it.",
                 Publisher = prenticeHall,
-                Authors = new HashSet<Author> {
+                Authors = new List<Author> {
                     robertCMartin,
                     deanWampler
                 },
-                Categories = new HashSet<Category> {
+                Categories = new List<Category> {
                     computerCategory,
                 },
                 Language = english
             };
             var book2 = new Book
             {
-                Id = 2,
+                ArticleId = 2,
                 InternationalStandardBookNumber = "9780137081073",
                 Title = "The Clean Coder",
                 SubTitle = "A Code of Conduct for Professional Programmers",
                 Description = "In The Clean Coder: A Code of Conduct for Professional Programmers, legendary software expert Robert C. Martin introduces the disciplines, techniques, tools, and practices of true software craftsmanship. This book is packed with practical advice–about everything from estimating and coding to refactoring and testing. It covers much more than technique: It is about attitude. Martin shows how to approach software development with honor, self-respect, and pride; work well and work clean; communicate and estimate faithfully; face difficult decisions with clarity and honesty; and understand that deep knowledge comes with a responsibility to act.",
                 Publisher = prenticeHall,
-                Authors = new HashSet<Author> {
+                Authors = new List<Author> {
                     robertCMartin,
                 },
-                Categories = new HashSet<Category> {
+                Categories = new List<Category> {
                     computerCategory,
                     literatureCategory
                 },
@@ -336,16 +365,16 @@ namespace Athene.Inventory.Web
             };
             var book3 = new Book
             {
-                Id = 3,
+                ArticleId = 3,
                 InternationalStandardBookNumber = "9783836219563",
                 Title = "Windows Presentation Forms",
                 SubTitle = "WPF - Das umfassende Handbuch",
                 Description = "Geballtes Wissen zum Grafik-Framework von .NET! Ob Grundlagen, XAML, GUI-Entwicklung, Datenbindung, Animationen, Multimedia oder Migration - hier finden Sie auf jede Frage eine Antwort! Grundkenntnisse in C# vorausgesetzt, ist dieses Buch sowohl zum Einstieg als auch als Nachschlagewerk optimal geeignet.",
                 Publisher = rheinwerk,
-                Authors = new HashSet<Author> {
+                Authors = new List<Author> {
                     thomasClaudiusHuber,
                 },
-                Categories = new HashSet<Category> {
+                Categories = new List<Category> {
                     computerCategory,
                     codingCategory,
                     literatureCategory
@@ -354,17 +383,17 @@ namespace Athene.Inventory.Web
             };
             var book4 = new Book
             {
-                Id = 4,
+                ArticleId = 4,
                 InternationalStandardBookNumber = "9783836219563",
                 Title = "Moderne Betriebssysteme",
                 SubTitle = "Moderne Betriebssysteme (4., aktualisierte Auflage)",
                 Description = "Auch in dieser komplett überarbeiteten Neuauflage des preisgekrönten Lehrbuchs stellen die Autoren wie gewohnt auf unterhaltsame Art und Weise alle Konzepte rund um das Thema Betriebssysteme vor, die man benötigt, um moderne Betriebssysteme zu verstehen und zu entwickeln. Dabei wurden den neuesten Entwicklungen der Betriebssysteme sowie der zugrunde liegenden Hardware Rechnung getragen. Das Lehrbuch enthält umfangreiche Aktualisierungen zu UNIX, Linux und Windows und behandelt erstmals auch Android als mobiles Betriebssystem. Das Kapitel zu IT-Sicherheit wurde grundlegend aktualisiert, ein neues Kapitel behandelt die Themen Virtualisierungs- und Cloud-Technologie.  Zahlreiche Abbildungen, viele Beispiele, aktuelle Fallstudien sowie über 500 Übungsaufgaben erleichtern das Verstehen und Erlernen der vorgestellten Konzepte und Theorien. Zudem stehen auf den Companion Websites zum Buch Experimentier- und Simulationswerkzeuge zu Linux und Window bereit – ideal zum Selbststudium.",
                 Publisher = rheinwerk,
-                Authors = new HashSet<Author> {
+                Authors = new List<Author> {
                     andrewTannenbaum,
                     herbertBos
                 },
-                Categories = new HashSet<Category> {
+                Categories = new List<Category> {
                     computerCategory,
                     literatureCategory
                 },
@@ -372,16 +401,16 @@ namespace Athene.Inventory.Web
             };
             var book5 = new Book
             {
-                Id = 5,
+                ArticleId = 5,
                 InternationalStandardBookNumber = "9783446414457",
                 Title = "Theoretische Grundlagen der Informatik",
                 SubTitle = "",
                 Description = "Das Buch bietet einen Einstieg in die theoretischen Grundlagen der Informatik. Es beschränkt sich auf die klassischen Themen: formale Sprachen, endliche Automaten und Grammatiken, Turing-Maschinen, Berechenbarkeit und Entscheidbarkeit, Komplexität. Das Konzept der Transformation zwischen den verschiedenen Formalismen zieht sich wie ein roter Faden durch das gesamte Buch. Auf eine anschauliche Vermittlung der Begriffe und Methoden der theoretischen Informatik und ihre Vertiefung in Aufgaben und Programmierprojekten wird großer Wert gelegt. Auf der zu dem Buch gehörenden Website findet sich das Lernprogramm Machines, mit dem endliche Automaten, Kellerautomaten, Grammatiken, reguläre Ausdrücke und Turing-Maschinen mit einer komfortablen grafischen Oberfläche realisiert und visualisiert werden können.",
                 Publisher = hanserVerlag,
-                Authors = new HashSet<Author> {
+                Authors = new List<Author> {
                     rolfSocher
                 },
-                Categories = new HashSet<Category> {
+                Categories = new List<Category> {
                     computerCategory,
                     literatureCategory
                 },
@@ -389,13 +418,13 @@ namespace Athene.Inventory.Web
             };
             var book6 = new Book
             {
-                Id = 6,
+                ArticleId = 6,
                 InternationalStandardBookNumber = "9783060313150",
                 Title = "English G 21",
                 SubTitle = "",
                 Description = "Eine systematische Prüfungsvorbereitung mit drei kürzeren Units, die dem Aufbau von Band 5 folgen",
                 Publisher = cornelsen,
-                Authors = new HashSet<Author> {
+                Authors = new List<Author> {
                     susanAbbey,
                     roderickCox,
                     laurenceHarger,
@@ -403,20 +432,20 @@ namespace Athene.Inventory.Web
                     wolfgangBiederstaedt,
                     hellmutSchwarz
                 },
-                Categories = new HashSet<Category> {
+                Categories = new List<Category> {
                     schoolCategory
                 },
                 Language = english
             };
             var book7 = new Book
             {
-                Id = 7,
+                ArticleId = 7,
                 InternationalStandardBookNumber = "9783125380011",
                 Title = "¡Adelante! Nivel intermedio",
                 SubTitle = "¡Adelante! Schülerbuch 11./12. Schuljahr. Nivel intermedio",
                 Description = "Alltagssituationen, über die man gerne spricht - Schulung der Grundfertigkeiten - Förderung des Sprechens - Aufgabenorientiertes Arbeiten - Grammatik, die auf das Wesentliche reduziert ist - Anregungen zum selbstständigen Lernen 8 Unidades, linearer Buchaufbau mit 3 Plateauphasen. Die inhaltliche Konzeption des Nivel elemental wird fortgeführt: Am Ende jeder Unidad steht ebenfalls die Tarea final. Die Schülerinnen und Schüler lernen interessante Schauplätze in Spanien und Lateinamerika kennen. Intensive Abiturvorbereitung im Teil Preparación para los exámenes: ein Angebot verschiedener…mehr",
                 Publisher = ernstKlett,
-                Authors = new HashSet<Author> {
+                Authors = new List<Author> {
                     antonioBarquero,
                     julianaBizama,
                     jaimeCorpas,
@@ -427,7 +456,7 @@ namespace Athene.Inventory.Web
                     javierNavarro,
                     rosamnaPardellas
                 },
-                Categories = new HashSet<Category> {
+                Categories = new List<Category> {
                     schoolCategory
                 },
                 Language = spain

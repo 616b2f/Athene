@@ -22,15 +22,15 @@ namespace Athene.Inventory.Web.Mappers
 
             CreateMap<Category, CategoryViewModel>();
 
-            CreateMap<CreateUserViewModel, ApplicationUser>()
+            CreateMap<CreateUserViewModel, User>()
                 .ForMember(x => x.Address, opt => opt.MapFrom(x => new Address(x.AddressStreet, x.AddressZip, x.AddressCity, x.AddressCountry)));
 
             CreateMap<CreateInventoryItemViewModel, InventoryItem>()
                 .ForMember(x => x.StockLocation, opt => opt.MapFrom(x => new StockLocation{ Hall = x.Hall, Corridor = x.Corridor, Rack = x.Rack, Level = x.Level, Position = x.Position }));
 
             CreateMap<EditBookViewModel, Book>()
-                .ForMember(x => x.Authors, opt => opt.MapFrom(x => x.authorsIds.Select(i => new Author { Id = i })))
-                .ForMember(x => x.Categories, opt => opt.MapFrom(x => x.categoriesIds.Select(i => new Category { Id = i })));
+                .ForMember(x => x.Authors, opt => opt.MapFrom(x => x.AuthorsIds.Select(i => new Author { Id = i })))
+                .ForMember(x => x.Categories, opt => opt.MapFrom(x => x.CategoriesIds.Select(i => new Category { Id = i })));
 
             CreateMap<Book, EditBookViewModel>();
 

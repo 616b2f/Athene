@@ -21,9 +21,9 @@ namespace Athene.Inventory.Web.Models
         IUserPasswordStore<TUser>,
         IQueryableRoleStore<TRole>,
         IUserEmailStore<TUser>,
-        IUserRepository
+        IUserRepository<TUser>
         where TRole : IdentityRole
-        where TUser : ApplicationUser
+        where TUser : User
     {
         private readonly Dictionary<string, TUser> _logins = new Dictionary<string, TUser>();
         private readonly Dictionary<string, TUser> _users = new Dictionary<string, TUser>();
@@ -390,7 +390,7 @@ namespace Athene.Inventory.Web.Models
             return Task.FromResult<IList<TUser>>(query.ToList());
         }
 
-        public IEnumerable<IUser> FindByMatchcode(string matchcode)
+        public IEnumerable<TUser> FindByMatchcode(string matchcode)
         {
             var normalizedMatchcode = matchcode.ToLower();
             return Users
@@ -401,21 +401,30 @@ namespace Athene.Inventory.Web.Models
                 .ToArray();
         }
 
-        public IUser FindByUserId(string userId)
+        public TUser FindByUserId(string userId)
         {
             return Users.SingleOrDefault(u => u.Id.ToString() == userId);
         }
 
-        public IEnumerable<IUser> FindByUserIds(IEnumerable<string> userIds)
+        public IEnumerable<TUser> FindByUserIds(IEnumerable<string> userIds)
         {
             return Users.Where(u => userIds.Contains(u.Id));
         }
 
-        public void Add(IUser user)
+        public void Add(TUser user)
         {
             if (user.Id == null)
                 user.Id = Guid.NewGuid().ToString();
             _users[user.Id] = (TUser)user;
+        }
+
+        public void AddRange(IEnumerable<TUser> users)
+        {
+            foreach(var user in users)
+            {
+                user.Id = Guid.NewGuid().ToString();
+                _users[user.Id] = user;
+            }
         }
     }
 }

@@ -17,24 +17,21 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
     [Authorize(Policy=Constants.Policies.Librarian)]
     public class InventoryController : Controller
     {
-		private readonly IInventoryRepository _inventoryService;
-		private readonly IArticleRepository _articleRepository;
-		private readonly IUserRepository _userRepository;
+        private readonly IInventoryProvider _inventoryProvider;
+        private readonly IArticleProvider _articleProvider;
+        private readonly IUserProvider<User> _userProvider;
         private readonly IStringLocalizer<SharedResource> _localizer;
-        private readonly UserManager<ApplicationUser> _userManager;
 
 		public InventoryController(
-            IInventoryRepository inventoryService, 
-            IArticleRepository articleRepository,
+            IInventoryProvider inventoryProvider,
+            IArticleProvider articleProvider,
             IStringLocalizer<SharedResource> localizer,
-            IUserRepository userRepository,
-            UserManager<ApplicationUser> userManager)
+            IUserProvider<User> userProvider)
 		{
-			_inventoryService = inventoryService;
-            _articleRepository = articleRepository;
+            _inventoryProvider = inventoryProvider;
+            _articleProvider = articleProvider;
             _localizer = localizer;
-            _userRepository = userRepository;
-            _userManager = userManager;
+            _userProvider = userProvider;
 		}
 
 		[HttpGet]
@@ -51,7 +48,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 			if (string.IsNullOrEmpty(q))
 				return View();
 
-            var articles = _articleRepository.SearchForArticlesByMatchcode(q);
+            var articles = _articleProvider.SearchForArticlesByMatchcode(q);
             return View(articles);
         }
 
@@ -61,9 +58,9 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 			if (id == 0)
 				return RedirectToAction("Index");
 
-            var inventoryItems = _inventoryService.FindInventoryItemsByArticleId(new[] { id });
+            var inventoryItems = _inventoryProvider.FindInventoryItemsByArticleId(new[] { id });
             var userIds = inventoryItems.Select(x => x.RentedByUserId);
-            var users = _userRepository.FindByUserIds(userIds);
+            var users = _userProvider.FindByUserIds(userIds);
             PropagateInventoryItemsWithUsers(inventoryItems, users);
             var viewModel = inventoryItems.ToDetailsViewModels();
             return View(viewModel);

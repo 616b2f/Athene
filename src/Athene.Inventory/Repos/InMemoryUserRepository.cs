@@ -5,12 +5,17 @@ using System.Linq;
 
 namespace Athene.Inventory.Abstractions.TestImp
 {
-    public class InMemoryUserRepository : IUserRepository
+    public class InMemoryUserRepository : IUserRepository<IUser>
     {
         private readonly List<IUser> _user = new List<IUser>();
         public void Add(IUser user)
         {
             _user.Add(user);
+        }
+
+        public void AddRange(IEnumerable<IUser> users)
+        {
+            _user.AddRange(users);
         }
 
         public IEnumerable<IUser> FindByMatchcode(string matchcode)

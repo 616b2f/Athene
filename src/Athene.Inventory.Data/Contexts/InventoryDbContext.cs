@@ -2,10 +2,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Athene.Inventory.Abstractions.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Athene.Inventory.Data.Contexts
 {
-    public class InventoryDbContext : IdentityDbContext<ApplicationUser>
+    public class InventoryDbContext : IdentityDbContext<User>
     {
         public InventoryDbContext(DbContextOptions<InventoryDbContext> options) 
             : base(options)
@@ -21,11 +22,6 @@ namespace Athene.Inventory.Data.Contexts
         public DbSet<Author> Authors { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<School> Schools { get; set; }
-
-        // protected override void OnConfiguring(DbContextOptionsBuilder options)
-        // {
-        //     options.UseSqlite(Startup.Configuration.GetConnectionString("DefaultConnection"));
-        // }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -60,23 +56,25 @@ namespace Athene.Inventory.Data.Contexts
 
             builder.Entity<Article>(opt => 
             {
-                opt.HasKey(x => x.Id);
-                opt.HasMany(x => x.InventoryItems).WithOne();
-                // opt.HasMany(x => x.Matchcodes);
-                opt.Ignore(x => x.Matchcodes);
+                opt.HasKey(x => x.ArticleId);
+                opt.HasMany(x => x.InventoryItems).WithOne(x => x.Article);
+                opt.OwnsMany(x => x.Matchcodes, m => 
+                {
+                    m.HasForeignKey("ArticleId");
+                    m.Property<int>("Id");
+                    m.HasKey("Id");
+                    m.HasIndex(x => x.Value);
+                });
             });
 
             builder.Entity<InventoryItem>(opt => 
             {
                 opt.HasKey(x => x.Id);
-                opt.HasOne(x => x.Article).WithMany().HasForeignKey();
+                opt.HasIndex(x => x.Barcode);
+                opt.HasIndex(x => x.ExternalId);
+                opt.HasIndex(x => x.RentedByUserId);
                 opt.Ignore(x => x.RentedBy);
             });
-
-            // builder.Entity<Student>(st => {
-            //     st.HasKey(x => x.StudentId);
-            //     st.Property(x => x.StudentId).ValueGeneratedNever();
-            // });
         }
     }
 }

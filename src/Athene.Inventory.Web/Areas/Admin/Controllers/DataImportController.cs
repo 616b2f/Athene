@@ -19,28 +19,21 @@ namespace Athene.Inventory.Web.Areas.Admin.Controllers
     [AutoValidateAntiforgeryToken]
     public class DataImportController : Controller
     {
-        private readonly IUserRepository _userRepo;
-        private readonly IInventoryRepository _inventory;
-        private readonly IArticleRepository _articleRepo;
+        private readonly IUnitOfWork<User> _unitOfWork;
 
-        public DataImportController(
-            IUserRepository userRepo,
-            IInventoryRepository inventory,
-            IArticleRepository articleRepo)
+        public DataImportController(IUnitOfWork<User> unitOfWork)
         {
-            _userRepo = userRepo;
-            _inventory = inventory;
-            _articleRepo = articleRepo;
+            _unitOfWork = unitOfWork;
         }
 
         private const string _booksDataType = "books";
         private const string _invItemsDataType = "invItems";
         private const string _studentDataType = "students";
 
-        private static IEnumerable<IDataImport> _dataImports = new List<IDataImport> {
+        private static readonly IEnumerable<IDataImport> _dataImports = new List<IDataImport> {
                 new CsvDataImport<Book, BookCsvMapping>(),
                 new CsvDataImport<InventoryItem, InventoryItemCsvMapping>(),
-                new CsvDataImport<ApplicationUser, StudentCsvMapping>(),
+                new CsvDataImport<User, StudentCsvMapping>(),
         };
 
         [HttpGet]
@@ -56,10 +49,10 @@ namespace Athene.Inventory.Web.Areas.Admin.Controllers
             viewModel.SourceTypes = new SelectList(new Dictionary<string,string>{
                 { "CSV Datei", Athene.Inventory.Abstractions.DataImport.Constants.InputFormats.Csv },
             }, "Value", "Key");
-            viewModel.DataTypes = new SelectList(new Dictionary<string,string>{
-                { "Buecher", nameof(Book) },
-                { "Buch exemplare", nameof(InventoryItem) },
-                { "Schueler", nameof(ApplicationUser) },
+            viewModel.DataTypes = new SelectList(new Dictionary<string, string>{
+                { "Buecher", nameof(Abstractions.Models.Book) },
+                { "Buch exemplare", nameof(Abstractions.Models.InventoryItem) },
+                { "Schueler", nameof(Inventory.User) },
             }, "Value", "Key");
         }
 
@@ -78,22 +71,23 @@ namespace Athene.Inventory.Web.Areas.Admin.Controllers
             string viewName = "";
             switch (dataImport.OutputFormat)
             {
-                case nameof(Book):
+                case nameof(Abstractions.Models.Book):
                     var books = (IEnumerable<Book>)items;
                     serialisedData = JsonConvert.SerializeObject(books);
                     cachePrefix = _booksDataType;
                     viewName = "Books";
                     break;
-                case nameof(InventoryItem):
+                case nameof(Abstractions.Models.InventoryItem):
                     var invItems = (IEnumerable<InventoryItem>)items;
                     MapToArticles(invItems);
-                    serialisedData = JsonConvert.SerializeObject(invItems, new JsonSerializerSettings {
+                    serialisedData = JsonConvert.SerializeObject(invItems, new JsonSerializerSettings
+                    {
                         TypeNameHandling = TypeNameHandling.All
                     });
                     cachePrefix = _invItemsDataType;
                     viewName = "InventoryItems";
                     break;
-                case nameof(ApplicationUser):
+                case nameof(Inventory.User):
                     var users = (IEnumerable<IUser>)items;
                     serialisedData = JsonConvert.SerializeObject(users);
                     items = users.Select(u => u.ToViewModel());
@@ -116,7 +110,7 @@ namespace Athene.Inventory.Web.Areas.Admin.Controllers
                 if (invItem.Article is Book)
                 {
                     var book = invItem.Article as Book;
-                    var result = _articleRepo.SearchForArticlesByMatchcode(book.InternationalStandardBookNumber);
+                    var result = _unitOfWork.Articles.SearchForArticlesByMatchcode(book.InternationalStandardBookNumber);
                     // TODO: if found more then 1 add error for imported inventoryItem and if Article is null too
                     if (result.Count() <= 1)
                         invItem.Article = (Book)result.FirstOrDefault();
@@ -133,7 +127,7 @@ namespace Athene.Inventory.Web.Areas.Admin.Controllers
             if (importId.StartsWith(_booksDataType))
             {
                 var books = JsonConvert.DeserializeObject<IEnumerable<Book>>(serializedData);
-                _articleRepo.AddArticles(books);
+                _unitOfWork.Articles.AddArticles(books);
                 ViewBag.ImportedQuantity = books.Count();
             }
             else if (importId.StartsWith(_invItemsDataType))
@@ -141,24 +135,17 @@ namespace Athene.Inventory.Web.Areas.Admin.Controllers
                 var invItems = JsonConvert.DeserializeObject<IEnumerable<InventoryItem>>(serializedData, new JsonSerializerSettings {
                         TypeNameHandling = TypeNameHandling.All
                     });
-                _inventory.AddInventoryItems(invItems);
+                _unitOfWork.Inventories.AddInventoryItems(invItems);
                 ViewBag.ImportedQuantity = invItems.Count();
             }
             else if (importId.StartsWith(_studentDataType))
             {
-                var users = JsonConvert.DeserializeObject<IEnumerable<ApplicationUser>>(serializedData);
-                ImportAllUsers(users);
+                var users = JsonConvert.DeserializeObject<IEnumerable<User>>(serializedData);
+                _unitOfWork.Users.AddRange(users);
                 ViewBag.ImportedQuantity = users.Count();
             }
+            _unitOfWork.SaveChanges();
             return View("ImportResult");
-        }
-
-        private void ImportAllUsers(IEnumerable<ApplicationUser> users)
-        {
-            foreach (var user in users)
-            {
-                _userRepo.Add(user);
-            }
         }
     }
 }

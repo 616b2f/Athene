@@ -13,20 +13,20 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
     [Authorize(Policy=Constants.Policies.Librarian)]
     public class AuthorsController : Controller
     {
-        private readonly IInventoryRepository _inventoryService;
-        private readonly IBookMetaRepository _bookMetaRepository;
+        private readonly IBookMetaProvider _bookMetaProvider;
+        private readonly IUnitOfWork<User> _unitOfWork;
 
-        public AuthorsController(
-            IInventoryRepository inventoryService,
-            IBookMetaRepository bookMetaRepository) 
+        public AuthorsController(IUnitOfWork<User> unitOfWork,
+            IBookMetaProvider bookMetaProvider)
         {
-            _inventoryService = inventoryService;
-            _bookMetaRepository = bookMetaRepository;
+            _bookMetaProvider = bookMetaProvider;
+            _unitOfWork = unitOfWork;
         }
+
         // GET: /<controller>/
         public IActionResult Index()
         {
-            var authors = _bookMetaRepository.AllAuthors();
+            var authors = _bookMetaProvider.AllAuthors();
             return View(authors.ToViewModels());
         }
 
@@ -43,9 +43,8 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
             if (ModelState.IsValid)
             {
                 var author = model.ToEntity();
-                var authors = new List<Author>();
-                authors.Add(author);
-                _bookMetaRepository.AddAuthors(authors);
+                _unitOfWork.BookMetas.AddAuthor(author);
+                _unitOfWork.SaveChanges();
                 return RedirectToAction("Index");
             }
 

@@ -18,18 +18,18 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
     [Authorize(Policy=Constants.Policies.Librarian)]
     public class UsersController : Controller
     {
+        private readonly IUnitOfWork<User> _unitOfWork;
         private readonly IStringLocalizer<SharedResource> _localizer;
-        private readonly IInventoryRepository _inventoryService;
-        private readonly IUserRepository _usersRepository;
+        private readonly IUserProvider<User> _usersProvider;
 
         public UsersController(
+            IUnitOfWork<User> unitOfWork,
             IStringLocalizer<SharedResource> localizer,
-            IInventoryRepository inventoryService,
-            IUserRepository usersRepository) 
+            IUserProvider<User> usersProvider) 
         {
+            _unitOfWork = unitOfWork;
             _localizer = localizer;
-            _inventoryService = inventoryService;
-            _usersRepository = usersRepository;
+            _usersProvider = usersProvider;
         }
 
         [HttpGet]
@@ -38,8 +38,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
             if (string.IsNullOrWhiteSpace(q))
                 return View();
 
-            var users = _usersRepository.FindByMatchcode(q)
-                .Cast<ApplicationUser>();
+            var users = _usersProvider.FindByMatchcode(q);
             return View(users);
         }
 
@@ -54,7 +53,8 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
         public IActionResult Create(CreateUserViewModel model)
         {
             if (ModelState.IsValid) {
-                _usersRepository.Add(model.ToEntity());
+                _unitOfWork.Users.Add(model.ToEntity());
+                _unitOfWork.SaveChanges();
                 this.SetUserMessage(UserMessageType.Success, _localizer["Success_UserCreated"]);
                 return RedirectToAction("Index");
             }

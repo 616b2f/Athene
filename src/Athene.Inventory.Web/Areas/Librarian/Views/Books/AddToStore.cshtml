@@ -8,8 +8,9 @@
 	</div>
 </div>
 
-@Html.Partial("_BookItemPreview", Model.Article)
+<partial name="_BookItemPreview" for="Article">
 
+<div asp-validation-summary="All" class="alert alert-danger"></div>
 <form asp-controller="Books" asp-action="AddToStore">
     @Html.HiddenFor(model => model.ArticleId)
     <div class="form-group col-md-2">

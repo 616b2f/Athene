@@ -68,7 +68,7 @@ namespace Athene.Inventory.Abstractions.TestImp
 
         public IEnumerable<InventoryItem> FindInventoryItemsByArticleId(int[] ids)
         {
-            return _inventoryItems.Where(x => ids.Contains(x.Article.Id)).AsEnumerable();
+            return _inventoryItems.Where(x => ids.Contains(x.Article.ArticleId)).AsEnumerable();
         }
 
         public IEnumerable<InventoryItem> SearchByMatchcode(string matchcode)
@@ -82,7 +82,7 @@ namespace Athene.Inventory.Abstractions.TestImp
         public IEnumerable<StockLocation> SearchForLocations(Article article)
         {
             return _inventoryItems
-                .Where(i => i.Article.Id == article.Id)
+                .Where(i => i.Article.ArticleId == article.ArticleId)
                 .Select(i => i.StockLocation)
                 .Distinct();
         }

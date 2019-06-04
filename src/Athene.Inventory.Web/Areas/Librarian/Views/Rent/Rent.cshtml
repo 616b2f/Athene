@@ -1,11 +1,11 @@
 @model Athene.Inventory.Web.Areas.Librarian.Models.RentViewModels.RentViewModel
 @{
-    ViewBag.Title = "Benutzer";
+    ViewBag.Title = @Localizer["Rent books"];
     Layout = "_Layout";
 }
 <h3>@ViewBag.Title</h3>
-@Html.Partial("_UserPreview", Model.User)
-<h3>Bücher leihen</h3>
+<partial name="_UserPreview" for="User">
+<h3>@Localizer["Rent books"]</h3>
 <form asp-controller="Rent" asp-action="Rent" asp-route-userId="@Model.UserId">
     <div class="form-group">
     <div class="form-inline">
@@ -20,7 +20,7 @@
                 </div>
             </div>
             <div class="input-group">
-                <button class="btn btn-primary">Alle leihen</button>
+                <button class="btn btn-primary">@Localizer["Rent all"]</button>
             </div>
         </div>
     </div>

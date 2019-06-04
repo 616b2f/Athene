@@ -8,7 +8,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Models.RentViewModels
         {
         }
         public string UserId { get; set; }
-        public ApplicationUser User { get; set; }
+        public User User { get; set; }
         public int[] BookItemIds { get; set; }
     }
 }

@@ -110,3 +110,10 @@ textarea.ath-input-sm {
 .navbar-default .navbar-brand:hover {
     color: #4d90fe;
 }
+
+.validation-summary-valid { 
+    display:none;
+}
+.validation-summary-error {
+    display: block;
+}

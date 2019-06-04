@@ -15,15 +15,15 @@ namespace Athene.Inventory.Web.Controllers
     [Authorize]
     public class InventoryController : Controller
     {
-        private readonly IInventoryRepository _inventory;
-        private readonly IArticleRepository _articleRepo;
+        private readonly IInventoryProvider _inventory;
+        private readonly IArticleProvider _article;
 
         public InventoryController(
-            IInventoryRepository inventory,
-            IArticleRepository articleRepo) 
+            IInventoryProvider inventory,
+            IArticleProvider article) 
         {
             _inventory = inventory;
-            _articleRepo = articleRepo;
+            _article = article;
         }
 
         [HttpGet]
@@ -40,8 +40,8 @@ namespace Athene.Inventory.Web.Controllers
             if (string.IsNullOrEmpty(q))
                 return View();
 
-            var articles = _articleRepo.SearchForArticlesByMatchcode(q);
-            var articleIds = articles.Select(x => x.Id).ToArray();
+            var articles = _article.SearchForArticlesByMatchcode(q);
+            var articleIds = articles.Select(x => x.ArticleId).ToArray();
             var invItems = _inventory.FindInventoryItemsByArticleId(articleIds);
             Propagate(articles, invItems);
             SetDefaultImageIfEmpty(articles);
@@ -66,7 +66,7 @@ namespace Athene.Inventory.Web.Controllers
         {
             foreach (var article in articles)
             {
-                article.InventoryItems = invItems.Where(x => x.Article.Id == article.Id).ToList();
+                article.InventoryItems = invItems.Where(x => x.Article.ArticleId == article.ArticleId).ToList();
             }
         }
     }

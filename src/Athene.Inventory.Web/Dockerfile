@@ -1,10 +1,10 @@
-FROM microsoft/dotnet:2.1.401-sdk-alpine as build
+FROM microsoft/dotnet:2.2-sdk-alpine as build
 COPY . /src
 WORKDIR /src/src/Athene.Inventory.Web/
 RUN dotnet restore Athene.Inventory.Web.csproj
 RUN dotnet publish Athene.Inventory.Web.csproj --no-restore -c Release -o /app
 
-FROM microsoft/dotnet:2.1.5-aspnetcore-runtime-alpine AS base
+FROM microsoft/dotnet:2.2-aspnetcore-runtime-alpine AS base
 RUN apk add --no-cache \
     sqlite \
     # add icu for globalization support

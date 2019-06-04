@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Identity;
 namespace Athene.Inventory
 {
     // Add profile data for application users by adding properties to the ApplicationUser class
-    public class ApplicationUser : IdentityUser, IUser
+    public class User : IdentityUser, IUser
     {
-        public ApplicationUser() {
+        public User() {
             RentedItems = new HashSet<InventoryItem>();
         }
         public string Surname { get; set; }

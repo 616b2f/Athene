@@ -20,22 +20,18 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 	[Authorize(Policy=Constants.Policies.Librarian)]
 	public class BooksController : Controller
 	{
-		private readonly IInventoryRepository _inventoryService;
-		private readonly IArticleRepository _articleRepository;
-        private readonly IBookMetaRepository _bookMetaRepository;
+        private readonly IUnitOfWork<User> _unitOfWork;
+        private readonly IBookMetaProvider _bookMetaProvider;
         private readonly IStringLocalizer<SharedResource> _localizer;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<User> _userManager;
 
-		public BooksController(
-            IInventoryRepository inventoryService, 
-            IArticleRepository articleRepository,
-            IBookMetaRepository bookMetaRepository,
+		public BooksController(IUnitOfWork<User> unitOfWork,
+            IBookMetaProvider bookMetaProvider,
             IStringLocalizer<SharedResource> localizer,
-            UserManager<ApplicationUser> userManager)
+            UserManager<User> userManager)
 		{
-			_inventoryService = inventoryService;
-            _articleRepository = articleRepository;
-            _bookMetaRepository = bookMetaRepository;
+            _unitOfWork = unitOfWork;
+            _bookMetaProvider = bookMetaProvider;
             _localizer = localizer;
             _userManager = userManager;
 		}
@@ -54,16 +50,16 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
             if (ModelState.IsValid)
             {
                 var book = new Book();
-                foreach(int authorId in model.authorsIds)
+                foreach(int authorId in model.AuthorsIds)
                 {
                     book.Authors.Add(new Author { Id = authorId });
                 }
-                book.Categories.Clear();
-                foreach(int categoryId in model.categoriesIds)
+                foreach(int categoryId in model.CategoriesIds)
                 {
                     book.Categories.Add(new Category { Id = categoryId });
                 }
-                _articleRepository.AddArticle(book);
+                _unitOfWork.Articles.AddArticle(book);
+                _unitOfWork.SaveChanges();
                 this.SetUserMessage(UserMessageType.Success, _localizer["Success_BookCreated"]);
                 return RedirectToAction("Index", "Inventory");
             }
@@ -78,14 +74,14 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
             if (articleId == null)
                 return RedirectToAction("Index", "Inventory");
 
-            var article = _articleRepository.FindArticleById(articleId.Value);
+            var article = _unitOfWork.Articles.FindArticleById(articleId.Value);
 
             if (article == null)
                 return RedirectToAction("Index", "Inventory");
 
             var viewModel = new CreateInventoryItemViewModel
             {
-                ArticleId = article.Id,
+                ArticleId = article.ArticleId,
                 Article = article,
             };
             return View(viewModel);
@@ -97,7 +93,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
         {
             if (ModelState.IsValid)
             {
-                var article = _articleRepository.FindArticleById(model.ArticleId);
+                var article = _unitOfWork.Articles.FindArticleById(model.ArticleId);
 
                 if (article == null)
                 {
@@ -117,10 +113,12 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
                     };
                     inventoryItem.Notes.Add(note);
                 }
-                _inventoryService.AddInventoryItem(inventoryItem);
+                _unitOfWork.Inventories.AddInventoryItem(inventoryItem);
+                _unitOfWork.SaveChanges();
                 return RedirectToAction("Index", "Inventory");
             }
 
+            model.Article = _unitOfWork.Articles.FindArticleById(model.ArticleId);
             return View(model);
         }
 
@@ -130,9 +128,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
             if (id == null)
                 return RedirectToAction("Index", "Inventory");
 
-            var book = _articleRepository.FindArticleById(id.Value) as Book;
-
-            if (book == null)
+            if (!(_unitOfWork.Articles.FindArticleById(id.Value) is Book book))
             {
                 this.SetUserMessage(UserMessageType.Error, _localizer["Error_BookNotFound"]);
                 return RedirectToAction("Index", "Inventory");
@@ -149,8 +145,14 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
         {
             if (ModelState.IsValid)
             {
-                var book = viewModel.ToModel();
-                _articleRepository.UpdateArticle(book);
+                if (!(_unitOfWork.Articles.FindArticleById(viewModel.Id) is Book book))
+                {
+                    this.SetUserMessage(UserMessageType.Error, _localizer["Error_BookNotFound"]);
+                    return RedirectToAction("Index", "Inventory");
+                }
+
+                viewModel.ToModel(book);
+                _unitOfWork.SaveChanges();
                 this.SetUserMessage(UserMessageType.Success, _localizer["Success_BookCreated"]);
                 return RedirectToAction("Index", "Inventory");
             }
@@ -161,25 +163,25 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 
         private void LoadCreateViewBags()
         {
-            var languages = _bookMetaRepository.AllLanguages();
+            var languages = _bookMetaProvider.AllLanguages();
             ViewBag.LanguageId = new SelectList(languages, "Id", "Name");
-            var publisher = _bookMetaRepository.AllPublisher();
+            var publisher = _bookMetaProvider.AllPublisher();
             ViewBag.PublisherId = new SelectList(publisher, "Id", "Name");
-            var authors = _bookMetaRepository.AllAuthors();
+            var authors = _bookMetaProvider.AllAuthors();
             ViewBag.Authors = new SelectList(authors, "Id", "FullName");
-            var categories = _bookMetaRepository.AllCategories();
+            var categories = _bookMetaProvider.AllCategories();
             ViewBag.Categories = new SelectList(categories, "Id", "Name");
         }
 
         private void LoadEditViewBags()
         {
-            var languages = _bookMetaRepository.AllLanguages();
+            var languages =  _bookMetaProvider.AllLanguages();
             ViewBag.LanguageId = new SelectList(languages, "Id", "Name");
-            var publisher = _bookMetaRepository.AllPublisher();
+            var publisher = _bookMetaProvider.AllPublisher();
             ViewBag.PublisherId = new SelectList(publisher, "Id", "Name");
-            var authors = _bookMetaRepository.AllAuthors();
+            var authors = _bookMetaProvider.AllAuthors();
             ViewBag.Authors = new SelectList(authors, "Id", "FullName");
-            var categories = _bookMetaRepository.AllCategories();
+            var categories = _bookMetaProvider.AllCategories();
             ViewBag.Categories = new SelectList(categories, "Id", "Name");
         }
     }

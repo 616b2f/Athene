@@ -5,7 +5,7 @@ using CsvHelper.Configuration;
 
 namespace Athene.Inventory.Abstractions.DataImport
 {
-    public class StudentCsvMapping : CsvClassMap<ApplicationUser>
+    public class StudentCsvMapping : CsvClassMap<User>
     {
         public StudentCsvMapping()
         {
