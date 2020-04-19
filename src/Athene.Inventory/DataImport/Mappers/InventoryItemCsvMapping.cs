@@ -1,12 +1,10 @@
 using System;
-using System.Globalization;
-using System.Linq;
 using Athene.Inventory.Abstractions.Models;
 using CsvHelper.Configuration;
 
 namespace Athene.Inventory.Abstractions.DataImport
 {
-    public class InventoryItemCsvMapping : CsvClassMap<InventoryItem>
+    public class InventoryItemCsvMapping : ClassMap<InventoryItem>
     {
         public InventoryItemCsvMapping()
         {

@@ -1,0 +1,106 @@
+<header>
+  <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <div class="container">
+      <a class="navbar-brand" [routerLink]="['/']">Athene</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target=".navbar-collapse"
+        aria-label="Toggle navigation"
+        [attr.aria-expanded]="isExpanded"
+        (click)="toggle()"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div
+        class="navbar-collapse collapse"
+        [ngClass]="{ show: isExpanded }"
+      >
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown" *ngIf="isAuthenticated | async" ngbDropdown [routerLinkActive]="['link-active']">
+            <a href="#" class="nav-link dropdown-toggle text-dark" ngbDropdownToggle id="navbarDropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <img src="/assets/icons/wrench.svg" alt="" width="16" height="16">
+                Manage <span class="caret"></span>
+            </a>
+            <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a ngbDropdownItem class="dropdown-item" [routerLink]="['/librarian/inventory']">Inventory</a>
+                <a ngbDropdownItem class="dropdown-item" [routerLink]="['/librarian/users']">Users</a>
+                <a ngbDropdownItem class="dropdown-item" [routerLink]="['/librarian/publishers']">Publishers</a>
+                <a ngbDropdownItem class="dropdown-item" [routerLink]="['/librarian/authors']">Authors</a>
+                <a ngbDropdownItem class="dropdown-item" [routerLink]="['/librarian/categories']">Categories</a>
+                <div *ngIf="isAdministrator">
+                    <h6 class="dropdown-header">Administrator</h6>
+                    <a ngbDropdownItem class="dropdown-item" [routerLink]="['/admin/dataimport']">Import data</a>
+                </div>
+              </div>
+        </li>
+      </ul>
+        <!-- <ul class="nav navbar-nav">
+          <li
+            class="nav-item"
+            [routerLinkActive]="['link-active']"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" [routerLink]="['/counter']"
+              >Counter</a
+            >
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" [routerLink]="['/fetch-data']"
+              >Fetch data</a
+            >
+          </li>
+        </ul> -->
+        <app-login-menu></app-login-menu>
+      </div>
+    </div>
+  </nav>
+</header>
+<!-- 
+<div class="navbar navbar-default ath-navbar-top navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="navbar-brand" [routerLink]="['/']">Athene</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <ul class="nav navbar-nav">
+                    @if ((await Authz.AuthorizeAsync(User, Constants.Permissions.AdministrateInventory)).Succeeded)
+                    {
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <label class="glyphicon glyphicon-wrench"></label>
+                                @Localizer["Manage"] <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a asp-area="Librarian" asp-controller="Inventory" asp-action="Index">@Localizer["Manage inventory"]</a></li>
+                                <li><a asp-area="Librarian" asp-controller="Users" asp-action="Index">@Localizer["Manage users"]</a></li>
+                                <li><a asp-area="Librarian" asp-controller="Publisher" asp-action="Index">@Localizer["Manage publishers"]</a></li>
+                                <li><a asp-area="Librarian" asp-controller="Authors" asp-action="Index">@Localizer["Manage authors"]</a></li>
+                                <li><a asp-area="Librarian" asp-controller="Categories" asp-action="Index">@Localizer["Manage categories"]</a></li>
+                                @if ((await Authz.AuthorizeAsync(User, Constants.Permissions.DataImport)).Succeeded)
+                                {
+                                    <li class="dropdown-header">@Localizer["Administrator"]</li>
+                                    <li><a asp-area="Admin" asp-controller="DataImport" asp-action="Index">@Localizer["Import data"]</a></li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            }
+            @await Html.PartialAsync("_LoginPartial")
+        </div>
+    </div>
+</div> -->

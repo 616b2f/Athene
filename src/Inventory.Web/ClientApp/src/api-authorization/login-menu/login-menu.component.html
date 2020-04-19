@@ -1,0 +1,51 @@
+<ul class="navbar-nav ml-auto" *ngIf="isAuthenticated | async">
+    <li ngbDropdown class="nav-item">
+        <a type="button" role="button" ngbDropdownToggle class="btn dropdown-caret-off" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <img src="/assets/icons/bell.svg" alt="" width="16" height="16">
+        </a>
+        <div ngbDropdownMenu class="dropdown-menu dropdown-menu-lg-right p-4 text-muted" style="max-width: 300px;">
+            <p class="mb-0">
+                You have no new notifications
+            </p>
+        </div>
+    </li>
+    <li ngbDropdown class="nav-item dropdown">
+        <a ngbDropdownToggle href="#" class="nav-link dropdown-toggle text-dark" id="userNavbarDropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <img src="/assets/icons/people-circle.svg" alt="" width="25" height="25"/>
+        </a>
+        <div ngbDropdownMenu class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="userNavbarDropdown">
+            <a class="dropdown-header">
+                Logged in as <strong>{{ userName | async }}</strong>"
+            </a>
+            <a ngbDropdownItem class="dropdown-item" [routerLink]='["/authentication/profile"]' title="Manage">Your Profile</a>
+            <div class="dropdown-divider"></div>
+            <a ngbDropdownItem class="dropdown-item" [routerLink]='["/authentication/logout"]' [state]='{ local: true }' title="Sign Out">Sign Out</a>
+            <!-- <li><a href="#">Settings</a></li> -->
+        </div>
+    </li>
+
+    <!-- <form class="form-inline ">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form> -->
+    <!-- <form class="navbar-form ath-searchbar"
+            asp-area=""
+            asp-controller="Inventory"
+            asp-action="Index"
+            method="get">
+            <div class="form-group">
+                <div class="input-group" style="display:table">
+                    <input name="q" type="text" class="form-control" placeholder="ISBN, Title, Description, Author" />
+                    <span class="input-group-btn"><button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span> @Localizer["Search"]</button></span>
+                </div>
+            </div>
+    </form> -->
+</ul>
+<ul class="navbar-nav" *ngIf="!(isAuthenticated | async)">
+  <li class="nav-item">
+        <a class="nav-link text-dark" [routerLink]='["/authentication/register"]'>Register</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" [routerLink]='["/authentication/login"]'>Login</a>
+    </li>
+</ul>

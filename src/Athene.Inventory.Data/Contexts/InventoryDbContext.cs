@@ -1,19 +1,19 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Athene.Inventory.Abstractions.Models;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
+using IdentityServer4.EntityFramework.Options;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 
 namespace Athene.Inventory.Data.Contexts
 {
-    public class InventoryDbContext : IdentityDbContext<User>
+    public class InventoryDbContext : ApiAuthorizationDbContext<User>
     {
-        public InventoryDbContext(DbContextOptions<InventoryDbContext> options) 
-            : base(options)
+        public InventoryDbContext(
+            DbContextOptions options,
+            IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
         }
 
-        public DbSet<Book> Books { get; set; }
         public DbSet<Article> Articles { get; set; }
         public DbSet<StockLocation> StockLocations { get; set; }
         public DbSet<InventoryItem> InventoryItems { get; set; }
@@ -54,27 +54,32 @@ namespace Athene.Inventory.Data.Contexts
             builder.Entity<Category>()
                 .HasKey(x => x.Id);
 
-            builder.Entity<Article>(opt => 
+            builder.Entity<InventoryItem>(opt => 
+            {
+                opt.HasKey(x => x.Id);
+                opt.HasOne(x => x.RentedBy).WithMany().HasForeignKey(x => x.RentedByUserId);
+                opt.HasIndex(x => x.Barcode);
+                opt.HasIndex(x => x.ExternalId);
+                opt.HasIndex(x => x.RentedByUserId);
+            });
+
+            builder.Entity<Article>(opt =>
             {
                 opt.HasKey(x => x.ArticleId);
                 opt.HasMany(x => x.InventoryItems).WithOne(x => x.Article);
+                opt.HasDiscriminator<string>("article_type")
+                    .HasValue<Book>("book")
+                    .HasValue<EBook>("ebook");
                 opt.OwnsMany(x => x.Matchcodes, m => 
                 {
-                    m.HasForeignKey("ArticleId");
-                    m.Property<int>("Id");
-                    m.HasKey("Id");
+                    m.WithOwner().HasForeignKey("ArticleId");
+                    m.HasKey(x => x.Id);
                     m.HasIndex(x => x.Value);
                 });
             });
 
-            builder.Entity<InventoryItem>(opt => 
-            {
-                opt.HasKey(x => x.Id);
-                opt.HasIndex(x => x.Barcode);
-                opt.HasIndex(x => x.ExternalId);
-                opt.HasIndex(x => x.RentedByUserId);
-                opt.Ignore(x => x.RentedBy);
-            });
+            builder.Entity<Book>(opt => opt.HasBaseType<Article>());
+            builder.Entity<EBook>(opt => opt.HasBaseType<Article>());
         }
     }
 }
