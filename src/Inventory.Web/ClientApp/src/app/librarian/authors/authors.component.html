@@ -1,0 +1,29 @@
+<div class="row">
+	<div class="col-md-12">
+		<h3>Autoren</h3>
+	</div>
+</div>
+<p>
+    <a class="btn btn-outline-light" asp-controller="Authors" asp-action="Create">
+        <span class="glyphicon glyphicon-plus"></span> Hinzufügen
+    </a>
+</p>
+<h3 *ngIf="!authors">Keine Autoren angelegt</h3>
+<table *ngIf="authors" class="table">
+    <tr>
+        <!-- <th>@Html.DisplayNameFor(model => model.Id)</th>
+        <th>@Html.DisplayNameFor(model => model.FullName)</th>
+        <th>@Html.DisplayNameFor(model => model.Info)</th> -->
+        <th>ID</th>
+        <th>FullName</th>
+        <th>Info</th>
+    </tr>
+    <ng-container *ngFor="let author of authors">
+        <tr>
+            <td>{{author.id}}</td>
+            <td>{{author.fullName}}</td>
+            <td>{{author.info}}</td>
+        </tr>
+    </ng-container>
+    }
+</table>

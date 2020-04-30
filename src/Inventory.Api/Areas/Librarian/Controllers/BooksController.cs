@@ -1,13 +1,13 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
-using Athene.Inventory.Web.Areas.Librarian.Models.BooksViewModels;
+using Athene.Inventory.Web.Areas.Librarian.Models.BooksDto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Athene.Inventory.Abstractions;
 using Athene.Inventory.Abstractions.Models;
 using Microsoft.AspNetCore.Identity;
 using Athene.Inventory.Web.Mappers;
-using Athene.Inventory.Web.ViewModels;
+using Athene.Inventory.Web.Dto;
 using Athene.Inventory.Web.Extensions;
 using Microsoft.Extensions.Localization;
 
@@ -37,9 +37,9 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 
         [HttpPost]
         [Route("")]
-        [ProducesResponseType(typeof(CreateBookViewModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(CreateBookDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Create(CreateBookViewModel model)
+        public IActionResult Create(CreateBookDto model)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
         [ProducesResponseType(typeof(InventoryItem), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-        public IActionResult AddToStore(CreateInventoryItemViewModel model)
+        public IActionResult AddToStore(CreateInventoryItemDto model)
         {
             if (ModelState.IsValid)
             {
@@ -101,7 +101,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
         [ProducesResponseType(typeof(Book), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-        public IActionResult Edit(EditBookViewModel viewModel)
+        public IActionResult Edit(EditBookDto viewModel)
         {
             if (ModelState.IsValid)
             {

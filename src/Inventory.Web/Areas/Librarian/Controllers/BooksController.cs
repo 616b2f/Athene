@@ -1,13 +1,11 @@
-using System;
 using Microsoft.AspNetCore.Mvc;
-using Athene.Inventory.Web.Areas.Librarian.Models.BooksViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Athene.Inventory.Abstractions;
 using Athene.Inventory.Abstractions.Models;
 using Microsoft.AspNetCore.Identity;
 using Athene.Inventory.Web.Mappers;
-using Athene.Inventory.Web.ViewModels;
+using Athene.Inventory.Web.Dto;
 using Athene.Inventory.Web.Extensions;
 using Microsoft.Extensions.Localization;
 
@@ -36,10 +34,9 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 		}
 
         [HttpPost]
-        [Route("")]
-        [ProducesResponseType(typeof(CreateBookViewModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(CreateBookDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Create(CreateBookViewModel model)
+        public IActionResult Create(CreateBookDto model)
         {
             if (ModelState.IsValid)
             {
@@ -60,48 +57,11 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
             return BadRequest();
         }
 
-        [HttpPost]
-        [Route("")]
-        [ProducesResponseType(typeof(InventoryItem), StatusCodes.Status201Created)]
+        [HttpPut]
+        [ProducesResponseType(typeof(BookDto), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-        public IActionResult AddToStore(CreateInventoryItemViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var article = _unitOfWork.Articles.FindArticleById(model.ArticleId);
-
-                if (article == null)
-                {
-                    return this.NotFoundProblemDetails("not_found", "article not found");
-                }
-
-                var inventoryItem = model.ToModel();
-                inventoryItem.Article = article;
-                if (!string.IsNullOrWhiteSpace(model.Note))
-                {
-                    var note = new ItemNote
-                    { 
-                        Text = model.Note,
-                        CreatedAt = DateTime.Now,
-                        UserId = _userManager.GetUserId(User),
-                    };
-                    inventoryItem.Notes.Add(note);
-                }
-                _unitOfWork.Inventories.AddInventoryItem(inventoryItem);
-                _unitOfWork.SaveChanges();
-                return Ok(inventoryItem);
-            }
-
-            return this.BadRequestProblemDetails("bad_request", "model is invalid");
-        }
-
-        [HttpPost]
-        [Route("")]
-        [ProducesResponseType(typeof(Book), StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-        public IActionResult Edit(EditBookViewModel viewModel)
+        public IActionResult Edit(EditBookDto viewModel)
         {
             if (ModelState.IsValid)
             {

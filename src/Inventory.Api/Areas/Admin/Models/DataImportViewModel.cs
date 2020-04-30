@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Athene.Inventory.Web.Areas.Admin.Models
 {
-    public class DataImportViewModel
+    public class DataImportDto
     {
         [Required]
         public string SourceType { get; set; }

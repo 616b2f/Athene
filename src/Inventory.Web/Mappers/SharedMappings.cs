@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using Athene.Inventory.Abstractions.Models;
-using Athene.Inventory.Web.Areas.Librarian.Models.BooksViewModels;
-using Athene.Inventory.Web.Areas.Librarian.Models.UsersViewModels;
-using Athene.Inventory.Web.Models;
-using Athene.Inventory.Web.ViewModels;
+using Athene.Inventory.Web.Areas.Librarian.Models.BooksDto;
+using Athene.Inventory.Web.Areas.Librarian.Models.UsersDto;
+using Athene.Inventory.Web.Dto;
 using AutoMapper;
 
 namespace Athene.Inventory.Web.Mappers
@@ -18,79 +17,79 @@ namespace Athene.Inventory.Web.Mappers
                 .CreateMapper();
         }
 
-        public static AuthorViewModel ToViewModel(this Author authors)
+        public static AuthorDto ToDto(this Author authors)
         {
-            return Mapper.Map<AuthorViewModel>(authors);
+            return Mapper.Map<AuthorDto>(authors);
         }
 
-        public static IEnumerable<AuthorViewModel> ToViewModels(this IEnumerable<Author> authors)
+        public static IEnumerable<AuthorDto> ToDto(this IEnumerable<Author> authors)
         {
-            return Mapper.Map<IEnumerable<AuthorViewModel>>(authors);
+            return Mapper.Map<IEnumerable<AuthorDto>>(authors);
         }
 
-        public static PublisherViewModel ToViewModel(this Publisher publishers)
+        public static PublisherDto ToDto(this Publisher publishers)
         {
-            return Mapper.Map<PublisherViewModel>(publishers);
+            return Mapper.Map<PublisherDto>(publishers);
         }
 
-        public static IEnumerable<PublisherViewModel> ToViewModels(this IEnumerable<Publisher> publishers)
+        public static IEnumerable<PublisherDto> ToDto(this IEnumerable<Abstractions.Models.Publisher> publishers)
         {
-            return Mapper.Map<IEnumerable<PublisherViewModel>>(publishers);
+            return Mapper.Map<IEnumerable<PublisherDto>>(publishers);
         }
 
-        public static Author ToEntity(this CreateAuthorViewModel viewModel)
+        public static Author ToEntity(this CreateAuthorDto dto)
         {
-            return Mapper.Map<Author>(viewModel);
+            return Mapper.Map<Author>(dto);
         }
 
-        public static Publisher ToEntity(this CreatePublisherViewModel viewModel)
+        public static Abstractions.Models.Publisher ToEntity(this CreatePublisherDto dto)
         {
-            return Mapper.Map<Publisher>(viewModel);
+            return Mapper.Map<Abstractions.Models.Publisher>(dto);
         }
 
-        public static Category ToEntity(this CreateCategoryViewModel viewModel)
+        public static Category ToEntity(this CreateCategoryDto dto)
         {
-            return Mapper.Map<Category>(viewModel);
+            return Mapper.Map<Category>(dto);
         }
 
-        public static CategoryViewModel ToViewModel(this Category category)
+        public static CategoryDto ToDto(this Category category)
         {
-            return Mapper.Map<CategoryViewModel>(category);
+            return Mapper.Map<CategoryDto>(category);
         }
 
-        public static IEnumerable<CategoryViewModel> ToViewModels(this IEnumerable<Category> categories)
+        public static IEnumerable<CategoryDto> ToDto(this IEnumerable<Category> categories)
         {
-            return Mapper.Map<IEnumerable<CategoryViewModel>>(categories);
+            return Mapper.Map<IEnumerable<CategoryDto>>(categories);
         }
 
-        public static User ToEntity(this CreateUserViewModel viewModel)
+        public static User ToEntity(this CreateUserDto dto)
         {
-            return Mapper.Map<User>(viewModel);
+            return Mapper.Map<User>(dto);
         }
 
-        public static InventoryItem ToModel(this CreateInventoryItemViewModel viewModel)
+        public static InventoryItem ToModel(this CreateInventoryItemDto dto)
         {
-            return Mapper.Map<InventoryItem>(viewModel);
+            return Mapper.Map<InventoryItem>(dto);
         }
 
-        public static User ToModel(this CreateUserViewModel viewModel)
+        public static User ToModel(this CreateUserDto dto)
         {
-            return Mapper.Map<User>(viewModel);
+            return Mapper.Map<User>(dto);
         }
 
-        public static EditBookViewModel ToEditViewModel(this Book model)
+        public static EditBookDto ToEditDto(this Book model)
         {
-            return Mapper.Map<EditBookViewModel>(model);
+            return Mapper.Map<EditBookDto>(model);
         }
 
-        public static void ToModel(this EditBookViewModel viewModel, Book book)
+        public static void ToModel(this EditBookDto dto, Book book)
         {
-            Mapper.Map<EditBookViewModel,Book>(viewModel, book);
+            Mapper.Map<EditBookDto,Book>(dto, book);
         }
 
-        public static IEnumerable<InventoryItemDetailsViewModel> ToDetailsViewModels(this IEnumerable<InventoryItem> model)
+        public static IEnumerable<InventoryItemDetailsDto> ToDetailsDto(this IEnumerable<InventoryItem> model)
         {
-            return Mapper.Map<IEnumerable<InventoryItemDetailsViewModel>>(model);
+            return Mapper.Map<IEnumerable<InventoryItemDetailsDto>>(model);
         }
     }
 }

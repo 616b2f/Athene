@@ -6,7 +6,7 @@ using Athene.Inventory.Abstractions;
 using Athene.Inventory.Abstractions.Models;
 using System.Linq;
 using System;
-using Athene.Inventory.Web.ViewModels;
+using Athene.Inventory.Web.Dto;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -45,7 +45,7 @@ namespace Athene.Inventory.Web.Controllers
             var invItems = _inventory.FindInventoryItemsByArticleId(articleIds);
             Propagate(articles, invItems);
             SetDefaultImageIfEmpty(articles);
-            var searchResult = new SearchResultViewModel
+            var searchResult = new SearchResultDto
             {
                 FoundQuantity = articles.Count(),
                 Items = articles,

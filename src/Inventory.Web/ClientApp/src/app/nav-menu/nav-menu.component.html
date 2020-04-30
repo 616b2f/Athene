@@ -19,7 +19,7 @@
       >
       <ul class="navbar-nav mr-auto">
         <li class="nav-item dropdown" *ngIf="isAuthenticated | async" ngbDropdown [routerLinkActive]="['link-active']">
-            <a href="#" class="nav-link dropdown-toggle text-dark" ngbDropdownToggle id="navbarDropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle text-dark" ngbDropdownToggle id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 <img src="/assets/icons/wrench.svg" alt="" width="16" height="16">
                 Manage <span class="caret"></span>
             </a>
@@ -36,6 +36,35 @@
               </div>
         </li>
       </ul>
+      <div class="flex-grow-1 d-flex mx-3" *ngIf="isAuthenticated | async">
+          <form class="form-inline flex-nowrap bg-light mx-0 mx-lg-auto rounded p-0 d-inline w-100" (ngSubmit)="onSearch(search.value)">
+            <div class="input-group flex-fill">
+              <input #search type="search" name="search" id="search" value="" placeholder="ISBN, Title, Description, Author" class="form-control" aria-label="Search this site">
+              <div class="input-group-append">
+                <input type="submit" name="commit" value="Search" class="btn btn-success" data-disable-with="Search">
+              </div> 
+            </div>
+          </form>
+      </div>
+
+
+    <!-- <form class="form-inline ">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form> -->
+    <!-- <form class="navbar-form ath-searchbar"
+            asp-area=""
+            asp-controller="Inventory"
+            asp-action="Index"
+            method="get">
+            <div class="form-group">
+                <div class="input-group" style="display:table">
+                    <input name="q" type="text" class="form-control" placeholder="ISBN, Title, Description, Author" />
+                    <span class="input-group-btn"><button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span> @Localizer["Search"]</button></span>
+                </div>
+            </div>
+    </form> -->
+
         <!-- <ul class="nav navbar-nav">
           <li
             class="nav-item"

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Athene.Inventory.Abstractions;
-using Athene.Inventory.Web.ViewModels;
+using Athene.Inventory.Web.Dto;
 using Athene.Inventory.Abstractions.Models;
 using Athene.Inventory.Web.Mappers;
 using Microsoft.AspNetCore.Http;
@@ -27,17 +27,17 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 
         [HttpGet]
         [Route("")]
-        [ProducesResponseType(typeof(CategoryViewModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(CategoryDto), StatusCodes.Status201Created)]
         public IActionResult Index()
         {
             var categories = _bookMetaProvider.AllCategories();
-            return Ok(categories.ToViewModels());
+            return Ok(categories.ToDto());
         }
 
         [HttpPost]
         [Route("")]
-        [ProducesResponseType(typeof(CreateCategoryViewModel), StatusCodes.Status201Created)]
-        public IActionResult Create(CreateCategoryViewModel model)
+        [ProducesResponseType(typeof(CreateCategoryDto), StatusCodes.Status201Created)]
+        public IActionResult Create(CreateCategoryDto model)
         {
             if (ModelState.IsValid)
             {

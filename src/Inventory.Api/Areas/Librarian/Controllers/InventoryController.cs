@@ -4,7 +4,7 @@ using Athene.Inventory.Abstractions;
 using Athene.Inventory.Abstractions.Models;
 using Athene.Inventory.Web.Extensions;
 using Athene.Inventory.Web.Mappers;
-using Athene.Inventory.Web.ViewModels;
+using Athene.Inventory.Web.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -56,7 +56,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        [ProducesResponseType(typeof(IEnumerable<InventoryItemDetailsViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<InventoryItemDetailsDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         public IActionResult ShowInventoryItems(int id)
         {
@@ -66,7 +66,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
             var inventoryItems = _inventoryProvider.FindInventoryItemsByArticleId(new[] { id });
             var userIds = inventoryItems.Select(x => x.RentedByUserId);
             var users = _userProvider.FindByUserIds(userIds);
-            var viewModel = inventoryItems.ToDetailsViewModels();
+            var viewModel = inventoryItems.ToDetailsDto();
             return Ok(viewModel);
         }
     }

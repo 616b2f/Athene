@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace Athene.Inventory.Web.Areas.Admin.Models
 {
-    public class StudentViewModel 
+    public class StudentDto 
     {
         [DisplayName("Surname")]
         public string Surname { get; set; }

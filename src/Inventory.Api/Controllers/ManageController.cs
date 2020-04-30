@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Athene.Inventory.Web.Services;
 using Athene.Inventory.Web.Models;
-using Athene.Inventory.Web.Models.ManageViewModels;
+using Athene.Inventory.Web.Models.ManageDto;
 
 namespace Athene.Inventory.Web.Controllers
 {
@@ -52,7 +52,7 @@ namespace Athene.Inventory.Web.Controllers
             {
                 return View("Error");
             }
-            var model = new IndexViewModel
+            var model = new IndexDto
             {
                 HasPassword = await _userManager.HasPasswordAsync(user),
                 PhoneNumber = await _userManager.GetPhoneNumberAsync(user),
@@ -67,7 +67,7 @@ namespace Athene.Inventory.Web.Controllers
         // POST: /Manage/RemoveLogin
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RemoveLogin(RemoveLoginViewModel account)
+        public async Task<IActionResult> RemoveLogin(RemoveLoginDto account)
         {
             ManageMessageId? message = ManageMessageId.Error;
             var user = await GetCurrentUserAsync();
@@ -94,7 +94,7 @@ namespace Athene.Inventory.Web.Controllers
         // POST: /Manage/AddPhoneNumber
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddPhoneNumber(AddPhoneNumberViewModel model)
+        public async Task<IActionResult> AddPhoneNumber(AddPhoneNumberDto model)
         {
             if (!ModelState.IsValid)
             {
@@ -155,14 +155,14 @@ namespace Athene.Inventory.Web.Controllers
             }
             var code = await _userManager.GenerateChangePhoneNumberTokenAsync(user, phoneNumber);
             // Send an SMS to verify the phone number
-            return phoneNumber == null ? View("Error") : View(new VerifyPhoneNumberViewModel { PhoneNumber = phoneNumber });
+            return phoneNumber == null ? View("Error") : View(new VerifyPhoneNumberDto { PhoneNumber = phoneNumber });
         }
 
         //
         // POST: /Manage/VerifyPhoneNumber
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> VerifyPhoneNumber(VerifyPhoneNumberViewModel model)
+        public async Task<IActionResult> VerifyPhoneNumber(VerifyPhoneNumberDto model)
         {
             if (!ModelState.IsValid)
             {
@@ -214,7 +214,7 @@ namespace Athene.Inventory.Web.Controllers
         // POST: /Manage/ChangePassword
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        public async Task<IActionResult> ChangePassword(ChangePasswordDto model)
         {
             if (!ModelState.IsValid)
             {
@@ -248,7 +248,7 @@ namespace Athene.Inventory.Web.Controllers
         // POST: /Manage/SetPassword
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SetPassword(SetPasswordViewModel model)
+        public async Task<IActionResult> SetPassword(SetPasswordDto model)
         {
             if (!ModelState.IsValid)
             {
@@ -290,7 +290,7 @@ namespace Athene.Inventory.Web.Controllers
                 .Where(auth => userLogins.All(ul => auth.Name != ul.LoginProvider))
                 .ToList();
             ViewData["ShowRemoveButton"] = user.PasswordHash != null || userLogins.Count > 1;
-            return View(new ManageLoginsViewModel
+            return View(new ManageLoginsDto
             {
                 CurrentLogins = userLogins,
                 OtherLogins = otherLogins

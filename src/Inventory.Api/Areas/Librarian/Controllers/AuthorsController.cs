@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Athene.Inventory.Abstractions;
-using Athene.Inventory.Web.ViewModels;
+using Athene.Inventory.Web.Dto;
 using Athene.Inventory.Web.Mappers;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
@@ -26,18 +26,18 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 
         [HttpGet]
         [Route("")]
-        [ProducesResponseType(typeof(IEnumerable<AuthorViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<AuthorDto>), StatusCodes.Status200OK)]
         public IActionResult Index()
         {
             var authors = _bookMetaProvider.AllAuthors();
-            return Ok(authors.ToViewModels());
+            return Ok(authors.ToDto());
         }
 
         [HttpPost]
         [Route("")]
-        [ProducesResponseType(typeof(CreateAuthorViewModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(CreateAuthorDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Create(CreateAuthorViewModel model)
+        public IActionResult Create(CreateAuthorDto model)
         {
             if (ModelState.IsValid)
             {

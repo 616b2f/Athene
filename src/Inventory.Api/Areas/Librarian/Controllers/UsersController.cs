@@ -3,7 +3,7 @@ using Athene.Inventory.Web.Services;
 using Microsoft.AspNetCore.Authorization;
 using Athene.Inventory.Web.Extensions;
 using Athene.Inventory.Abstractions;
-using Athene.Inventory.Web.Areas.Librarian.Models.UsersViewModels;
+using Athene.Inventory.Web.Areas.Librarian.Models.UsersDto;
 using Athene.Inventory.Web.Models;
 using Athene.Inventory.Abstractions.Models;
 using System.Linq;
@@ -66,7 +66,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(User), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-        public IActionResult Create(CreateUserViewModel model)
+        public IActionResult Create(CreateUserDto model)
         {
             if (ModelState.IsValid) {
                 var entity = model.ToEntity();

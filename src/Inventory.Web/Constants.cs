@@ -30,6 +30,7 @@ namespace Athene.Inventory.Web
         {
             public const string Administrator = "Administrator";
             public const string Librarian = "Librarian";
+            public const string Student = "Student";
         }
 
         public static class Permissions

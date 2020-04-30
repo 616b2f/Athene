@@ -1,9 +1,9 @@
 using System.Linq;
 using Athene.Inventory.Abstractions.Models;
-using Athene.Inventory.Web.Areas.Librarian.Models.BooksViewModels;
-using Athene.Inventory.Web.Areas.Librarian.Models.UsersViewModels;
+using Athene.Inventory.Web.Areas.Librarian.Models.BooksDto;
+using Athene.Inventory.Web.Areas.Librarian.Models.UsersDto;
 using Athene.Inventory.Web.Models;
-using Athene.Inventory.Web.ViewModels;
+using Athene.Inventory.Web.Dto;
 using AutoMapper;
 
 namespace Athene.Inventory.Web.Mappers
@@ -12,29 +12,29 @@ namespace Athene.Inventory.Web.Mappers
     {
         public SharedMapperProfile()
         {
-            CreateMap<Author, AuthorViewModel>();
+            CreateMap<Author, AuthorDto>();
 
-            CreateMap<Publisher, PublisherViewModel>();
+            CreateMap<Publisher, PublisherDto>();
 
-            CreateMap<CreateAuthorViewModel, Author>();
+            CreateMap<CreateAuthorDto, Author>();
 
-            CreateMap<CreatePublisherViewModel, Publisher>();
+            CreateMap<CreatePublisherDto, Publisher>();
 
-            CreateMap<Category, CategoryViewModel>();
+            CreateMap<Category, CategoryDto>();
 
-            CreateMap<CreateUserViewModel, User>()
+            CreateMap<CreateUserDto, User>()
                 .ForMember(x => x.Address, opt => opt.MapFrom(x => new Address(x.AddressStreet, x.AddressZip, x.AddressCity, x.AddressCountry)));
 
-            CreateMap<CreateInventoryItemViewModel, InventoryItem>()
+            CreateMap<CreateInventoryItemDto, InventoryItem>()
                 .ForMember(x => x.StockLocation, opt => opt.MapFrom(x => new StockLocation{ Hall = x.Hall, Corridor = x.Corridor, Rack = x.Rack, Level = x.Level, Position = x.Position }));
 
-            CreateMap<EditBookViewModel, Book>()
+            CreateMap<EditBookDto, Book>()
                 .ForMember(x => x.Authors, opt => opt.MapFrom(x => x.AuthorsIds.Select(i => new Author { Id = i })))
                 .ForMember(x => x.Categories, opt => opt.MapFrom(x => x.CategoriesIds.Select(i => new Category { Id = i })));
 
-            CreateMap<Book, EditBookViewModel>();
+            CreateMap<Book, EditBookDto>();
 
-            CreateMap<InventoryItem, InventoryItemDetailsViewModel>()
+            CreateMap<InventoryItem, InventoryItemDetailsDto>()
                 .ForMember(x => x.InventoryItemId, opt => opt.MapFrom(x => x.Id))
                 .ForMember(x => x.StockLocation, opt => opt.MapFrom(x => x.StockLocation.OneLiner))
                 .ForMember(x => x.RentedByUserDisplayName, opt => opt.MapFrom(x => x.RentedBy.FullName))

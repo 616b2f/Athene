@@ -27,8 +27,10 @@ namespace Athene.Inventory.Web
 
         public static void InitializeUsers(IServiceProvider provider)
         {
-            var _userManager = provider.GetService<UserManager<User>>();
-            TestData.CreateUsers(_userManager);
+            var roleManager = provider.GetService<RoleManager<IdentityRole>>();
+            TestData.CreateRoles(roleManager);
+            var userManager = provider.GetService<UserManager<User>>();
+            TestData.CreateUsers(userManager);
         }
 
         public static void InitializeBookMeta(IServiceProvider provider)
@@ -50,6 +52,23 @@ namespace Athene.Inventory.Web
             var unitOfWork = provider.GetService<IUnitOfWork<User>>();
             TestData.CreateBookInventoryItems(unitOfWork.Inventories, unitOfWork.Articles);
             unitOfWork.SaveChanges();
+        }
+
+        private static void CreateRoles(RoleManager<IdentityRole> roleManager)
+        {
+            var roleNames = new [] {
+                Constants.Roles.Administrator,
+                Constants.Roles.Librarian,
+                Constants.Roles.Student
+            };
+            foreach (var roleName in roleNames)
+            {
+                var role = roleManager.FindByNameAsync(Constants.Roles.Administrator).GetAwaiter().GetResult();
+                if (role == null)
+                {
+                    roleManager.CreateAsync(new IdentityRole(roleName)).GetAwaiter().GetResult();
+                }
+            }
         }
 
         public static void CreateUsers(UserManager<User> userManager)
@@ -133,10 +152,6 @@ namespace Athene.Inventory.Web
                 },
             };
 
-            var librarianRole = new Claim(ClaimTypes.Role, "Librarian");
-            var adminRole = new Claim(ClaimTypes.Role, "Administrator");
-            var studentRole = new Claim(ClaimTypes.Role, "Student");
-
             var dataImportBooksPermission = new Claim(Constants.ClaimTypes.Permission, Constants.Permissions.DataImportBooks);
             var dataImportUsersPermission = new Claim(Constants.ClaimTypes.Permission, Constants.Permissions.DataImportUsers);
             var dataImportInventoryItemsPermission = new Claim(Constants.ClaimTypes.Permission, Constants.Permissions.DataImportInventoryItems);
@@ -150,21 +165,31 @@ namespace Athene.Inventory.Web
             userManager.CreateAsync(student2, "Test123!").Wait();
             userManager.CreateAsync(student3, "Test123!").Wait();
 
-            userManager.AddClaimAsync(adminUser, adminRole).Wait();
+            // var librarianRole = new Claim(ClaimTypes.Role, Constants.Roles.Librarian);
+            // var adminRole = new Claim(ClaimTypes.Role, Constants.Roles.Administrator);
+            // var studentRole = new Claim(ClaimTypes.Role, Constants.Roles.Student);
+
+            userManager.AddToRoleAsync(librarianUser, Constants.Roles.Librarian);
+            userManager.AddToRoleAsync(adminUser, Constants.Roles.Administrator);
+            userManager.AddToRoleAsync(student1, Constants.Roles.Student);
+            userManager.AddToRoleAsync(student2, Constants.Roles.Student);
+            userManager.AddToRoleAsync(student3, Constants.Roles.Student);
+
+            // userManager.AddClaimAsync(adminUser, adminRole).Wait();
             userManager.AddClaimAsync(adminUser, dataImportPermission).Wait();
             userManager.AddClaimAsync(adminUser, dataImportBooksPermission).Wait();
             userManager.AddClaimAsync(adminUser, dataImportUsersPermission).Wait();
             userManager.AddClaimAsync(adminUser, dataImportInventoryItemsPermission).Wait();
             userManager.AddClaimAsync(adminUser, administrateInventoryPermission).Wait();
             
-            userManager.AddClaimAsync(librarianUser, librarianRole).Wait();
+            // userManager.AddClaimAsync(librarianUser, librarianRole).Wait();
             userManager.AddClaimAsync(librarianUser, dataImportBooksPermission).Wait();
             userManager.AddClaimAsync(librarianUser, administrateInventoryPermission).Wait();
 
-            userManager.AddClaimAsync(student1, studentRole).Wait();
+            // userManager.AddClaimAsync(student1, studentRole).Wait();
             userManager.AddClaimAsync(student1, rentBookPermission).Wait();
 
-            userManager.AddClaimAsync(student2, studentRole).Wait();
+            // userManager.AddClaimAsync(student2, studentRole).Wait();
             userManager.AddClaimAsync(student2, rentBookPermission).Wait();
         }
 

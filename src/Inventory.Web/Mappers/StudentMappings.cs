@@ -14,9 +14,9 @@ namespace Athene.Inventory.Web.Mappers
                 .CreateMapper();
         }
 
-        public static StudentViewModel ToViewModel(this User users)
+        public static StudentDto ToDto(this User users)
         {
-            return Mapper.Map<StudentViewModel>(users);
+            return Mapper.Map<StudentDto>(users);
         }
     }
 }

@@ -39,12 +39,12 @@ namespace Athene.Inventory.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var viewModel = new DataImportViewModel();
-            PropagadaDataImportViewModel(viewModel);
+            var viewModel = new DataImportDto();
+            PropagadaDataImportDto(viewModel);
             return View(viewModel);
         }
 
-        private void PropagadaDataImportViewModel(DataImportViewModel viewModel)
+        private void PropagadaDataImportDto(DataImportDto viewModel)
         {
             viewModel.SourceTypes = new SelectList(new Dictionary<string,string>{
                 { "CSV Datei", Athene.Inventory.Abstractions.DataImport.Constants.InputFormats.Csv },
@@ -57,7 +57,7 @@ namespace Athene.Inventory.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Upload(DataImportViewModel model)
+        public IActionResult Upload(DataImportDto model)
         {
             var dataImport = _dataImports.SingleOrDefault(x => 
                 x.InputFormat == model.SourceType &&
@@ -90,7 +90,7 @@ namespace Athene.Inventory.Web.Areas.Admin.Controllers
                 case nameof(Inventory.User):
                     var users = (IEnumerable<User>)items;
                     serialisedData = JsonConvert.SerializeObject(users);
-                    items = users.Select(u => u.ToViewModel());
+                    items = users.Select(u => u.ToDto());
                     cachePrefix = _studentDataType;
                     viewName = "Students";
                     break;

@@ -1,0 +1,121 @@
+<div *ngIf="items$ | async as items; else loading" class="text-center">
+    <div *ngIf="!items">
+		<br>
+		<br>
+        <h3><small>"Nothing found"</small></h3>
+    </div>
+    <div *ngFor="let item of items">
+        <div>
+			<div class="panel panel-default panel-body">
+				<div class="media">
+					<div class="media-left">
+						<img src="{{item.imageUrl}}">
+					</div>
+					<div class="media-body"> 
+						<div class="row">
+							<div class="col-md-12">
+								<label asp-for="Title"></label>
+								{{item.title}}
+							</div>
+							<div class="col-md-12">
+								<label asp-for="Description"></label>
+								<div *ngIf="item.description; else nodescription">
+									<br />
+									{{item.description}}
+								</div>
+								<ng-template #nodescription>
+									<label>-</label>
+								</ng-template>
+							</div>
+							<div class="col-md-12">
+								<span class="glyphicon glyphicon-tag"></span>
+								<div *ngIf="item.categories && item.categories.length > 0; else nocategories">
+									<div *ngFor="let category of item.categories">
+										<span class="label label-default">
+											#{{category.name}}
+										</span>
+									</div>
+								</div>
+								<ng-template #nocategories>
+									<label>-</label>
+								</ng-template>
+							</div>
+							<!-- <div class="col-md-12">
+								<label asp-for="Authors"></label>
+								@if (Model.Authors.Count > 0)
+								{
+									@foreach (var author in Model.Authors)
+									{
+										<span>
+											@author.FullName
+										</span>
+									}
+								}
+								else
+								{
+									<label>@Localizer["Not Available"]</label>
+								}
+							</div>
+							<div class="col-md-12">
+								<label asp-for="InventoryItems"></label>
+								@if (Model.InventoryItems.Count > 0)
+								{
+									<label>@Localizer["Total"]:</label>
+									<span>@Model.InventoryItems.Count()</span>
+									<label>@Localizer["Not borrowed"]:</label>
+									<span>@Model.InventoryItems.Where(x => x.RentedBy == null).Count()</span>
+									<label>@Localizer["Borrowed"]:</label>
+									<span>@Model.InventoryItems.Where(x => x.RentedBy != null).Count()</span>
+									// @foreach (var invItem in Model.InventoryItems)
+									// {
+									//     @Html.Partial("_InventoryItemPreview", invItem)
+									// }
+								}
+								else
+								{
+									<label>@Localizer["Not Available"]</label>
+								}
+							</div> -->
+						</div>
+					</div>
+				</div>
+			</div>
+
+        </div>
+    </div>
+</div>
+
+<ng-template #loading>
+  ... loading
+</ng-template>
+
+
+
+<!-- <div class="row">
+	<div class="col-md-6">
+		<h3>@Localizer["Search"]</h3>
+	</div>
+	<div class="col-md-6">
+		<partial name="_MessageContainer">
+	</div>
+</div>
+
+@if (Model.Items.Count() == 0)
+{	
+	<div class="text-center">
+		<br>
+		<br>
+		<h3><small>@Localizer["Nothing found"]</small></h3>
+	</div>
+}
+else
+{
+    @Localizer["{0} match", Model.FoundQuantity]<br/>
+    @foreach (var article in Model.Items)
+    {
+			@if (article is Book)
+			{
+				@await Html.PartialAsync("_BookPreview", article as Book)
+			}
+    }
+} -->

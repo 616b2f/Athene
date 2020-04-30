@@ -8,7 +8,7 @@ namespace Athene.Inventory.Web.Mappers
     {
         public StudentMapperProfile()
         {
-            CreateMap<User, StudentViewModel>()
+            CreateMap<User, StudentDto>()
                 .ForMember(s => s.SchoolClass, opt => opt.MapFrom(u => u.Student.SchoolClass.Name ?? ""))
                 .ForMember(s => s.SchoolName, opt => opt.MapFrom(u => u.Student.SchoolClass.School.Name ?? ""));
         }

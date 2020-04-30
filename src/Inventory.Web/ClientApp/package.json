@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "nswag": "nswag",
+    "build-api-client": "nswag run nswag.json",
     "start": "ng serve",
     "build": "ng build",
     "build:ssr": "ng run Inventory.Web:server:dev",
@@ -50,6 +52,7 @@
     "karma-coverage-istanbul-reporter": "^2.1.1",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.5.3",
+    "nswag": "^13.4.2",
     "typescript": "3.5.3"
   },
   "optionalDependencies": {

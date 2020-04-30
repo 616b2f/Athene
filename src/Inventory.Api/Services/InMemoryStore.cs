@@ -4,12 +4,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using Athene.Inventory.Web.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Athene.Inventory.Abstractions;
-using Athene.Inventory.Abstractions.Models;
-using Athene.Inventory.Data;
 
 namespace Athene.Inventory.Web.Models
 {

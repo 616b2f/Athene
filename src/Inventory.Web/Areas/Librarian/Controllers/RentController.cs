@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using Athene.Inventory.Web.Areas.Librarian.Models.RentViewModels;
+using Athene.Inventory.Web.Areas.Librarian.Models.RentDto;
 using Athene.Inventory.Abstractions;
 using Athene.Inventory.Abstractions.Models;
 using System;
@@ -33,7 +33,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
         }
 
         [HttpGet("{userId}")]
-        [ProducesResponseType(typeof(RentedViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(RentedDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         public IActionResult Rented(string userId)
         {
@@ -45,7 +45,7 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
                 return this.NotFoundProblemDetails("not_found", "user not found");
 
             IEnumerable<InventoryItem> rentedBooks = _inventoryProvider.FindRentedItemsByUser(userId);
-            var viewModel = new RentedViewModel
+            var viewModel = new RentedDto
             {
                 User = user,
                 RentedItems = rentedBooks,
