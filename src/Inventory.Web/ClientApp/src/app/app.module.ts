@@ -3,21 +3,22 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { INVENTORY_API_BASE_URL, InventoryApiClient } from 'src/api-client/inventory-api-client';
 import { InventoryListComponent } from './inventory-list/inventory-list.component';
+import { AlertsComponent } from './alerts/alerts.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
+    AlertsComponent,
     HomeComponent,
     InventoryListComponent,
   ],
@@ -25,13 +26,14 @@ import { InventoryListComponent } from './inventory-list/inventory-list.componen
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    NgbAlertModule,
     ApiAuthorizationModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'inventory/:q', component: InventoryListComponent },
+      { path: 'inventory/:q', component: InventoryListComponent, canActivate: [AuthorizeGuard] },
       {
-        path: 'librarian/authors',
-        loadChildren: () => import('./librarian/authors/authors.module').then(mod => mod.AuthorsModule),
+        path: 'librarian',
+        loadChildren: () => import('./librarian/librarian.module').then(mod => mod.LibrarianModule),
         canActivate: [AuthorizeGuard]
       },
       // { path: 'counter', component: CounterComponent },

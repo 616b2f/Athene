@@ -28,6 +28,11 @@ namespace Athene.Inventory.Data.Services
         {
             return _dbContext.Articles
                 .AsNoTracking()
+                .Include(x => x.InventoryItems)
+                .OfType<Book>()
+                    .Include(x => x.Authors)
+                    .Include(x => x.Categories)
+                    .Include(x => x.Publisher)
                 .Where(x => x.Matchcodes.Any(m => m.Value.Contains(matchcode)))
                 .ToList();
         }

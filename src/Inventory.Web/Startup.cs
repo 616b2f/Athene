@@ -18,11 +18,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Localization.JsonLocalizer.StringLocalizer;
-using System;
+using System.Text.Json.Serialization;
 
 namespace Inventory.Web
 {
@@ -109,7 +105,9 @@ namespace Inventory.Web
 
             services.AddControllersWithViews()
                     .AddJsonOptions(opt => {
-                        opt.JsonSerializerOptions.Converters.Add(new AbstractWriteOnlyJsonConverter());
+                        opt.JsonSerializerOptions.ReferenceHandling = ReferenceHandling.Preserve;
+                        opt.JsonSerializerOptions.Converters
+                            .Add(new Athene.Inventory.Web.JsonConverter.AbstractWriteOnlyJsonConverter());
                     });
                 
             services.AddRazorPages()

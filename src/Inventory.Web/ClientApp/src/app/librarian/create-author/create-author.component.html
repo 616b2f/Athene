@@ -1,0 +1,14 @@
+<div class="row">
+	<div class="col-md-12">
+		<h3>Autor hinzufügen</h3>
+	</div>
+</div>
+<form [formGroup]="createForm" (ngSubmit)="create(createForm.value)">
+    <div class="form-group">
+        <label for="fullName">FullName</label>
+        <input id="fullName" type="text" formControlName="fullName" class="form-control ath-input-sm">
+        <label for="info">Info</label>
+        <input id="info" type="text" formControlName="info" class="form-control ath-input-sm">
+    </div>
+    <button class="btn btn-primary" type="submit">Hinzufügen</button>
+</form>

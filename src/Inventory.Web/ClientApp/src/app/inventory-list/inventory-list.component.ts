@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { InventoryApiClient, Article } from 'src/api-client/inventory-api-client';
+import { InventoryApiClient, Article, InventoryItem } from 'src/api-client/inventory-api-client';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -22,4 +22,11 @@ export class InventoryListComponent implements OnInit {
     );
   }
 
+  notBorrowedCount(inventoryItems: InventoryItem[]): number {
+    return inventoryItems.filter(i => !i.rentedBy).length;
+  }
+
+  borrowedCount(inventoryItems: InventoryItem[]): number {
+    return inventoryItems.filter(i => i.rentedBy).length;
+  }
 }

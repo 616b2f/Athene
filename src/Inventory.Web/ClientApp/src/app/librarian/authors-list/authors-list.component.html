@@ -4,16 +4,13 @@
 	</div>
 </div>
 <p>
-    <a class="btn btn-outline-light" asp-controller="Authors" asp-action="Create">
+    <a class="btn btn-ligth" [routerLink]="['/librarian/authors/create']">
         <span class="glyphicon glyphicon-plus"></span> Hinzufügen
     </a>
 </p>
 <h3 *ngIf="!authors">Keine Autoren angelegt</h3>
 <table *ngIf="authors" class="table">
     <tr>
-        <!-- <th>@Html.DisplayNameFor(model => model.Id)</th>
-        <th>@Html.DisplayNameFor(model => model.FullName)</th>
-        <th>@Html.DisplayNameFor(model => model.Info)</th> -->
         <th>ID</th>
         <th>FullName</th>
         <th>Info</th>
@@ -25,5 +22,4 @@
             <td>{{author.info}}</td>
         </tr>
     </ng-container>
-    }
 </table>

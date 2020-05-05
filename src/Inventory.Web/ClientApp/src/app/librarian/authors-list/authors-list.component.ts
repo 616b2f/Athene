@@ -3,10 +3,10 @@ import { InventoryApiClient, AuthorDto } from 'src/api-client/inventory-api-clie
 
 @Component({
   selector: 'app-authors',
-  templateUrl: './authors.component.html',
-  styleUrls: ['./authors.component.css']
+  templateUrl: './authors-list.component.html',
+  styleUrls: ['./authors-list.component.css']
 })
-export class AuthorsComponent implements OnInit {
+export class AuthorsListComponent implements OnInit {
   authors: AuthorDto[];
 
   constructor(public client: InventoryApiClient) { }

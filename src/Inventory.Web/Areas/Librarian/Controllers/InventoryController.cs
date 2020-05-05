@@ -61,6 +61,15 @@ namespace Athene.Inventory.Web.Areas.Librarian.Controllers
 				return this.BadRequestProblemDetails("bad_request", "q parameter is empty");
 
             var articles = _articleProvider.SearchForArticlesByMatchcode(q);
+
+            // HACK: set article to null in all inventoryItems to prevent json serializer to get in loop
+            foreach (var article in articles)
+            {
+                foreach (var invItem in article.InventoryItems)
+                {
+                    invItem.Article = null; 
+                }
+            }
             return Ok(articles);
         }
         
