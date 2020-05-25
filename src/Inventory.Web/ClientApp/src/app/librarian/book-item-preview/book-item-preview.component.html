@@ -1,0 +1,17 @@
+<div class="card card-default card-body mb-3">
+    <dl class="row">
+        <dt class="col-sm-2">Article ID:</dt>
+        <dd class="col-sm-10">{{book.articleId}}</dd>
+
+        <dt class="col-sm-2">Title:</dt>
+        <dd class="col-sm-10">{{book.title}}</dd>
+
+        <dt class="col-sm-2">Description:</dt>
+        <dd class="col-sm-10">{{book.description}}</dd>
+    </dl>
+    <div class="btn-toolbar" role="toolbar">
+        <a class="btn btn-primary" [routerLink]="['/librarian/books/edit', book.articleId]">Edit</a>
+        <a class="btn btn-primary mx-2" [routerLink]="['/librarian/inventory/items/byarticle', book.articleId]">Show owned copies</a>
+        <a class="btn btn-primary" [routerLink]="['/librarian/books/add-to-store', book.articleId]">Add to inventory</a>
+    </div>
+</div>

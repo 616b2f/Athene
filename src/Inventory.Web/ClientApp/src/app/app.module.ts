@@ -11,8 +11,8 @@ import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { NgbDropdownModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { INVENTORY_API_BASE_URL, InventoryApiClient } from 'src/api-client/inventory-api-client';
-import { InventoryListComponent } from './inventory-list/inventory-list.component';
 import { AlertsComponent } from './alerts/alerts.component';
+import { ArticlesListComponent } from './articles-list/articles-list.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +20,7 @@ import { AlertsComponent } from './alerts/alerts.component';
     NavMenuComponent,
     AlertsComponent,
     HomeComponent,
-    InventoryListComponent,
+    ArticlesListComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -30,7 +30,7 @@ import { AlertsComponent } from './alerts/alerts.component';
     ApiAuthorizationModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'inventory/:q', component: InventoryListComponent, canActivate: [AuthorizeGuard] },
+      { path: 'articles/:q', component: ArticlesListComponent, canActivate: [AuthorizeGuard] },
       {
         path: 'librarian',
         loadChildren: () => import('./librarian/librarian.module').then(mod => mod.LibrarianModule),

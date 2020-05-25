@@ -26,7 +26,7 @@ export class NavMenuComponent implements OnInit {
   }
 
   onSearch(searchString: string) {
-    this.router.navigate(['/inventory', searchString]);
+    this.router.navigate(['/articles', searchString]);
   }
 
   collapse() {

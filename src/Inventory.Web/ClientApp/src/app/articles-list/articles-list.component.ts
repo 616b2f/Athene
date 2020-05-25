@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { InventoryApiClient, Article, InventoryItem } from 'src/api-client/inventory-api-client';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-inventory-list',
-  templateUrl: './inventory-list.component.html',
-  styleUrls: ['./inventory-list.component.css']
+  selector: 'app-articles-list',
+  templateUrl: './articles-list.component.html',
+  styleUrls: ['./articles-list.component.css']
 })
-export class InventoryListComponent implements OnInit {
+export class ArticlesListComponent implements OnInit {
   items$: Observable<Article[]>;
 
   constructor(private client: InventoryApiClient,

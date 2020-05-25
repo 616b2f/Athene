@@ -4,26 +4,39 @@ import { AuthorsListComponent } from './authors-list/authors-list.component';
 import { RouterModule, Routes } from '@angular/router';
 import { CreateAuthorComponent } from './create-author/create-author.component';
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { InventoryListComponent } from './inventory-list/inventory-list.component';
+import { BookItemPreviewComponent } from './book-item-preview/book-item-preview.component';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { CreateBookComponent } from './create-book/create-book.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: AuthorsListComponent
+    canActivate: [AuthorizeGuard],
+    children: [
+      { path: 'inventory/:q', component: InventoryListComponent },
+      { path: 'inventory', component: InventoryListComponent },
+      { path: 'authors', component: AuthorsListComponent },
+      { path: 'authors/create', component: CreateAuthorComponent },
+      { path: 'books/create', component: CreateBookComponent },
+    ],
   },
-  {
-    path: 'authors',
-    component: AuthorsListComponent,
-    canActivate: [AuthorizeGuard]
-  },
-  { path: 'authors/create', component: CreateAuthorComponent, canActivate: [AuthorizeGuard] },
 ];
 
 @NgModule({
-  declarations: [AuthorsListComponent, CreateAuthorComponent],
+  declarations: [
+    AuthorsListComponent,
+    CreateAuthorComponent,
+    InventoryListComponent,
+    BookItemPreviewComponent,
+    CreateBookComponent,
+  ],
   imports: [
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
+    NgbDropdownModule,
     RouterModule.forChild(routes)
   ],
   exports: [RouterModule]

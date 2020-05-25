@@ -126,3 +126,9 @@ textarea.ath-input-sm {
 .dropdown-caret-off::after {
     display: none;
 }
+
+/* enable input-group-prepend for custom-select */
+.input-group .input-group-prepend .custom-select,
+.input-group .input-group-prepend .form-control {
+    border-top-right-radius: 0; border-bottom-right-radius: 0;
+}
