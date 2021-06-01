@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore.Query;
 using Athene.Inventory.Abstractions;
 using Athene.Inventory.Abstractions.Models;
 using Athene.Inventory.Data.Contexts;
