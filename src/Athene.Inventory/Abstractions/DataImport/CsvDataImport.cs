@@ -15,12 +15,12 @@ namespace Athene.Inventory.Abstractions.DataImport
 
         public string OutputFormat => typeof(TClass).Name;
 
-        public IEnumerable<TClass> Convert<TClass>(Stream fileStream)
+        public IEnumerable<TClass> Convert<TClass>(Stream fileStream, string delimiter = ";")
 					where TClass : class
         {
             var reader = new StreamReader(fileStream);
             var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture);
-            csvReader.Configuration.Delimiter = ";"; //"\t";
+            csvReader.Configuration.Delimiter = delimiter; //"\t";
             csvReader.Configuration.HasHeaderRecord = false;
             csvReader.Configuration.RegisterClassMap<TMapper>();
             var result = csvReader.GetRecords<TClass>().ToList(); 

@@ -7,7 +7,7 @@ namespace Athene.Inventory.Abstractions.DataImport
     {
         string InputFormat { get; }
         string OutputFormat { get; }
-        IEnumerable<TClass> Convert<TClass>(Stream fileStream)
+        IEnumerable<TClass> Convert<TClass>(Stream fileStream, string delimiter = ";")
 					where TClass : class;
     }
 }
