@@ -20,7 +20,7 @@ namespace  Athene.AbstractionTests
 
             var ms = new MemoryStream(Encoding.UTF8.GetBytes(fileContent));
             var csv = new CsvDataImport<Book, BookCsvMapping>();
-            var books = csv.Convert(ms);
+            var books = csv.Convert<Book>(ms);
             Assert.Equal(2, books.Count());
             var book1 = books.Single(x => x.InternationalStandardBookNumber == "9783507106062");
             Assert.Equal(2, book1.Authors.Count());
@@ -36,7 +36,7 @@ namespace  Athene.AbstractionTests
 
             var ms = new MemoryStream(Encoding.UTF8.GetBytes(fileContent));
             var csv = new CsvDataImport<InventoryItem, InventoryItemCsvMapping>();
-            var items = csv.Convert(ms);
+            var items = csv.Convert<InventoryItem>(ms);
             Assert.Equal(2, items.Count());
             var item1 = items.First();
             Assert.Equal(Condition.New, item1.Condition);

@@ -27,6 +27,11 @@ namespace Athene.Inventory.Data.Services
             _db.AddRange(items);
         }
 
+        public InventoryItem FindInventoryItemById(int id)
+        {
+            return _db.InventoryItems.SingleOrDefault(x => x.Id == id);
+        }
+
         public IEnumerable<InventoryItem> FindInventoryItemsById(int[] ids)
         {
             return _db.InventoryItems.Where(x => ids.Contains(x.Id)).AsEnumerable();

@@ -8,7 +8,7 @@ namespace Athene.Inventory.AbstractionsTests
 {
     public class UserRepositoryTests
     {
-        private readonly IUserRepository _userService;
+        private readonly IUserRepository<User> _userService;
         public UserRepositoryTests()
         {
             _userService = new InMemoryUserRepository();
@@ -17,7 +17,7 @@ namespace Athene.Inventory.AbstractionsTests
         [Fact]
         public void AddUser()
         {
-            var user = new TestUser
+            var user = new User
             {
                Id = "1",
                Surname = "Hans",

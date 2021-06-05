@@ -63,44 +63,45 @@ namespace Athene.Inventory.Web.Areas.Admin.Controllers
                 x.InputFormat == model.SourceType &&
                 x.OutputFormat == model.DataType);
             if (dataImport == null)
-                throw new NotImplementedException();
+                throw new NotImplementedException($"Converter not implemented for type '{model.DataType}'");
             
-            var items = dataImport.Convert(model.UploadFile.OpenReadStream());
-            string serialisedData = "";
-            string cachePrefix = "";
-            string viewName = "";
             switch (dataImport.OutputFormat)
             {
                 case nameof(Abstractions.Models.Book):
-                    var books = (IEnumerable<Book>)items;
-                    serialisedData = JsonConvert.SerializeObject(books);
-                    cachePrefix = _booksDataType;
-                    viewName = "Books";
-                    break;
+									{
+										var books = dataImport.Convert<Book>(model.UploadFile.OpenReadStream());
+										var serialisedData = JsonConvert.SerializeObject(books);
+										string importId = $"{_booksDataType}_{Guid.NewGuid()}";
+										ViewBag.ImportId = importId;
+										HttpContext.Session.SetString(importId, serialisedData);
+										return View("Books", books);
+									}
                 case nameof(Abstractions.Models.InventoryItem):
-                    var invItems = (IEnumerable<InventoryItem>)items;
-                    MapToArticles(invItems);
-                    serialisedData = JsonConvert.SerializeObject(invItems, new JsonSerializerSettings
-                    {
-                        TypeNameHandling = TypeNameHandling.All
-                    });
-                    cachePrefix = _invItemsDataType;
-                    viewName = "InventoryItems";
-                    break;
+									{
+										var invItems = dataImport.Convert<InventoryItem>(model.UploadFile.OpenReadStream());
+										MapToArticles(invItems);
+										var serialisedData = JsonConvert.SerializeObject(invItems, new JsonSerializerSettings
+												{
+													TypeNameHandling = TypeNameHandling.All
+												});
+										string importId = $"{_invItemsDataType}_{Guid.NewGuid()}";
+										ViewBag.ImportId = importId;
+										HttpContext.Session.SetString(importId, serialisedData);
+										return View("InventoryItems", invItems);
+									}
                 case nameof(Inventory.User):
-                    var users = (IEnumerable<User>)items;
-                    serialisedData = JsonConvert.SerializeObject(users);
-                    items = users.Select(u => u.ToDto());
-                    cachePrefix = _studentDataType;
-                    viewName = "Students";
-                    break;
+									{
+										var users = dataImport.Convert<User>(model.UploadFile.OpenReadStream());
+										var serialisedData = JsonConvert.SerializeObject(users);
+										var items = users.Select(u => u.ToDto());
+										string importId = $"{_studentDataType}_{Guid.NewGuid()}";
+										ViewBag.ImportId = importId;
+										HttpContext.Session.SetString(importId, serialisedData);
+										return View("Students", items);
+									}
                 default:
                     throw new NotImplementedException();
             }
-            string importId = $"{cachePrefix}_{Guid.NewGuid()}";
-            ViewBag.ImportId = importId;
-            HttpContext.Session.SetString(importId, serialisedData);
-            return View(viewName, items);
         }
 
         private void MapToArticles(IEnumerable<InventoryItem> invItems)

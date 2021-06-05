@@ -15,7 +15,8 @@ namespace Athene.Inventory.Abstractions.DataImport
 
         public string OutputFormat => typeof(TClass).Name;
 
-        public IEnumerable<object> Convert(Stream fileStream)
+        public IEnumerable<TClass> Convert<TClass>(Stream fileStream)
+					where TClass : class
         {
             var reader = new StreamReader(fileStream);
             var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture);
