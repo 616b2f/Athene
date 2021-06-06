@@ -1,0 +1,53 @@
+<div class="row">
+	<div class="col-md-12">
+		<h3>Inventory search</h3>
+	</div>
+</div>
+<div class="row">
+
+    <form class="col-md-offset-3 col-md-6" (ngSubmit)="onSearch(search.value)">
+        <div class="input-group">
+            <div class="input-group-prepend" ngbDropdown>
+                <select name='itemtype' class="custom-select" id="inputGroupSelect01">
+                    <ng-container *ngFor="let targetGroup of searchTargets">
+                        <option value="{{targetGroup}}">{{targetGroup}}</option>
+                    </ng-container>
+                </select>
+            </div>
+
+            <input #search name="q" type="text" class="form-control" />
+            <span class="input-group-append">
+                <button class="btn btn-primary" type="submit">
+                    <img src="/assets/icons/search.svg" alt="" width="16" height="16"> Search
+                </button>
+            </span>
+        </div>
+    </form>
+    <div>
+        <div ngbDropdown class="dropdown">
+            <button ngbDropdownToggle class="btn btn-outline-secondary dropdown-toggle" type="button">Add</button>
+            <div ngbDropdownMenu class="dropdown-menu">
+                <a ngbDropdownItem class="dropdown-item" [routerLink]="['/books/create']"><span class="glyphicon glyphicon-plus"></span>Add Book</a>
+                <a ngbDropdownItem class="dropdown-item" [routerLink]="['/books/create']"><span class="glyphicon glyphicon-plus"></span>Add Magazine</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="items$ | async as items">
+
+	<div *ngIf="items.length == 0; else itemsFound">
+		<p>Nothing found</p>
+	</div>
+
+	<ng-template #itemsFound>
+        <p class="mb-1 mt-3">
+            {{items.length}} matches
+        </p>
+		<ng-container *ngFor="let item of items">
+            <ng-container *ngIf="isBook(item)">
+                <app-book-item-preview [book]="item" [ngClass]="'mb-3'"></app-book-item-preview>
+            </ng-container>
+		</ng-container>
+	</ng-template>
+</div>

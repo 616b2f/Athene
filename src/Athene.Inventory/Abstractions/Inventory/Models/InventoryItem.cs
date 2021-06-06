@@ -16,7 +16,7 @@ namespace Athene.Inventory.Abstractions.Models
         public StockLocation StockLocation { get; set; }
         public ICollection<ItemNote> Notes { get; set; }
         public string RentedByUserId { get; set; }
-        public IUser RentedBy { get; set; }
+        public User RentedBy { get; set; }
         public DateTime? RentedAt { get; set; }
         public DateTime? PurchasedAt { get; set; }
         public decimal PurchasePrice { get; set; }

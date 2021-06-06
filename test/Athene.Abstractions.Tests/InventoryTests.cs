@@ -9,11 +9,11 @@ namespace Athene.Inventory.AbstractionsTests
     public class InventoryTests
     {
         private readonly IArticleRepository _articles;
-        private readonly IInventory _inventory;
+        private readonly IInventoryRepository _inventory;
         public InventoryTests()
         {
             _articles = new InMemoryArticleRepository();
-            _inventory = new InMemoryInventory();
+            _inventory = new InMemoryInventoryRepository();
         }
 
         [Fact]
@@ -21,7 +21,7 @@ namespace Athene.Inventory.AbstractionsTests
         {
             var book = new Book
             {
-                Id = 1,
+                ArticleId = 1,
                 InternationalStandardBookNumber = "9780132350884",
                 Title = "Clean Code",
                 SubTitle = "A Handbook of Agile Software Craftsmanship",
@@ -57,7 +57,7 @@ namespace Athene.Inventory.AbstractionsTests
 
             Assert.True(article is Book);
             var tmpBook = article as Book;
-            Assert.Equal(book.Id, tmpBook.Id);
+            Assert.Equal(book.ArticleId, tmpBook.ArticleId);
             Assert.Equal(book.Name, tmpBook.Name);
             Assert.Equal(book.Title, tmpBook.Title);
             Assert.Equal(book.SubTitle, tmpBook.SubTitle);
@@ -79,7 +79,7 @@ namespace Athene.Inventory.AbstractionsTests
                 Id = 1,
                 Article = new Book
                 {
-                    Id = 1,
+                    ArticleId = 1,
                     InternationalStandardBookNumber = "9780132350884",
                     Title = "Clean Code",
                     SubTitle = "A Handbook of Agile Software Craftsmanship",
@@ -112,26 +112,26 @@ namespace Athene.Inventory.AbstractionsTests
                 },
                 StockLocation = new StockLocation 
                 {
-                    Hall = 1,
-                    Corridor = 2,
-                    Rack = 3,
-                    Level = 4,
-                    Position = 5,
+                    Hall = "1",
+                    Corridor = "2",
+                    Rack = "3",
+                    Level = "4",
+                    Position = "5",
                 },
             };
             _inventory.AddInventoryItem(inventoryItem);
             var tmpInventoryItem = _inventory.FindInventoryItemById(1);
 
-            Assert.Equal(1 ,tmpInventoryItem.Article.Id);
+            Assert.Equal(1 ,tmpInventoryItem.Article.ArticleId);
             Assert.True(tmpInventoryItem.Article is Book);
             var book = tmpInventoryItem.Article as Book;
             Assert.Equal("9780132350884", book.InternationalStandardBookNumber);
             Assert.Equal(1, tmpInventoryItem.Id);
-            Assert.Equal(1, tmpInventoryItem.StockLocation.Hall);
-            Assert.Equal(2, tmpInventoryItem.StockLocation.Corridor);
-            Assert.Equal(3, tmpInventoryItem.StockLocation.Rack);
-            Assert.Equal(4, tmpInventoryItem.StockLocation.Level);
-            Assert.Equal(5, tmpInventoryItem.StockLocation.Position);
+            Assert.Equal("1", tmpInventoryItem.StockLocation.Hall);
+            Assert.Equal("2", tmpInventoryItem.StockLocation.Corridor);
+            Assert.Equal("3", tmpInventoryItem.StockLocation.Rack);
+            Assert.Equal("4", tmpInventoryItem.StockLocation.Level);
+            Assert.Equal("5", tmpInventoryItem.StockLocation.Position);
         }
     }
 }

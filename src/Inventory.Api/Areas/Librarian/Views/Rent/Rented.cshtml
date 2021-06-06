@@ -1,0 +1,12 @@
+@model Athene.Inventory.Web.Areas.Librarian.Models.RentDto.RentedDto
+@{
+    ViewBag.Title = Localizer["Rented Books"];
+    Layout = "_Layout";
+}
+<h3>@ViewBag.Title</h3>
+<partial name="_UserPreview" for="User">
+<h3>@Localizer["Rented Books"]</h3>
+@foreach (var item in Model.RentedItems)
+{
+    @await Html.PartialAsync("_RentedInventoryItemPreview", item)
+}

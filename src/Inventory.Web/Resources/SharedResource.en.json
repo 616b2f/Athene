@@ -1,0 +1,7 @@
+{
+    "Error_UserNotFound": "User not found",
+    "Success_UserCreated": "User created successfully",
+    "Success_BookCreated": "Book created successfully",
+    "Error_OnSaving": "Error occured while saving",
+    "Error_BookNotFound": "Book could not be found"
+}

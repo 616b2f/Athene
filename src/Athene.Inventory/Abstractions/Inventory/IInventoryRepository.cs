@@ -9,5 +9,6 @@ namespace Athene.Inventory.Abstractions
         void AddInventoryItem(InventoryItem item);
         void AddInventoryItems(IEnumerable<InventoryItem> items);
         IEnumerable<InventoryItem> FindInventoryItemsById(int[] ids);
+        InventoryItem FindInventoryItemById(int id);
     }
 }

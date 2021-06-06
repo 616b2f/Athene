@@ -1,0 +1,47 @@
+@model IEnumerable<InventoryItemDetailsDto>
+@{
+    Layout = "_Layout";
+}
+
+<table class="table">
+    <tr>
+        <th>
+            <label asp-for="@Model.FirstOrDefault().InventoryItemId"></label>
+        </th>
+        <th>
+            <label asp-for="@Model.FirstOrDefault().Barcode"></label>
+        </th>
+        <th>
+            <label asp-for="@Model.FirstOrDefault().ExternalId"></label>
+        </th>
+        <th>
+            <label asp-for="@Model.FirstOrDefault().PurchasedAt"></label>
+        </th>
+        <th>
+            <label asp-for="@Model.FirstOrDefault().Condition"></label>
+        </th>
+        <th>
+            <label asp-for="@Model.FirstOrDefault().StockLocation"></label>
+        </th>
+        <th>
+            <label asp-for="@Model.FirstOrDefault().RentedByUserDisplayName"></label>
+        </th>
+        <th>
+            <label asp-for="@Model.FirstOrDefault().RentedAt"></label>
+        </th>
+    </tr>
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.InventoryItemId</td>
+        <td>@item.Barcode</td>
+        <td>@item.ExternalId</td>
+        <td>@item.PurchasedAt</td>
+        <td>@item.Condition</td>
+        <td>@item.StockLocation</td>
+        <td>@item.RentedByUserDisplayName</td>
+        <td>@item.RentedAt</td>
+    </tr>
+    // @Html.Partial("_InventoryItemDetails", item)
+}
+</table>

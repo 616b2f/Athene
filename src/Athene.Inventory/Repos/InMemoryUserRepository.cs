@@ -1,24 +1,23 @@
 using System;
 using System.Collections.Generic;
-using Athene.Inventory.Abstractions.Models;
 using System.Linq;
 
 namespace Athene.Inventory.Abstractions.TestImp
 {
-    public class InMemoryUserRepository : IUserRepository<IUser>
+    public class InMemoryUserRepository : IUserRepository<User>
     {
-        private readonly List<IUser> _user = new List<IUser>();
-        public void Add(IUser user)
+        private readonly List<User> _user = new List<User>();
+        public void Add(User user)
         {
             _user.Add(user);
         }
 
-        public void AddRange(IEnumerable<IUser> users)
+        public void AddRange(IEnumerable<User> users)
         {
             _user.AddRange(users);
         }
 
-        public IEnumerable<IUser> FindByMatchcode(string matchcode)
+        public IEnumerable<User> FindByMatchcode(string matchcode)
         {
             var normalizedMatchcode = matchcode.ToLower();
             return _user.Where(u => 
@@ -26,12 +25,12 @@ namespace Athene.Inventory.Abstractions.TestImp
                 u.StudentId.ToLower().Contains(normalizedMatchcode));
         }
 
-        public IUser FindByUserId(string userId)
+        public User FindByUserId(string userId)
         {
             return _user.SingleOrDefault(u => u.Id.ToString() == userId);
         }
 
-        public IEnumerable<IUser> FindByUserIds(IEnumerable<string> userIds)
+        public IEnumerable<User> FindByUserIds(IEnumerable<string> userIds)
         {
             return _user.Where(x => userIds.Contains(x.Id));
         }

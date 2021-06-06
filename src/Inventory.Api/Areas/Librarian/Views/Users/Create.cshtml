@@ -1,0 +1,53 @@
+@model Athene.Inventory.Web.Areas.Librarian.Models.UsersDto.CreateUserDto
+@using Athene.Inventory.Abstractions.Models;
+@{
+    ViewBag.Title = @Localizer["Add Student"];
+    Layout = "_Layout";
+}
+
+<div class="row">
+	<div class="col-md-12">
+		<h3>@ViewBag.Title</h3>
+	</div>
+</div>
+<form asp-controller="Users"
+    asp-action="Create"
+    class="form-horizontal">
+      <div class="form-group">
+          <label asp-for="Surname"></label>
+          <input class="form-control" asp-for="Surname"/>
+      </div>
+      <div class="form-group">
+          <label asp-for="Lastname"></label>
+          <input class="form-control" asp-for="Lastname"/>
+      </div>
+      <div class="form-group">
+          <label asp-for="Birthsday"></label>
+          <input class="form-control" asp-for="Birthsday"/>
+      </div>
+      <div class="form-group">
+          <label asp-for="Gender"></label>
+          <select class="form-control" asp-for="Gender" asp-items="Html.GetEnumSelectList<Gender>()"></select>
+      </div>
+      <div class="form-group">
+          <label asp-for="AddressStreet"></label>
+          <input class="form-control" asp-for="AddressStreet"/>
+      </div>
+      <div class="form-group">
+          <label asp-for="AddressZip"></label>
+          <input class="form-control" asp-for="AddressZip"/>
+      </div>
+      <div class="form-group">
+          <label asp-for="AddressCity"></label>
+          <input class="form-control" asp-for="AddressCity"/>
+      </div>
+      <div class="form-group">
+          <label asp-for="AddressCountry"></label>
+          <input class="form-control" asp-for="AddressCountry"/>
+      </div>
+      <div class="form-group">
+          <label asp-for="Student.StudentId"></label>
+          <input class="form-control" asp-for="Student.StudentId">
+      </div>
+      <button class="btn btn-primary">@Localizer["Add"]</button>
+</form>

@@ -56,16 +56,18 @@ namespace Athene.Inventory.Data.Services
             return _db.InventoryItems
                 .Include(x => x.StockLocation)
                 .Include(x => x.Article)
+                .Include(x => x.RentedBy)
                 .Where(x => ids.Contains(x.Article.ArticleId))
                 .ToList();
         }
 
         public IEnumerable<InventoryItem> SearchByMatchcode(string matchcode)
         {
-            return _db.InventoryItems.Where(x => 
-                x.Id.ToString() == matchcode ||
-                x.Barcode == matchcode ||
-                x.Article.Name.Contains(matchcode));
+            return _db.InventoryItems
+                .Where(x => 
+                    x.Id.ToString() == matchcode ||
+                    x.Barcode == matchcode ||
+                    x.Article.Name.Contains(matchcode));
         }
 
         public IEnumerable<StockLocation> SearchForLocations(int articleId)

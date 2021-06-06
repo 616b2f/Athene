@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore.Query;
 using Athene.Inventory.Abstractions;
 using Athene.Inventory.Abstractions.Models;
 using Athene.Inventory.Data.Contexts;
@@ -28,6 +27,11 @@ namespace Athene.Inventory.Data.Services
         {
             return _dbContext.Articles
                 .AsNoTracking()
+                .Include(x => x.InventoryItems)
+                .OfType<Book>()
+                    .Include(x => x.Authors)
+                    .Include(x => x.Categories)
+                    .Include(x => x.Publisher)
                 .Where(x => x.Matchcodes.Any(m => m.Value.Contains(matchcode)))
                 .ToList();
         }

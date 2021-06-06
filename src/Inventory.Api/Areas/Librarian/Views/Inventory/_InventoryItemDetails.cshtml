@@ -1,0 +1,20 @@
+@model InventoryItemDetailsDto
+
+<div class="panel panel-default panel-body">
+    <label asp-for="InventoryItemId"></label>
+    @Model.InventoryItemId<br/>
+    <label asp-for="ExternalId"></label>
+    @Model.ExternalId<br/>
+    <label asp-for="Barcode"></label>
+    @Model.Barcode<br/>
+    <label asp-for="StockLocation"></label>
+    @Model.StockLocation<br/>
+    <label asp-for="RentedByUserDisplayName"></label>
+    @Model.RentedByUserDisplayName<br/>
+    <label asp-for="RentedAt"></label>
+    @Model.RentedAt<br/>
+    <label asp-for="PurchasedAt"></label>
+    @Model.PurchasedAt<br/>
+    <label asp-for="Condition"></label>
+    @Model.Condition<br/>
+</div>
