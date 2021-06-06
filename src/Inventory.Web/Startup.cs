@@ -105,7 +105,7 @@ namespace Inventory.Web
 
             services.AddControllersWithViews()
                     .AddJsonOptions(opt => {
-                        opt.JsonSerializerOptions.ReferenceHandling = ReferenceHandling.Preserve;
+                        opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
                         opt.JsonSerializerOptions.Converters
                             .Add(new Athene.Inventory.Web.JsonConverter.AbstractWriteOnlyJsonConverter());
                     });
